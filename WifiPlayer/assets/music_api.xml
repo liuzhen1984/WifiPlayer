@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<music>
+    <api>
+        <alias_name>随心听</alias_name>
+        <url>fm.baidu.com</url>
+        <ico_url></ico_url>
+        <organize_name>Baidu</organize_name>
+        <organize_url>www.baidu.com</organize_url>
+        <organize_desc>百度音乐</organize_desc>
+    </api>
+    <api>
+        <alias_name>云音乐</alias_name>
+        <url>muisc.163.com</url>
+        <ico_url></ico_url>
+        <organize_name>网易</organize_name>
+        <organize_url>www.163.com</organize_url>
+        <organize_desc>网易音乐</organize_desc>
+    </api>
+    <api>
+        <alias_name>QQ音乐</alias_name>
+        <url>music.qq.com</url>
+        <ico_url></ico_url>
+        <organize_name>腾讯</organize_name>
+        <organize_url>www.qq.com</organize_url>
+        <organize_desc>腾讯科技</organize_desc>
+    </api>
+    <api>
+        <alias_name>豆瓣音乐</alias_name>
+        <url>music.douban.com</url>
+        <ico_url></ico_url>
+        <organize_name>豆瓣</organize_name>
+        <organize_url>www.douban.com</organize_url>
+        <organize_desc>豆瓣科技</organize_desc>
+    </api>
+</music>

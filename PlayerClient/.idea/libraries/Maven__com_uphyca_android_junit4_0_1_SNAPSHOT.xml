@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.uphyca:android-junit4:0.1-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/uphyca/android-junit4/0.1-SNAPSHOT/android-junit4-0.1-20130124.210759-3.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/uphyca/android-junit4/0.1-SNAPSHOT/android-junit4-0.1-20130124.210759-3-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/uphyca/android-junit4/0.1-SNAPSHOT/android-junit4-0.1-20130124.210759-3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

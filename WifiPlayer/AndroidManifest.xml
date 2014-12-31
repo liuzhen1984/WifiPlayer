@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.silveroak.wifiplayer"
+          android:versionCode="1"
+          android:versionName="0.11">
+    <uses-sdk
+            android:minSdkVersion="15"
+            android:targetSdkVersion="20" />
+    <application
+            android:allowBackup="true"
+            android:icon="@drawable/ic_launcher"
+            android:name="com.silveroak.wifiplayer.BootApplication"
+            android:label="@string/app_name"
+            android:largeHeap="true"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        <activity android:name="com.silveroak.wifiplayer.MainActivity"
+                  android:launchMode="singleTask"
+                  android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <service android:name="com.silveroak.wifiplayer.service.WifiPlayerService"
+                 android:launchMode="singleTask">
+                 <!--android:process=":remote">-->
+                <intent-filter>
+                    <action android:name="com.silveroak.wifiplayer.service.WifiPlayerService"/>
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+        </service>
+        <receiver  android:name="com.silveroak.wifiplayer.broadcast.BootReceiver" />
+
+        <receiver android:name="com.silveroak.wifiplayer.broadcast.BootReceiver">
+            <intent-filter >
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+    </application>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+</manifest>

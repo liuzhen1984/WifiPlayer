@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WifiPlayer-Server</string>
+    <string name="welcome">Welcome to Wifi player server</string>
+    <string name="success">Successful</string>
+    <string name="error">Error</string>
+    <string name="sdcarderror">SDCARD Error!</string>
+</resources>
