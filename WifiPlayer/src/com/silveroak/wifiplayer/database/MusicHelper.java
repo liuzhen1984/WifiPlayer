@@ -148,7 +148,7 @@ public class MusicHelper extends SQLiteOpenHelper {
         Cursor c = null;
         try {
             if (db != null) {
-                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  "where "+_ID+"="+id +";",new String[0]);
+                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  " where "+_ID+"="+id +";",new String[0]);
                 if (c != null && c.moveToFirst()) {
                     result = trans(c);
                 }
@@ -234,7 +234,7 @@ public class MusicHelper extends SQLiteOpenHelper {
                 +NAME+"=?,"+SPECIAL+"=?,"
                 +SINGER+"=?,"+CATEGORY+"=?,"
                 +URL+"=?,"+LOCAl_PATH+"=?,"
-                +"where "+_ID+"="+_id;
+                +" where "+_ID+"="+_id;
         SQLiteDatabase db = getReadableDatabase();
         SQLiteStatement stat = db.compileStatement(sql);
 

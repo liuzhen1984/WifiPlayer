@@ -106,7 +106,7 @@ public class PlayerListHelper extends SQLiteOpenHelper {
         Cursor c = null;
         try {
             if (db != null) {
-                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  "where "+_ID+"="+id +";",new String[0]);
+                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  " where "+_ID+"="+id +";",new String[0]);
                 if (c != null && c.moveToFirst()) {
                     PlayerList tasks = new PlayerList();
 
