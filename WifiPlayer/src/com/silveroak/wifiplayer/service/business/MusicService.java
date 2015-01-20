@@ -1,11 +1,15 @@
 package com.silveroak.wifiplayer.service.business;
 
 import android.content.Context;
+import com.silveroak.wifiplayer.database.MusicHelper;
 import com.silveroak.wifiplayer.domain.ErrorCode;
 import com.silveroak.wifiplayer.domain.Result;
+import com.silveroak.wifiplayer.domain.muisc.Music;
 import com.silveroak.wifiplayer.utils.JsonUtils;
 import com.silveroak.wifiplayer.utils.LogUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,9 +20,14 @@ public class MusicService implements IProcessService {
     private final static String TAG = MusicService.class.getSimpleName();
     private final String uri = "music";
     private static MusicService iService = null;
+    private Context context;
+    private MusicHelper musicHelper;
+    private static List<String> ADD_URL = new ArrayList<String>();
     public synchronized static MusicService getService(Context context){
         if(iService==null){
             iService = new MusicService();
+            iService.context = context;
+            iService.musicHelper = new MusicHelper(context);
         }
         return iService;
     }
@@ -42,9 +51,9 @@ public class MusicService implements IProcessService {
             }
             else
             if ("add".equals(type)) {
-                return add(JsonUtils.string2Map(params));
+                return add(params);
             } else if ("delete".equals(type)) {
-                return delete(JsonUtils.string2Map(params));
+                return delete(params);
             } else if ("collect".equals(type)) {
                 return collect(JsonUtils.string2Map(params));
             } else {
@@ -64,19 +73,25 @@ public class MusicService implements IProcessService {
     }
 
     /**
-     * params
      *
-     * @param params
+     * @param url    音乐的唯一链接
      * @return
      */
-    private Result add(Map<String,Object> params){
-        LogUtils.debug(TAG," params:"+params);
+    private Result add(String url){
+        LogUtils.debug(TAG,"Add url to music");
+        //url 需要下载，解析内容
         Result result = new Result();
+
+        Music music = musicHelper.findByUrl(url);
+        if(music==null){
+            //下载解析
+            ADD_URL.add(url);
+        }
         result.setResult(ErrorCode.SUCCESS);
         return result;
     }
-    private Result delete(Map<String,Object> params){
-        LogUtils.debug(TAG, " params:" + params);
+    private Result delete(String musicId){
+        LogUtils.debug(TAG, " Delete music "+ String.valueOf(musicId) );
         Result result = new Result();
         result.setResult(ErrorCode.SUCCESS);
 
@@ -89,6 +104,33 @@ public class MusicService implements IProcessService {
         result.setResult(ErrorCode.SUCCESS);
 
         return result;
+    }
+
+    private void listenAddUrl(){
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while (true){
+                    List<String> urls = new ArrayList<String>(ADD_URL);
+                    if(urls.size()>0){
+                        for(String url:urls){
+                            //下载解析，并保存
+                            Music music = new Music();
+                            music.setUrl(url);
+                            musicHelper.insert(music);
+                        }
+                    }
+                    try {
+                        Thread.sleep(3000l);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        };
+        new Thread(runnable).start();
+
     }
 
 }
