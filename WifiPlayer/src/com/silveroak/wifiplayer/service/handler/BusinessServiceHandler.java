@@ -1,5 +1,6 @@
 package com.silveroak.wifiplayer.service.handler;
 
+import com.silveroak.wifiplayer.constants.MessageConstant;
 import com.silveroak.wifiplayer.domain.TcpRequest;
 import com.silveroak.wifiplayer.service.RouteService;
 import com.silveroak.wifiplayer.service.tcpserver.ServerCache;
@@ -48,8 +49,8 @@ public class BusinessServiceHandler extends SimpleChannelInboundHandler<Object> 
             ServerCache.addClientChannel(ctx.channel());
         }
         try{
-            if("0-0".equalsIgnoreCase(msg.toString())){
-                ctx.writeAndFlush("0-0");
+            if(MessageConstant.HB_STR.equalsIgnoreCase(msg.toString())){
+                ctx.writeAndFlush(MessageConstant.HB_STR);
             }else {
                 String r = RouteService.init().tcpRequest(
                         JsonUtils.string2Object(msg.toString(), TcpRequest.class)

@@ -17,6 +17,7 @@ package com.silveroak.playerclient.service.business;/*
 import android.os.Bundle;
 import android.os.Message;
 import com.silveroak.playerclient.ClientActivity;
+import com.silveroak.playerclient.constants.MessageConstant;
 import com.silveroak.playerclient.domain.ErrorCode;
 import com.silveroak.playerclient.domain.Result;
 import com.silveroak.playerclient.utils.JsonUtils;
@@ -41,7 +42,7 @@ public class PanelClientHandler  extends SimpleChannelInboundHandler<Object> {
             return;
         }
         String strMsg = msg.toString();
-        if("0-0".equalsIgnoreCase(strMsg)){
+        if(MessageConstant.HB_STR.equalsIgnoreCase(strMsg)){
             return;
         }
 

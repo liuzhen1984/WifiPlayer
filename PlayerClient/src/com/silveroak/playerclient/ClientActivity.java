@@ -16,6 +16,7 @@ import com.silveroak.playerclient.service.HttpServer.LocalHttpServer;
 import com.silveroak.playerclient.service.IHandlerWhatAndKey;
 import com.silveroak.playerclient.service.UDPService;
 import com.silveroak.playerclient.service.business.PanelClient;
+import com.silveroak.playerclient.service.business.SearchMusic;
 import com.silveroak.playerclient.utils.JsonUtils;
 import com.silveroak.playerclient.utils.LogUtils;
 import io.netty.channel.Channel;
@@ -26,9 +27,11 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
     private static final String TAG = ClientActivity.class.getSimpleName();
 
 
+    private EditText searchText; // url地址
     private EditText pathText; // url地址
     private TextView resultView;
     private ProgressBar progressBar;
+    private Button searchBtn;
     private Button playBtn;
     private Button startBtn;
     private Button pausedBtn;
@@ -92,8 +95,14 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
         };
 
         storageUtils =  StorageUtils.getInstance(getApplicationContext());
+        searchText = (EditText) findViewById(R.id.search);
+
         pathText = (EditText) findViewById(R.id.path);
         resultView = (TextView) findViewById(R.id.resultView);
+
+        searchBtn = (Button) findViewById(R.id.bt_search);
+
+
         playBtn = (Button) findViewById(R.id.btn_online_play);
         startBtn = (Button) findViewById(R.id.btn_online_start);
         pausedBtn = (Button) findViewById(R.id.btn_online_paused);
@@ -111,6 +120,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
         stopBtn.setOnClickListener(listener);
         pBtn.setOnClickListener(listener);
         nBtn.setOnClickListener(listener);
+        searchBtn.setOnClickListener(listener);
         findBtn.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -189,6 +199,30 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
         public void onClick(View v) {
             final Channel channel = PanelClient.init(getApplicationContext()).getChannel();
             switch (v.getId()) {
+                case R.id.bt_search:
+                    final String searchStr = searchText.getText().toString();
+                    if(searchStr.length()>0) {
+
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                               //todo 调用百度获取接口
+                                String url = SearchMusic.getSearchMusic(getApplicationContext()).getUrl(searchStr);
+                                if(url!=null){
+                                    LogUtils.debug(TAG, url);
+                                    if(channel!=null){
+                                        TcpRequest  tcpRequest = new TcpRequest();
+                                        tcpRequest.setUrl("/play/play");
+                                        tcpRequest.setPayload(url);
+                                        channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
+                                    }
+                                } else{
+                                    LogUtils.debug(TAG,"No find " + searchStr);
+                                }
+                            }
+                        }).start();
+                    }
+                    break;
                 case R.id.btn_online_play:
                     new Thread(new Runnable() {
 

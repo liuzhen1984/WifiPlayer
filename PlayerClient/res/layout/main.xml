@@ -24,6 +24,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:layout_weight="0.97" android:weightSum="1">
             <EditText
+                    android:layout_width="346dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/search"/>
+            <Button
+                    android:layout_width="93dp"
+                    android:layout_height="wrap_content"
+                    android:text="Search"
+                    android:id="@+id/bt_search" android:layout_gravity="right"/>
+            <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/path"/>
