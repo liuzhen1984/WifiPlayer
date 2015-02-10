@@ -40,7 +40,7 @@ public class NetworkUtils {
             }
             MusicType musicType = null;
             try {
-                musicType = MusicType.valueOf(type);
+                musicType = MusicType.valueOf(type.toUpperCase());
             }catch (Exception ex){}
             if(musicType==null){
                 return null;

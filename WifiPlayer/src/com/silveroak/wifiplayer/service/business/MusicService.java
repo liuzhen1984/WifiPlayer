@@ -84,7 +84,7 @@ public class MusicService implements IProcessService {
 
         Music music = musicHelper.findByUrl(url);
         if(music==null){
-            //下载解析
+            //todo 下载解析
             ADD_URL.add(url);
         }
         result.setResult(ErrorCode.SUCCESS);
@@ -114,7 +114,7 @@ public class MusicService implements IProcessService {
                     List<String> urls = new ArrayList<String>(ADD_URL);
                     if(urls.size()>0){
                         for(String url:urls){
-                            //下载解析，并保存
+                            //todo 下载解析，并保存
                             Music music = new Music();
                             music.setUrl(url);
                             musicHelper.insert(music);

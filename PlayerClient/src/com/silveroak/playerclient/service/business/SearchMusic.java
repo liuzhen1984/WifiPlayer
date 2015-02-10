@@ -9,6 +9,8 @@ import org.xmlpull.v1.XmlPullParser;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +37,16 @@ public class SearchMusic {
     }
 
     public String getUrl(String musicName){
-        String url = BAIDU_API+musicName+"$$";
+
+        String url = null;
+        try {
+            musicName = URLEncoder.encode(musicName, "utf8");
+            url = BAIDU_API + musicName + "$$";
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            LogUtils.error(TAG,e);
+            return null;
+        }
         String musicXml = NetworkUtils.requestUrlGet(url);
         if(musicXml==null){
             return null;

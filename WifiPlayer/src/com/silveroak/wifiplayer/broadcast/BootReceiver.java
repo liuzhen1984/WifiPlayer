@@ -3,7 +3,6 @@ package com.silveroak.wifiplayer.broadcast;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import com.silveroak.wifiplayer.WifiPlayerActivity;
 
 /**
  * Created by haoquanqing on 14-6-4.
@@ -22,9 +21,6 @@ public class BootReceiver extends BroadcastReceiver {
             return;
         }
 
-        Intent ss = new Intent(ctx, WifiPlayerActivity.class);
-        ss.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        ctx.startActivity(ss);
     }
 
     protected void startAppService(Context ctx){

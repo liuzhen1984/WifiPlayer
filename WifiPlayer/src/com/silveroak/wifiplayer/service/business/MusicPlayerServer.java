@@ -11,19 +11,23 @@ import com.silveroak.wifiplayer.database.MusicHelper;
 import com.silveroak.wifiplayer.domain.ErrorCode;
 import com.silveroak.wifiplayer.domain.PlayerInfo;
 import com.silveroak.wifiplayer.domain.Result;
+import com.silveroak.wifiplayer.domain.muisc.DownloadMusicFile;
+import com.silveroak.wifiplayer.domain.muisc.Music;
 import com.silveroak.wifiplayer.preference.StorageUtils;
 import com.silveroak.wifiplayer.preference.data.CurrentPlayer;
 import com.silveroak.wifiplayer.service.IHandlerWhatAndKey;
 import com.silveroak.wifiplayer.service.tcpserver.ServerCache;
 import com.silveroak.wifiplayer.utils.JsonUtils;
 import com.silveroak.wifiplayer.utils.LogUtils;
+import com.silveroak.wifiplayer.utils.NetworkUtils;
 import io.netty.channel.Channel;
 
 import java.util.*;
 
 /**
  * Created by zliu on 14/12/27.
- * *  play:  all, 获取当前CurrentPlayer 信息
+ * *  play:
+ * all, 获取当前CurrentPlayer 信息
  * info,获取当前的信息，payload，对象：PlayerInfo
  * start,
  * paused,
@@ -214,7 +218,9 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
 
         }
         try {
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, Integer.valueOf(params), AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
+            int value = Integer.valueOf(params);
+            int current = audioManager.getStreamVolume( AudioManager.STREAM_MUSIC );
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, current+value, AudioManager.FLAG_PLAY_SOUND | AudioManager.FLAG_SHOW_UI);
         } catch (Exception ex) {
             result.setResult(ErrorCode.USER_ERROR.PARAMS_FORMAT);
             return result;
@@ -238,6 +244,10 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         LogUtils.debug(TAG, "CurrentPlayer:" + getCurrentPlayer());
         result.setResult(ErrorCode.SUCCESS);
         return result;
+    }
+
+    public Result playList(){
+        return null;
     }
 
     public Result start() {
@@ -374,7 +384,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
     }
 
     public Result delete(String url) {
-        LogUtils.debug(TAG, " previous:");
+        LogUtils.debug(TAG, " delete  :"+url);
 
         Result result = new Result();
         result.setWhat(IHandlerWhatAndKey.UPDATE_INFO);
@@ -384,6 +394,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         List<String> musicList = currentPlayer.getPlayerList();
         if ("all".equalsIgnoreCase(url)) {
             currentPlayer.setPlayerList(new ArrayList<String>());
+            //todo 清楚内容
         } else {
             for (String music : musicList) {
                 if (music.equalsIgnoreCase(url)) {
@@ -426,6 +437,8 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
             if (!isHave) {
                 currentPlayer.getPlayerList().add(url);
             }
+            //todo url 解析内容
+            parserUrl(url);
             saveCurrentPlayer(currentPlayer);
             result.setPayload(currentPlayer);
         } catch (Exception e) {
@@ -476,6 +489,21 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
             playUrl(currentPlayer.getPlayerMusic());
         } else {
             next();
+        }
+    }
+
+    private void parserUrl(final String url){
+        Music music = musicHelper.findByUrl(url);
+        if(music==null || music.getName()==null || "".equals(music.getName())){
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    DownloadMusicFile dmf =   NetworkUtils.downloadMusicFile(context,url);
+                    LogUtils.debug(TAG,dmf.toString());
+                }
+            };
+            new Thread(runnable).start();
+
         }
     }
 

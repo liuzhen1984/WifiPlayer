@@ -7,7 +7,7 @@ public class SystemConstant {
     public final static String CURRENT_PLAYER_LIST_NAME = "current_player_list";
 
     public interface PORT{
-        public final static int HTTP_SERVER_PORT = 8080;
+        public final static int HTTP_SERVER_PORT = 8181;
         public final static int TCP_SERVER_PORT = 9898;
         public final static int UDP_CLIENT_TO_SERVER = 19898;
         public final static int UDP_SERVER_TO_CLIENT = 18989;
