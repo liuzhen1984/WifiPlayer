@@ -54,16 +54,16 @@
       <file leaf-file-name="MusicPlayerServer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/silveroak/wifiplayer/service/business/MusicPlayerServer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5805921" vertical-offset="6991" max-vertical-offset="7599">
-              <caret line="501" column="0" selection-start-line="501" selection-start-column="0" selection-end-line="501" selection-end-column="0" />
+            <state vertical-scroll-proportion="1.1579893" vertical-offset="6699" max-vertical-offset="7599">
+              <caret line="499" column="22" selection-start-line="498" selection-start-column="21" selection-end-line="499" selection-end-column="22" />
               <folding>
-                <element signature="e#8791#8792#0" expanded="true" />
-                <element signature="e#8818#8819#0" expanded="true" />
+                <element signature="e#8675#8676#0" expanded="true" />
+                <element signature="e#8702#8703#0" expanded="true" />
                 <element signature="method#saveCurrentPlayer#0;class#MusicPlayerServer#0" expanded="false" />
                 <element signature="method#getCurrentPlayer#0;class#MusicPlayerServer#0" expanded="false" />
                 <element signature="method#autoNext#0;class#MusicPlayerServer#0" expanded="false" />
-                <element signature="e#17367#17624#0" expanded="true" />
-                <element signature="e#17623#17624#0" expanded="true" />
+                <element signature="e#17251#17512#0" expanded="true" />
+                <element signature="e#17511#17512#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -72,8 +72,8 @@
       <file leaf-file-name="NetworkUtils.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/silveroak/wifiplayer/utils/NetworkUtils.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="580" max-vertical-offset="1530">
-              <caret line="60" column="59" selection-start-line="60" selection-start-column="48" selection-end-line="60" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="257" max-vertical-offset="1530">
+              <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -221,8 +221,8 @@
         <option value="$PROJECT_DIR$/src/com/silveroak/wifiplayer/constants/SystemConstant.java" />
         <option value="$PROJECT_DIR$/src/com/silveroak/wifiplayer/broadcast/BootReceiver.java" />
         <option value="$PROJECT_DIR$/src/com/silveroak/wifiplayer/service/business/MusicService.java" />
-        <option value="$PROJECT_DIR$/src/com/silveroak/wifiplayer/service/business/MusicPlayerServer.java" />
         <option value="$PROJECT_DIR$/src/com/silveroak/wifiplayer/utils/NetworkUtils.java" />
+        <option value="$PROJECT_DIR$/src/com/silveroak/wifiplayer/service/business/MusicPlayerServer.java" />
       </list>
     </option>
   </component>
@@ -878,12 +878,12 @@
       <workItem from="1423465367804" duration="3404000" />
       <workItem from="1423482154950" duration="1507000" />
       <workItem from="1423530248501" duration="5740000" />
-      <workItem from="1423536449781" duration="2678000" />
+      <workItem from="1423536449781" duration="3072000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="138055000" />
+    <option name="totallyTimeSpent" value="138449000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -907,7 +907,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-1057" width="1274" height="1057" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="154" y="-1007" width="128" height="1080" />
@@ -928,10 +928,10 @@
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32306057" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20191287" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3103082" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="188" y="-623" width="1218" height="728" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3103082" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="188" y="-623" width="1218" height="728" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24229543" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36450586" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.36450586" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37156704" sideWeight="0.221843" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1002,13 +1002,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/silveroak/wifiplayer/service/business/MusicPlayerServer.java</url>
-          <line>214</line>
+          <line>212</line>
           <properties />
           <option name="timeStamp" value="45" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/com/silveroak/wifiplayer/service/business/MusicPlayerServer.java</url>
-          <line>501</line>
+          <line>499</line>
           <properties />
           <option name="timeStamp" value="47" />
         </line-breakpoint>
@@ -1511,24 +1511,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/silveroak/wifiplayer/utils/NetworkUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="580" max-vertical-offset="1530">
-          <caret line="60" column="59" selection-start-line="60" selection-start-column="48" selection-end-line="60" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="257" max-vertical-offset="1530">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/silveroak/wifiplayer/service/business/MusicPlayerServer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5805921" vertical-offset="6991" max-vertical-offset="7599">
-          <caret line="501" column="0" selection-start-line="501" selection-start-column="0" selection-end-line="501" selection-end-column="0" />
+        <state vertical-scroll-proportion="1.1579893" vertical-offset="6699" max-vertical-offset="7599">
+          <caret line="499" column="22" selection-start-line="498" selection-start-column="21" selection-end-line="499" selection-end-column="22" />
           <folding>
-            <element signature="e#8791#8792#0" expanded="true" />
-            <element signature="e#8818#8819#0" expanded="true" />
+            <element signature="e#8675#8676#0" expanded="true" />
+            <element signature="e#8702#8703#0" expanded="true" />
             <element signature="method#saveCurrentPlayer#0;class#MusicPlayerServer#0" expanded="false" />
             <element signature="method#getCurrentPlayer#0;class#MusicPlayerServer#0" expanded="false" />
             <element signature="method#autoNext#0;class#MusicPlayerServer#0" expanded="false" />
-            <element signature="e#17367#17624#0" expanded="true" />
-            <element signature="e#17623#17624#0" expanded="true" />
+            <element signature="e#17251#17512#0" expanded="true" />
+            <element signature="e#17511#17512#0" expanded="true" />
           </folding>
         </state>
       </provider>

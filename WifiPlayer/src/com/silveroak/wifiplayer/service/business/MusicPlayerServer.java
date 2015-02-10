@@ -11,7 +11,6 @@ import com.silveroak.wifiplayer.database.MusicHelper;
 import com.silveroak.wifiplayer.domain.ErrorCode;
 import com.silveroak.wifiplayer.domain.PlayerInfo;
 import com.silveroak.wifiplayer.domain.Result;
-import com.silveroak.wifiplayer.domain.muisc.DownloadMusicFile;
 import com.silveroak.wifiplayer.domain.muisc.Music;
 import com.silveroak.wifiplayer.preference.StorageUtils;
 import com.silveroak.wifiplayer.preference.data.CurrentPlayer;
@@ -19,7 +18,6 @@ import com.silveroak.wifiplayer.service.IHandlerWhatAndKey;
 import com.silveroak.wifiplayer.service.tcpserver.ServerCache;
 import com.silveroak.wifiplayer.utils.JsonUtils;
 import com.silveroak.wifiplayer.utils.LogUtils;
-import com.silveroak.wifiplayer.utils.NetworkUtils;
 import io.netty.channel.Channel;
 
 import java.util.*;
@@ -498,8 +496,8 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
             Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    DownloadMusicFile dmf =   NetworkUtils.downloadMusicFile(context,url);
-                    LogUtils.debug(TAG,dmf.toString());
+//                    DownloadMusicFile dmf =   NetworkUtils.downloadMusicFile(context,url);
+//                    LogUtils.debug(TAG,dmf.toString());
                 }
             };
             new Thread(runnable).start();
