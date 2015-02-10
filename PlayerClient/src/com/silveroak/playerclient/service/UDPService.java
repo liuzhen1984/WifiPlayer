@@ -94,7 +94,11 @@ public class UDPService implements  Runnable {
                             msg = "Connected wifi player server error: "+result.getPayload();
                         }
                     }else{
-                        msg="Connected wifi player server error:"+result.getResult();
+                        if(result.getResult()==ErrorCode.SYSTEM_ERROR.WIFI_CONFIG_ERROR){
+                            msg="Wifi no configuration";
+                        } else {
+                            msg = "Connected wifi player server error:" + result.getResult();
+                        }
                     }
                     Message toUI = new Message();
                     Bundle bundle = new Bundle();

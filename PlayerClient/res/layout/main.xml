@@ -102,6 +102,9 @@
                         android:layout_height="wrap_content"
                         android:text="Find WifiPlayer"
                         android:id="@+id/b_find_wifi_player_host"/>
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Config Wifi" android:id="@+id/config_wifi"
+                        android:layout_gravity="center_horizontal"/>
                 <TextView
                         android:layout_width="340dp"
                         android:layout_height="wrap_content"

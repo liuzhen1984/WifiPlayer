@@ -9,10 +9,11 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
+import com.silveroak.playerclient.domain.Music;
 import com.silveroak.playerclient.domain.TcpRequest;
+import com.silveroak.playerclient.domain.WifiConfig;
 import com.silveroak.playerclient.preference.StorageUtils;
 import com.silveroak.playerclient.preference.data.SystemInfo;
-import com.silveroak.playerclient.service.HttpServer.LocalHttpServer;
 import com.silveroak.playerclient.service.IHandlerWhatAndKey;
 import com.silveroak.playerclient.service.UDPService;
 import com.silveroak.playerclient.service.business.PanelClient;
@@ -39,6 +40,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
     private Button pBtn;
     private Button nBtn;
     private Button findBtn;
+    private Button configWifiBtn;
     private SeekBar musicProgress; // 音乐进度
 
     private StorageUtils storageUtils;
@@ -55,6 +57,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
     private TextView showIp;
 
     public static boolean isFind = false;
+    public static boolean isConfig = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +104,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
         resultView = (TextView) findViewById(R.id.resultView);
 
         searchBtn = (Button) findViewById(R.id.bt_search);
+        configWifiBtn = (Button) findViewById(R.id.config_wifi);
 
 
         playBtn = (Button) findViewById(R.id.btn_online_play);
@@ -158,6 +162,24 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                 return true;            }
         });
 
+        configWifiBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isConfig = true;
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new Thread(UDPService.init(getApplication())).start();
+                        WifiConfig wifiConfig = new WifiConfig();
+                        wifiConfig.setSsid("Silveroak-labsa");
+                        wifiConfig.setPassword("12161017");
+                        UDPService.init(getApplicationContext()).send("config:"+JsonUtils.object2String(wifiConfig));
+                        isConfig = false;
+                    }
+                }).start();
+            }
+        });
+
         musicProgress.setOnSeekBarChangeListener(new SeekBarChangeEvent());
         Runnable runnable = new Runnable() {
             @Override
@@ -186,7 +208,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
 
 
         try {
-            LocalHttpServer.start();
+//            LocalHttpServer.start();
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.error(TAG,e);
@@ -207,13 +229,12 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                             @Override
                             public void run() {
                                //todo 调用百度获取接口
-                                String url = SearchMusic.getSearchMusic(getApplicationContext()).getUrl(searchStr);
-                                if(url!=null){
-                                    LogUtils.debug(TAG, url);
+                                Music music = SearchMusic.getSearchMusic(getApplicationContext()).getMusic(searchStr);
+                                if(music!=null){
                                     if(channel!=null){
                                         TcpRequest  tcpRequest = new TcpRequest();
                                         tcpRequest.setUrl("/play/play");
-                                        tcpRequest.setPayload(url);
+                                        tcpRequest.setPayload(JsonUtils.object2String(music));
                                         channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
                                     }
                                 } else{

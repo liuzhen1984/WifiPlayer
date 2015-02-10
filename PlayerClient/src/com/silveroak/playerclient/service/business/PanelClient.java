@@ -80,7 +80,15 @@ public class PanelClient {
 			return false;
 		}
 		if(channelFuture !=null && channelFuture.channel().isOpen()){
-			return true;
+            try{
+                channelFuture.channel().close();
+                channelFuture=null;
+
+            }catch (Exception ex){}
+            try{
+                channel.close();
+                channel=null;
+            }catch (Exception ex){}
 		}
 
 		// Configure the client.

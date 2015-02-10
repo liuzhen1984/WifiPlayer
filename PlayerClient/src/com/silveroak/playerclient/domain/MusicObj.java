@@ -7,17 +7,27 @@ import java.io.Serializable;
  */
 public class MusicObj implements Serializable{
 
+    private String id;
     private String name;
-    private String url;
+    private String artistName;
     private Long length;
 
     @Override
     public String toString() {
         return "MusicObj{" +
-                "name='" + name + '\'' +
-                ", url='" + url + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", artistName='" + artistName + '\'' +
                 ", length=" + length +
                 '}';
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -28,12 +38,12 @@ public class MusicObj implements Serializable{
         this.name = name;
     }
 
-    public String getUrl() {
-        return url;
+    public String getArtistName() {
+        return artistName;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setArtistName(String artistName) {
+        this.artistName = artistName;
     }
 
     public Long getLength() {

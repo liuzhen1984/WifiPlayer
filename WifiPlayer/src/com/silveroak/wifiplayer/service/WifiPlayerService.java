@@ -29,11 +29,11 @@ public class WifiPlayerService extends Service {
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(receiver, filter);
 
-        try {
-            HttpServer.start();
-        } catch (Exception e) {
-            LogUtils.error(TAG,e);
-        }
+//        try {
+//            HttpServer.start();
+//        } catch (Exception e) {
+//            LogUtils.error(TAG,e);
+//        }
 
         try{
             TcpServer.init();

@@ -114,7 +114,7 @@ public class MusicHelper extends SQLiteOpenHelper {
                 + FORMAT + " varchar(50) , "
                 + RATE + " int(11) , "
                 + SIZE + " int(1) , "
-                + RELATE_STATUS + " varchar(50) "
+                + RELATE_STATUS + " varchar(50) ,"
                 + RESOURCE_TYPE + " varchar(50) "
                 + ");");
         db.execSQL("CREATE INDEX IF NOT EXISTS " + INDEX_NAME + " ON " + TABLE_NAME + " ("
@@ -272,7 +272,7 @@ public class MusicHelper extends SQLiteOpenHelper {
         stat.bindString(6, tasks.getSongPicRadio());
         stat.bindString(7,tasks.getLrcLink());
         stat.bindString(8,tasks.getSongLink());
-        stat.bindString(9,tasks.getFormat());
+        stat.bindString(9,tasks.getFormat()==null?"":tasks.getFormat());
         stat.bindLong(10, tasks.getRate());
         stat.bindLong(11, tasks.getSize());
         stat.bindString(12,tasks.getRelateStatus());

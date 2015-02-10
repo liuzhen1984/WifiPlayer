@@ -12,6 +12,7 @@ public class ErrorCode {
         public final static int MESSENGER_ERROR = 7100004;
         public final static int VALUE_ERROR = 7100005;
         public final static int MAX_CONNECT = 7100006;
+        public final static int WIFI_CONFIG_ERROR = 7100007;
 	}
 
     public interface USER_ERROR{
