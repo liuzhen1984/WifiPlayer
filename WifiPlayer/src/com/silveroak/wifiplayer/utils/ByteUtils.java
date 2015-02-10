@@ -124,11 +124,11 @@ public class ByteUtils {
      * @return
      */
     public static byte[] append(byte[] data, byte[] adata) {
-        if(data==null){
+        if (data == null) {
             data = new byte[0];
         }
         int len = data.length;
-        if(adata==null){
+        if (adata == null) {
             return data;
         }
         int alen = adata.length;
@@ -192,6 +192,7 @@ public class ByteUtils {
         }
         return n;
     }
+
     public static byte[] intToShort(short x) {
         byte[] targets = new byte[2];
         for (int i = 0; i < 2; i++) {
@@ -200,10 +201,11 @@ public class ByteUtils {
         }
         return targets;
     }
+
     public static byte[] intToBytes(int x) {
         int_buffer = ByteBuffer.allocate(4);
         int_buffer.putInt(x);
-        return  subByte(int_buffer.array(),-2);
+        return subByte(int_buffer.array(), -2);
     }
 
     public static byte[] longToBytes(long x) {
@@ -213,7 +215,7 @@ public class ByteUtils {
     }
 
     public static long bytesToLong(byte[] bytes) {
-        if(bytes==null){
+        if (bytes == null) {
             return 0l;
         }
         if (bytes.length < 8) {
@@ -227,15 +229,15 @@ public class ByteUtils {
     }
 
     public static float bytesToFloat(byte[] bytes) {
-        if(bytes==null){
+        if (bytes == null) {
             return 0f;
         }
         int value1 = byte2Integer(subByte(bytes, 0, 2));
         int value2 = byte2Integer(subByte(bytes, 2));
-        int rv = Math.round((float)value2 / 100);
-        float rvf = rv/10.0f;
-        if(value1<0){
-            rvf = value1-rvf;
+        int rv = Math.round((float) value2 / 100);
+        float rvf = rv / 10.0f;
+        if (value1 < 0) {
+            rvf = value1 - rvf;
         } else {
             rvf = rvf + value1;
         }
@@ -246,13 +248,14 @@ public class ByteUtils {
         int iv = (int) value;
         byte[] values = intToBytes(iv);
 
-        int fv = (int) ((value-iv)*1000);
-        if(fv<0){
-            fv=0-fv;
+        int fv = (int) ((value - iv) * 1000);
+        if (fv < 0) {
+            fv = 0 - fv;
         }
-        values = append(values,intToBytes(fv));
+        values = append(values, intToBytes(fv));
         return values;
     }
+
     public static String byte2Hext(byte bin) {
         int i = bin & 0xFF;
         return Integer.toHexString(i);
@@ -283,10 +286,10 @@ public class ByteUtils {
         return result;
     }
 
-    public static <T> T bytes2Obj(byte[] data,Class<T> clazz) {
+    public static <T> T bytes2Obj(byte[] data, Class<T> clazz) {
         Object obj = null;
         try {
-            if(data==null){
+            if (data == null) {
                 return null;
             }
             ByteArrayInputStream bi = new ByteArrayInputStream(data);
@@ -294,11 +297,11 @@ public class ByteUtils {
             obj = oi.readObject();
             bi.close();
             oi.close();
-            return (T)obj;
+            return (T) obj;
         } catch (Exception e) {
             // TODO Auto-generated catch block
             //e.printStackTrace();
-            LogUtils.warn(TAG,e.toString());
+            LogUtils.warn(TAG, e.toString());
         }
         return null;
     }
@@ -309,10 +312,11 @@ public class ByteUtils {
             type = "";
         }
         System.out.println();
-        System.out.println(bytes2StringPtr(data,type));
+        System.out.println(bytes2StringPtr(data, type));
         System.out.println();
 
     }
+
     public static String bytes2StringPtr(byte[] data, String type) {
         if (type == null) {
             type = "";
@@ -325,6 +329,7 @@ public class ByteUtils {
         return sb.toString();
 
     }
+
     public static String bytes2String(byte[] data, String type) {
         if (type == null) {
             type = "";
@@ -332,10 +337,10 @@ public class ByteUtils {
         StringBuffer sb = new StringBuffer();
         System.out.println();
         for (int i = 0; i < data.length; i++) {
-            if("".equals(type)) {
+            if ("".equals(type)) {
                 sb.append(String.format("%02x", data[i]));
-            }else{
-                sb.append(String.format(type+"%02x",data[i]));
+            } else {
+                sb.append(String.format(type + "%02x", data[i]));
             }
         }
         return sb.toString();
@@ -343,6 +348,153 @@ public class ByteUtils {
     }
 
     public static void printLog(byte[] data, String tag) {
-        LogUtils.debug(tag, bytes2String(data,",0x"));
+        LogUtils.debug(tag, bytes2String(data, ",0x"));
     }
+
+
+    /**
+     * 字节操作类
+     * */
+    /**
+     * 正向索引
+     */
+    public static int indexOf(byte[] tag, byte[] src) {
+        return indexOf(tag, src, 1);
+    }
+
+    /**
+     * 获取第index个的位置<br />
+     * index从1开始
+     */
+    public static int indexOf(byte[] tag, byte[] src, int index) {
+        return indexOf(tag, src, 1, src.length);
+    }
+
+    /**
+     * 获取第index个的位置<br />
+     * index从1开始
+     */
+    public static int indexOf(byte[] tag, byte[] src, int index, int len) {
+        if (len > src.length) {
+            try {
+                throw new Exception("大于总个数");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        int size = 0;
+        int tagLen = tag.length;
+        byte[] tmp = new byte[tagLen];
+        for (int j = 0; j < len - tagLen + 1; j++) {
+            for (int i = 0; i < tagLen; i++) {
+                tmp[i] = src[j + i];
+            }
+            // 判断是否相等
+            for (int i = 0; i < tagLen; i++) {
+                if (tmp[i] != tag[i])
+                    break;
+                if (i == tagLen - 1) {
+                    size++;
+                    return j;
+                }
+            }
+
+        }
+        return -1;
+    }
+
+    /**
+     * 倒序索引<br />
+     */
+    public static int lastIndexOf(byte[] tag, byte[] src) {
+
+        return lastIndexOf(tag, src, 1);
+    }
+
+    /**
+     * 倒序获取第index个的位置<br />
+     * index从1开始
+     */
+    public static int lastIndexOf(byte[] tag, byte[] src, int index) {
+        return lastIndexOf(tag, src, src.length);
+    }
+
+    /**
+     * 倒序获取第index个的位置<br />
+     * index从1开始
+     */
+    public static int lastIndexOf(byte[] tag, byte[] src, int index, int len) {
+        if (len > src.length) {
+            try {
+                throw new Exception("大于总个数");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        int size = 0;
+        int tagLen = tag.length;
+        byte[] tmp = new byte[tagLen];
+        for (int j = len - tagLen; j >= 0; j--) {
+            for (int i = 0; i < tagLen; i++) {
+                tmp[i] = src[j + i];
+
+            }
+            for (int i = 0; i < tagLen; i++) {
+                if (tmp[i] != tag[i])
+                    break;
+                if (i == tagLen - 1) {
+                    size++;
+                    return j;
+                }
+            }
+
+        }
+        return -1;
+    }
+
+    /**
+     * 统计个数
+     */
+    public static int size(byte[] tag, byte[] src) {
+        int size = 0;
+        int tagLen = tag.length;
+        int srcLen = src.length;
+        byte[] tmp = new byte[tagLen];
+        for (int j = 0; j < srcLen - tagLen + 1; j++) {
+            for (int i = 0; i < tagLen; i++) {
+                tmp[i] = src[j + i];
+            }
+            for (int i = 0; i < tagLen; i++) {
+                if (tmp[i] != tag[i])
+                    break;
+                if (i == tagLen - 1) {
+                    size++;
+                }
+            }
+            // 速度较慢
+            // if (Arrays.equals(tmp, tag)) {
+            // size++;
+            // }
+        }
+        return size;
+    }
+
+    /**
+     * 截取byte[]
+     */
+    public static byte[] cutBytes(int start, int end, byte[] src) {
+        if (end <= start || start < 0 || end > src.length) {
+            try {
+                throw new Exception("参数错误");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        byte[] tmp = new byte[end - start];
+        for (int i = 0; i < end - start; i++) {
+            tmp[i] = src[start + i];
+        }
+        return tmp;
+    }
+
 }

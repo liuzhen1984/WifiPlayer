@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class DownloadMusicFile {
     private MusicType type;
     private String name;
+    private String musicName;
     private byte[] data;
     private String path;
     private Integer size;
@@ -19,10 +20,19 @@ public class DownloadMusicFile {
         return "DownloadMusicFile{" +
                 "type=" + type +
                 ", name='" + name + '\'' +
+                ", musicName='" + musicName + '\'' +
                 ", data=" + Arrays.toString(data) +
                 ", path='" + path + '\'' +
                 ", size=" + size +
                 '}';
+    }
+
+    public String getMusicName() {
+        return musicName;
+    }
+
+    public void setMusicName(String musicName) {
+        this.musicName = musicName;
     }
 
     public Integer getSize() {

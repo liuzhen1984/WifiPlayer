@@ -20,7 +20,8 @@ import java.util.List;
 public class SearchMusic {
     private final static String TAG = SearchMusic.class.getSimpleName();
 
-    private final String BAIDU_API = "http://box.zhangmen.baidu.com/x?op=12&count=1&title=";
+    private final String BAIDU_SERRCH_API = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=webapp_music&method=baidu.ting.search.catalogSug&format=json&callback=&query=";
+    private final String BAIDU_GET_API = "http://ting.baidu.com/data/music/links?songIds=";
 
     private static Context context = null;
 
@@ -41,7 +42,7 @@ public class SearchMusic {
         String url = null;
         try {
             musicName = URLEncoder.encode(musicName, "utf8");
-            url = BAIDU_API + musicName + "$$";
+            url = BAIDU_SERRCH_API + musicName;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             LogUtils.error(TAG,e);

@@ -11,7 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by haoquanqing on 14-6-11.
+ * Created by  on 14-6-11.
+ *
+ *   private String songName;
+ private String artistName;
+ private String albumName;
+ private String songPicSmall;
+ private String songPicBig;
+ private String songPicRadio;
+ private String lrcLink;
+ private String songLink;
+ private String format;
+ private int rate;
+ private int size;
+ private String relateStatus;
+ private String resourceType;
  */
 public class MusicHelper extends SQLiteOpenHelper {
 
@@ -23,13 +37,19 @@ public class MusicHelper extends SQLiteOpenHelper {
     private static final String TABLE_NAME = "music";
     private static final String INDEX_NAME = "index_music";
     private static final String _ID = "_id";
-    private static final String NAME = "name";
-    private static final String SPECIAL = "special";
-    private static final String SINGER = "singer";
-    private static final String CATEGORY = "category";
-    private static final String URL = "url";
-    private static final String LOCAl_PATH = "localPath";
-    private static final String SOURCE = "source";
+    private static final String SONG_NAME = "song_name";
+    private static final String ARTIST_NAME = "artist_name";
+    private static final String ALBUM_NAME = "album_name";
+    private static final String SONG_PIC_SMALL = "song_pic_small";
+    private static final String SONG_PIC_BIG = "song_pic_big";
+    private static final String SONG_PIC_RADIO = "song_pic_radio";
+    private static final String LRC_LINK = "lrc_link";
+    private static final String SONG_LINK = "song_link";
+    private static final String FORMAT = "format";
+    private static final String RATE = "rate";
+    private static final String SIZE = "size";
+    private static final String RELATE_STATUS = "relate_status";
+    private static final String RESOURCE_TYPE = "resource_type";
 
     public MusicHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -62,29 +82,43 @@ public class MusicHelper extends SQLiteOpenHelper {
 
     /**
      *
-     private static final String NAME = "name";
-     private static final String SPECIAL = "special";
-     private static final String SINGER = "singer";
-     private static final String CATEGORY = "category";
-     private static final String URL = "url";
-     private static final String LOCAl_PATH = "localPath";
-     private static final String SOURCE = "source";
-     private static final String PLAYER_LIST_ID = "play_list_id";
+     private static final String TABLE_NAME = "music";
+     private static final String INDEX_NAME = "index_music";
+     private static final String _ID = "_id";
+     private static final String SONG_NAME = "song_name";
+     private static final String ARTIST_NAME = "artist_name";
+     private static final String ALBUM_NAME = "album_name";
+     private static final String SONG_PIC_SMALL = "song_pic_small";
+     private static final String SONG_PIC_BIG = "song_pic_big";
+     private static final String SONG_PIC_RADIO = "song_pic_radio";
+     private static final String LRC_LINK = "lrc_link";
+     private static final String SONG_LINK = "song_link";
+     private static final String FORMAT = "format";
+     private static final String RATE = "rate";
+     private static final String SIZE = "size";
+     private static final String RELATE_STATUS = "relate_status";
+     private static final String RESOURCE_TYPE = "resource_type";
      * @param db
      */
     private void createTableAndIndex(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
                 + _ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + NAME + " varchar(50), "
-                + SPECIAL + " varchar(50) ,"
-                + SINGER + " varchar(50) ,"
-                + CATEGORY + " varchar(50) , "
-                + URL + " varchar(255)  ,"
-                + LOCAl_PATH + " varchar(255)  ,"
-                + SOURCE + " varchar(50) "
+                + SONG_NAME + " varchar(50), "
+                + ARTIST_NAME + " varchar(50), "
+                + ALBUM_NAME + " varchar(50), "
+                + SONG_PIC_SMALL + " varchar(255) ,"
+                + SONG_PIC_BIG + " varchar(255) ,"
+                + SONG_PIC_RADIO + " varchar(255) , "
+                + LRC_LINK + " varchar(255) , "
+                + SONG_LINK + " varchar(255) , "
+                + FORMAT + " varchar(50) , "
+                + RATE + " int(11) , "
+                + SIZE + " int(1) , "
+                + RELATE_STATUS + " varchar(50) "
+                + RESOURCE_TYPE + " varchar(50) "
                 + ");");
         db.execSQL("CREATE INDEX IF NOT EXISTS " + INDEX_NAME + " ON " + TABLE_NAME + " ("
-                + URL + ");");
+                + SONG_LINK + ");");
         isCreate = true;
 
     }
@@ -97,7 +131,7 @@ public class MusicHelper extends SQLiteOpenHelper {
         try {
 
             if (db != null) {
-                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  " where "+SPECIAL+"="+special+";",new String[0]);
+                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  " where "+ALBUM_NAME+"="+special+";",new String[0]);
                 while(c!=null && c.moveToNext()) {
                     musicAPIs.add(trans(c));
                 }
@@ -123,7 +157,7 @@ public class MusicHelper extends SQLiteOpenHelper {
         try {
 
             if (db != null) {
-                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  " where "+SINGER+"="+singer+";",new String[0]);
+                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  " where "+ARTIST_NAME+"="+singer+";",new String[0]);
                 while(c!=null && c.moveToNext()) {
                     musicAPIs.add(trans(c));
                 }
@@ -173,7 +207,7 @@ public class MusicHelper extends SQLiteOpenHelper {
         Cursor c = null;
         try {
             if (db != null) {
-                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  " where "+URL+"=\""+url +"\";",new String[0]);
+                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  " where "+SONG_LINK+"=\""+url +"\";",new String[0]);
                 if (c != null && c.moveToFirst()) {
                     result = trans(c);
                 }
@@ -191,67 +225,65 @@ public class MusicHelper extends SQLiteOpenHelper {
         return result;
     }
     /**
-     *  private static final String NAME = "name";
-     private static final String SPECIAL = "special";
-     private static final String SINGER = "singer";
-     private static final String CATEGORY = "category";
-     private static final String URL = "url";
-     private static final String LOCAl_PATH = "localPath";
-     private static final String SOURCE = "source";
-     private static final String PLAYER_LIST_ID = "play_list_id";
+     private static final String TABLE_NAME = "music";
+     private static final String INDEX_NAME = "index_music";
+     private static final String _ID = "_id";
+     private static final String SONG_NAME = "song_name";
+     private static final String ARTIST_NAME = "artist_name";
+     private static final String ALBUM_NAME = "album_name";
+     private static final String SONG_PIC_SMALL = "song_pic_small";
+     private static final String SONG_PIC_BIG = "song_pic_big";
+     private static final String SONG_PIC_RADIO = "song_pic_radio";
+     private static final String LRC_LINK = "lrc_link";
+     private static final String SONG_LINK = "song_link";
+     private static final String FORMAT = "format";
+     private static final String RATE = "rate";
+     private static final String SIZE = "size";
+     private static final String RELATE_STATUS = "relate_status";
+     private static final String RESOURCE_TYPE = "resource_type";
      * @param tasks
      */
     //插入
     public void insert(Music tasks){
         String sql = "insert into "+TABLE_NAME+"("
-                +NAME+","
-                +SPECIAL+","
-                +SINGER+","
-                +CATEGORY+","
-                +URL+","
-                +LOCAl_PATH +","
-                +SOURCE +","
-                + ") values(?,?,?,?,?,?,?)";
+                +SONG_NAME+","
+                +ARTIST_NAME+","
+                +ALBUM_NAME+","
+                +SONG_PIC_SMALL+","
+                +SONG_PIC_BIG+","
+                +SONG_PIC_RADIO+","
+                +LRC_LINK+","
+                +SONG_LINK+","
+                +FORMAT+","
+                +RATE+","
+                +SIZE+","
+                +RELATE_STATUS+","
+                +RESOURCE_TYPE
+                + ") values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
         SQLiteDatabase db = getReadableDatabase();
         SQLiteStatement stat = db.compileStatement(sql);
 
         db.beginTransaction();
-        stat.bindString(1, tasks.getName());
-        stat.bindString(2, tasks.getSpecial());
-        stat.bindString(3, tasks.getSinger());
-        stat.bindString(4, tasks.getCategory());
-        stat.bindString(5, tasks.getUrl());
-        stat.bindString(6,tasks.getLocalPath());
-        stat.bindString(7,tasks.getSource());
+        stat.bindString(1, tasks.getSongName());
+        stat.bindString(2, tasks.getArtistName());
+        stat.bindString(3, tasks.getAlbumName());
+        stat.bindString(4, tasks.getSongPicSmall());
+        stat.bindString(5, tasks.getSongPicBig());
+        stat.bindString(6, tasks.getSongPicRadio());
+        stat.bindString(7,tasks.getLrcLink());
+        stat.bindString(8,tasks.getSongLink());
+        stat.bindString(9,tasks.getFormat());
+        stat.bindLong(10, tasks.getRate());
+        stat.bindLong(11, tasks.getSize());
+        stat.bindString(12,tasks.getRelateStatus());
+        stat.bindString(13,tasks.getResourceType());
         stat.executeInsert();
         db.setTransactionSuccessful();
         db.endTransaction();
         db.close();
     }
-    //插入
-    public void update(long _id,Music tasks){
-        String sql = "UPDATE "+TABLE_NAME+" SET "
-                +NAME+"=?,"+SPECIAL+"=?,"
-                +SINGER+"=?,"+CATEGORY+"=?,"
-                +URL+"=?,"+LOCAl_PATH+"=?,"
-                +" where "+_ID+"="+_id;
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteStatement stat = db.compileStatement(sql);
 
-        db.beginTransaction();
-        stat.bindString(1, tasks.getName());
-        stat.bindString(2, tasks.getSpecial());
-        stat.bindString(3, tasks.getSinger());
-        stat.bindString(4, tasks.getCategory());
-        stat.bindString(5, tasks.getUrl());
-        stat.bindString(6,tasks.getLocalPath());
-        stat.bindString(7,tasks.getSource());
-        stat.executeUpdateDelete();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-    }
-    //插入
+    //
     public void delete(long _id){
         String sql = "DELETE FROM "+TABLE_NAME+" where "+_ID+"="+_id;
         SQLiteDatabase db = getReadableDatabase();
@@ -267,13 +299,19 @@ public class MusicHelper extends SQLiteOpenHelper {
         Music tasks = new Music();
 
         tasks.set_id(c.getLong(c.getColumnIndex(_ID)));
-        tasks.setName(c.getString(c.getColumnIndex(NAME)));
-        tasks.setSpecial(c.getString(c.getColumnIndex(SPECIAL)));
-        tasks.setSinger(c.getString(c.getColumnIndex(SINGER)));
-        tasks.setCategory(c.getString(c.getColumnIndex(CATEGORY)));
-        tasks.setLocalPath(c.getString(c.getColumnIndex(LOCAl_PATH)));
-        tasks.setUrl(c.getString(c.getColumnIndex(URL)));
-        tasks.setSource(c.getString(c.getColumnIndex(SOURCE)));
+        tasks.setSongName(c.getString(c.getColumnIndex(SONG_NAME)));
+        tasks.setArtistName(c.getString(c.getColumnIndex(ARTIST_NAME)));
+        tasks.setAlbumName(c.getString(c.getColumnIndex(ALBUM_NAME)));
+        tasks.setSongPicSmall(c.getString(c.getColumnIndex(SONG_PIC_SMALL)));
+        tasks.setSongPicBig(c.getString(c.getColumnIndex(SONG_PIC_BIG)));
+        tasks.setSongPicRadio(c.getString(c.getColumnIndex(SONG_PIC_RADIO)));
+        tasks.setLrcLink(c.getString(c.getColumnIndex(LRC_LINK)));
+        tasks.setSongLink(c.getString(c.getColumnIndex(SONG_LINK)));
+        tasks.setFormat(c.getString(c.getColumnIndex(FORMAT)));
+        tasks.setRate(c.getInt(c.getColumnIndex(RATE)));
+        tasks.setSize(c.getInt(c.getColumnIndex(SIZE)));
+        tasks.setRelateStatus(c.getString(c.getColumnIndex(RELATE_STATUS)));
+        tasks.setResourceType(c.getString(c.getColumnIndex(RESOURCE_TYPE)));
         return tasks;
     }
 }

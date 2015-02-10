@@ -1,4 +1,4 @@
-package com.silveroak.wifiplayer.domain.muisc;
+package com.silveroak.playerclient.domain;
 
 import java.io.Serializable;
 

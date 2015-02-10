@@ -116,7 +116,7 @@ public class MusicService implements IProcessService {
                         for(String url:urls){
                             //todo 下载解析，并保存
                             Music music = new Music();
-                            music.setUrl(url);
+                            music.setSongLink(url);
                             musicHelper.insert(music);
                         }
                     }

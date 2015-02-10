@@ -1,5 +1,7 @@
 package com.silveroak.wifiplayer.service.parser;
 
+import com.silveroak.wifiplayer.domain.muisc.Music;
+
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -19,6 +21,19 @@ import java.io.UnsupportedEncodingException;
  * 从“标题”开始，每部分内容之间用'\0'（字符串结束标志）或'\20'（空格）隔开。
  */
 public final class Mp3ParserService {
+
+    private static Mp3ParserService service=null;
+
+    private Mp3ParserService(){};
+    public static Mp3ParserService getService(){
+        if(service==null){
+            service = new Mp3ParserService();
+            service.muisc = new Music();
+        }
+        return service;
+    }
+
+    private Music muisc;
 
     // ID3v1 & ID3v2
     private String strTitle;
@@ -64,9 +79,9 @@ public final class Mp3ParserService {
         return b[0] == 'T' && b[1] == 'A' && b[2] == 'G';
     }
 
-    public void parseID3V1(byte[] b) {
+    public Music parseID3V1(byte[] b) {
         if (b.length < 128 || checkID3V1(b) == false)
-            return;
+            return null;
 
         byte[] buf = new byte[125];
         System.arraycopy(b, 3, buf, 0, 125);
@@ -74,18 +89,25 @@ public final class Mp3ParserService {
             if (buf[i] == 0)
                 buf[i] = 0x20; //空格
 
-        if (strTitle == null)
+        if (strTitle == null) {
             strTitle = new String(buf, 0, 30).trim();
+            this.muisc.setSongName(strTitle);
+        }
         if (strTitle.length() == 0)
             strTitle = null;
 
-        if (strArtist == null)
+        if (strArtist == null) {
             strArtist = new String(buf, 30, 30).trim();
+            this.muisc.setArtistName(strArtist);
+
+        }
         if (strArtist.length() == 0)
             strArtist = null;
 
-        if (strAlbum == null)
+        if (strAlbum == null) {
             strAlbum = new String(buf, 60, 30).trim();
+            this.muisc.setAlbumName(strAlbum);
+        }
         if (strAlbum.length() == 0)
             strAlbum = null;
 
@@ -95,6 +117,7 @@ public final class Mp3ParserService {
             strYear = null;
 
         buf = null;
+        return muisc;
     }
 
 //--------------------------------------------------------------------
