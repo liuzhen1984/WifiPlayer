@@ -21,7 +21,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/aidl" />
       <excludeFolder url="file://$MODULE_DIR$/target/generated-sources/r" />
     </content>
-    <orderEntry type="jdk" jdkName="Maven Android 4.4.2 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Maven Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: android:android:4.4.2_r3" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-all:4.0.23.Final" level="project" />

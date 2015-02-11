@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/musicListContainer">
+
+    <fragment android:name="com.silveroak.playerclient.ui.fragment.PlayerTopBarFragment"
+              android:id="@+id/topbar"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" />
+
+    <fragment android:name="com.silveroak.playerclient.ui.fragment.PlayerSearchBarFragment"
+              android:id="@+id/searchbar"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" />
+
+    <fragment android:name="com.silveroak.playerclient.ui.fragment.PlayerMusicListFragment"
+              android:id="@+id/musiclist"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content" />
+
+
+</LinearLayout>
