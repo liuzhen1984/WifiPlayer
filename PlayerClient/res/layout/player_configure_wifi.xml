@@ -3,22 +3,16 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:id="@+id/musicPlayContainer">
+              android:id="@+id/configureWifiContainer">
+
 
     <fragment android:name="com.silveroak.playerclient.ui.fragment.PlayerTopBarFragment"
               android:id="@+id/topbar"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content" />
-
-    <fragment android:name="com.silveroak.playerclient.ui.fragment.PlayerSearchBarFragment"
-              android:id="@+id/searchbar"
+    <fragment android:name="com.silveroak.playerclient.ui.fragment.PlayerConfigureFragment"
+              android:id="@+id/configurewifi"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content" />
-
-    <fragment android:name="com.silveroak.playerclient.ui.fragment.PlayerMusicPlayFragment"
-              android:id="@+id/musicplay"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content" />
-
 
 </LinearLayout>

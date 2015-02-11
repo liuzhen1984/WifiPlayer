@@ -18,7 +18,6 @@
     <ImageButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_below="@+id/tvSearchDevice"
             android:id="@+id/imgBtnRefreshSearch"
             android:src="@drawable/refresh"/>

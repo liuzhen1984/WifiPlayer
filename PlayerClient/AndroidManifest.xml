@@ -7,7 +7,7 @@
             android:minSdkVersion="15"
             android:targetSdkVersion="20"/>
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
-        <activity android:name="PlayerSearchActivity"
+        <activity android:name="PlayerSearchDeviceActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
