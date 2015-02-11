@@ -40,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/imgBtnNextSong"
                 android:src="@drawable/next_song"
-                android:layout_marginLeft="50dp"
-                />
+                android:layout_marginLeft="50dp"/>
     </LinearLayout>
 </RelativeLayout>

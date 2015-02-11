@@ -16,7 +16,7 @@ import com.silveroak.playerclient.domain.WifiConfig;
 import com.silveroak.playerclient.preference.StorageUtils;
 import com.silveroak.playerclient.preference.data.SystemInfo;
 import com.silveroak.playerclient.service.IHandlerWhatAndKey;
-import com.silveroak.playerclient.service.UDPService;
+import com.silveroak.playerclient.service.SearchDeviceService;
 import com.silveroak.playerclient.service.business.PanelClient;
 import com.silveroak.playerclient.service.business.SearchMusic;
 import com.silveroak.playerclient.utils.JsonUtils;
@@ -135,15 +135,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                new Thread(UDPService.init(getApplication())).start();
-                                while(isFind) {
-                                    UDPService.init(getApplicationContext()).send("find");
-                                    try {
-                                        Thread.sleep(10000l);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
+                            SearchDeviceService.init(getApplication()).search();
                             }
                         }).start();
                         break;
@@ -155,7 +147,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                             @Override
                             public void run() {
                                 isFind = false;
-                                UDPService.init(getApplicationContext()).closeListen();
+                                SearchDeviceService.init(getApplicationContext()).closeListen();
                             }
                         }).start();
                         break;
@@ -170,12 +162,11 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        new Thread(UDPService.init(getApplication())).start();
                         WifiConfig wifiConfig = new WifiConfig();
                         wifiConfig.setSsid("SilverOakLabs");
                         wifiConfig.setPassword("Good2Great");
                         wifiConfig.setKeyMgmt(WifiKeyMgmtEnum.WPA);
-                        UDPService.init(getApplicationContext()).send("config==="+JsonUtils.object2String(wifiConfig));
+                        SearchDeviceService.init(getApplicationContext()).config(wifiConfig);
                         isConfig = false;
                     }
                 }).start();

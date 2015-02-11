@@ -9,5 +9,10 @@ public interface IHandlerWhatAndKey {
     public static final int MESSAGE = -1;
 
 
+    public static final int SEARCH_DEVICE_MESSAGE = 101;
+
+
+
+
     public static final String MESSAGE_KEY = "message_key";
 }
