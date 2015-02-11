@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.*;
+import com.silveroak.playerclient.constants.WifiKeyMgmtEnum;
 import com.silveroak.playerclient.domain.Music;
 import com.silveroak.playerclient.domain.TcpRequest;
 import com.silveroak.playerclient.domain.WifiConfig;
@@ -171,9 +172,10 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                     public void run() {
                         new Thread(UDPService.init(getApplication())).start();
                         WifiConfig wifiConfig = new WifiConfig();
-                        wifiConfig.setSsid("Silveroak-labsa");
-                        wifiConfig.setPassword("12161017");
-                        UDPService.init(getApplicationContext()).send("config:"+JsonUtils.object2String(wifiConfig));
+                        wifiConfig.setSsid("SilverOakLabs");
+                        wifiConfig.setPassword("Good2Great");
+                        wifiConfig.setKeyMgmt(WifiKeyMgmtEnum.WPA);
+                        UDPService.init(getApplicationContext()).send("config==="+JsonUtils.object2String(wifiConfig));
                         isConfig = false;
                     }
                 }).start();

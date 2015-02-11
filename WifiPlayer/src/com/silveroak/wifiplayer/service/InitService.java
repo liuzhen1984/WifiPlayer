@@ -34,6 +34,8 @@ public class InitService {
          LogUtils.debug(TAG,"PS size:"+PROCESS_SERVICES.size());
         MusicHelper musicHelper = new MusicHelper(context);
 
+        ConfigService.getConfigService(context).monitor();
+
     }
 
     public static void initPlayerList(Context context){

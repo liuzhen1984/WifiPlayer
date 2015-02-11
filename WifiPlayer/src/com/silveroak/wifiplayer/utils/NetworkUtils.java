@@ -1,7 +1,10 @@
 package com.silveroak.wifiplayer.utils;
 
 import android.content.Context;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import com.silveroak.wifiplayer.constants.MusicType;
+import com.silveroak.wifiplayer.constants.WifiKeyMgmtEnum;
 import com.silveroak.wifiplayer.domain.muisc.Music;
 import com.silveroak.wifiplayer.service.parser.Mp3ParserService;
 import com.silveroak.wifiplayer.service.parser.Mp3ReadId3v2;
@@ -13,6 +16,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.List;
 
 /**
  * Created by zliu on 14/10/30.
@@ -111,5 +115,77 @@ public class NetworkUtils {
         inStream.close();
         //把outStream里的数据写入内存
         return outStream.toByteArray();
+    }
+
+
+    public static WifiConfiguration createWifiInfo(WifiManager wifiManager,String SSID, String Password, WifiKeyMgmtEnum type) {
+        if(wifiManager==null){
+            return null;
+        }
+        if(SSID==null||"".equals(SSID)){
+            return null;
+        }
+        if(Password==null){
+            Password = "";
+        }
+        if(type==null){
+            type=WifiKeyMgmtEnum.WPA;
+        }
+        WifiConfiguration config = new WifiConfiguration();
+        config.allowedAuthAlgorithms.clear();
+        config.allowedGroupCiphers.clear();
+        config.allowedKeyManagement.clear();
+        config.allowedPairwiseCiphers.clear();
+        config.allowedProtocols.clear();
+        config.SSID = "\"" + SSID + "\"";
+
+        WifiConfiguration tempConfig = IsExsits(wifiManager,SSID);
+        if (tempConfig != null) {
+            wifiManager.removeNetwork(tempConfig.networkId);
+        }
+// 没有密码：
+        if (type.equals(WifiKeyMgmtEnum.NONE)) {
+            config.wepKeys[0] = "";
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+            config.wepTxKeyIndex = 0;
+        }
+// WEP方式加密
+        if (type.equals(WifiKeyMgmtEnum.WEP)) {
+            config.hiddenSSID = true;
+            config.wepKeys[0] = "\"" + Password + "\"";
+            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+            config.wepTxKeyIndex = 0;
+        }
+// WPA方式加密
+        if (type.equals(WifiKeyMgmtEnum.WPA)) {
+            config.preSharedKey = "\"" + Password + "\"";
+            config.hiddenSSID = true;
+            config.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+            config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+            config.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+            config.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+            config.status = WifiConfiguration.Status.ENABLED;
+        }
+        return config;
+    }
+
+    public static WifiConfiguration IsExsits(WifiManager wifiManager,String SSID) {
+        List<WifiConfiguration> existingConfigs = wifiManager.getConfiguredNetworks();
+        if(existingConfigs==null){
+            return null;
+        }
+        for (WifiConfiguration existingConfig : existingConfigs) {
+            if (existingConfig.SSID.equals("\"" + SSID + "\"")) {
+                return existingConfig;
+            }
+        }
+        return null;
     }
 }

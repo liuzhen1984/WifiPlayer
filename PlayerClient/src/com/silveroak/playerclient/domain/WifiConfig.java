@@ -1,28 +1,30 @@
 package com.silveroak.playerclient.domain;
 
+
+import com.silveroak.playerclient.constants.WifiKeyMgmtEnum;
+
 /**
  * Created by zliu on 15/2/10.
  */
 public class WifiConfig {
     private String ssid;
-    private String keyMgmt;
+    private WifiKeyMgmtEnum keyMgmt;
     private String password;
-
 
     @Override
     public String toString() {
         return "WifiConfig{" +
                 "ssid='" + ssid + '\'' +
-                ", keyMgmt='" + keyMgmt + '\'' +
+                ", keyMgmt=" + keyMgmt +
                 ", password='" + password + '\'' +
                 '}';
     }
 
-    public String getKeyMgmt() {
+    public WifiKeyMgmtEnum getKeyMgmt() {
         return keyMgmt;
     }
 
-    public void setKeyMgmt(String keyMgmt) {
+    public void setKeyMgmt(WifiKeyMgmtEnum keyMgmt) {
         this.keyMgmt = keyMgmt;
     }
 
