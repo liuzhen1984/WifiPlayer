@@ -9,6 +9,7 @@ public interface MessageConstant {
     public enum  SEARCH_DEVICE_CMD {
         NO_FIND_DEVCIE("no_find_device"),
         IN_CONFIG_PAGE("in_config_page"),
+        DO_CONFIG_WIFI("do_config_wifi"),
         COMPLETE("complete");
         private String cmd;
         SEARCH_DEVICE_CMD(String cmd){

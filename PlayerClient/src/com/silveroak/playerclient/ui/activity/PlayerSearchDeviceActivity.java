@@ -83,7 +83,12 @@ public class PlayerSearchDeviceActivity extends Activity implements IHandlerWhat
                             SearchDeviceService.init(getApplicationContext()).closeListen();
                             msg("Connect device successful");
 //                            startActivity(intent);
-                        } else{
+                        } else
+                                if(cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.DO_CONFIG_WIFI.getCmd())){
+                                    msg("正在配置稍后重试");
+                                    SearchDeviceService.init(getApplicationContext()).search();
+                                }
+                            else{
                             //todo 没有找到设备，及热点，停留在次页面
                             msg("No find device");
                         }

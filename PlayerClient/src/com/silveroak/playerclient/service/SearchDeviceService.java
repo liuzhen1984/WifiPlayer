@@ -116,9 +116,11 @@ public class SearchDeviceService {
                             LISTEN_STATUS = 1;
                             LogUtils.debug(TAG,"Connected wifi player server error: "+result.getPayload());
                         }
-                    }else  if(result.getResult()==ErrorCode.SYSTEM_ERROR.WIFI_CONFIG_ERROR){
+                    }else  if( result.getResult()==ErrorCode.SYSTEM_ERROR.WIFI_DO_CONFIG){
+                        sendMessage(MessageConstant.SEARCH_DEVICE_CMD.DO_CONFIG_WIFI.getCmd());
+                        LISTEN_STATUS = 1;
+                    }else  if(result.getResult()==ErrorCode.SYSTEM_ERROR.WIFI_CONFIG_ERROR ){
                         LISTEN_STATUS = 3;
-                        //todo 通知前台进入配置页面
                     } else {
                         LISTEN_STATUS = 1;
                         LogUtils.debug(TAG,"Connected wifi player server error:" + result.getResult());
@@ -220,7 +222,7 @@ public class SearchDeviceService {
                     if (LISTEN_STATUS == 1 && count < 3) {
                         count++;
                         try {
-                            Thread.sleep(3000l);
+                            Thread.sleep(5000l);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
