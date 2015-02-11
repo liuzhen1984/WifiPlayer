@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent">
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="400dp"
+            android:text="Almost Lover"
+            android:layout_alignParentTop="true"
+            android:id="@+id/tvSongName"
+            android:gravity="center"/>
+    <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/llControl"
+            android:id="@+id/sbSongProcess"
+            android:layout_marginBottom="30dp"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/llControl">
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgBtnPreviousSong"
+                android:src="@drawable/pre_song"
+                android:layout_marginRight="50dp"/>
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgBtnPlayPause"
+                android:src="@drawable/play_song"/>
+        <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgBtnNextSong"
+                android:src="@drawable/next_song"
+                android:layout_marginLeft="50dp"
+                />
+    </LinearLayout>
+</RelativeLayout>
