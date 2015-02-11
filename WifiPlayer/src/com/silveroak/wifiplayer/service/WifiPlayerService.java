@@ -62,8 +62,8 @@ public class WifiPlayerService extends Service {
                 new Thread(){
                     @Override
                     public void run(){
-                        //todo 启动server
-
+                        // 启动server
+                        UDPService.init(getApplicationContext()).run();
                     }
                 }.start();
             }

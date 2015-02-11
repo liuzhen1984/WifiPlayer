@@ -237,4 +237,20 @@ public class TransUtil {
         return  (i & 0xFF)+ "."+ ((i >> 8) & 0xFF)+ "."
                 + ((i >> 16) & 0xFF) + "." + ((i >> 24) & 0xFF);
     }
+
+
+    public static String sqliteEscape(String keyWord){
+        keyWord = keyWord.replace(":", "/:");
+        keyWord = keyWord.replace("/", "//");
+        keyWord = keyWord.replace("'", "''");
+        keyWord = keyWord.replace("[", "/[");
+        keyWord = keyWord.replace("]", "/]");
+        keyWord = keyWord.replace("%", "/%");
+        keyWord = keyWord.replace("&","/&");
+        keyWord = keyWord.replace("_", "/_");
+        keyWord = keyWord.replace("(", "/(");
+        keyWord = keyWord.replace(")", "/)");
+        return keyWord;
+    }
+
 }

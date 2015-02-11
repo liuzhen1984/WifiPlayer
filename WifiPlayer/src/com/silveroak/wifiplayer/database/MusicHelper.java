@@ -201,6 +201,31 @@ public class MusicHelper extends SQLiteOpenHelper {
     }
 
     //根据url查询
+    public Music findByName(String name) {
+        Music result = null;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor c = null;
+        try {
+            if (db != null) {
+                c = db.rawQuery("SELECT * FROM " + TABLE_NAME +  " where "+SONG_NAME+"=\""+name +"\";",new String[0]);
+                if (c != null && c.moveToFirst()) {
+                    result = trans(c);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if(c!=null){
+                c.close();
+            }
+            if(db!=null){
+                db.close();
+            }
+        }
+        return result;
+    }
+
+    //根据url查询
     public Music findByUrl(String url) {
         Music result = null;
         SQLiteDatabase db = getReadableDatabase();

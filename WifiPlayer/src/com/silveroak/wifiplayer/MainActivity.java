@@ -18,10 +18,8 @@ public class MainActivity extends Activity {
     private static final int PROCESSING = 1;
     private static final int FAILURE = -1;
 
-    private EditText pathText; // url地址
     private TextView resultView;
     private ProgressBar progressBar;
-    private Button playBtn;
     private Button startBtn;
     private Button pausedBtn;
     private Button stopBtn;
@@ -66,9 +64,7 @@ public class MainActivity extends Activity {
         showIp.setText(SysTools.getLocalIP(getApplicationContext())+":"+ SystemConstant.PORT.HTTP_SERVER_PORT+"\n");
         showIp.append(SysTools.getLocalIP(getApplicationContext()) + ":" + SystemConstant.PORT.TCP_SERVER_PORT);
 
-        pathText = (EditText) findViewById(R.id.path);
         resultView = (TextView) findViewById(R.id.resultView);
-        playBtn = (Button) findViewById(R.id.btn_online_play);
         startBtn = (Button) findViewById(R.id.btn_online_start);
         pausedBtn = (Button) findViewById(R.id.btn_online_paused);
         stopBtn = (Button) findViewById(R.id.btn_online_stop);
@@ -78,7 +74,6 @@ public class MainActivity extends Activity {
 
 
         ButtonClickListener listener = new ButtonClickListener();
-        playBtn.setOnClickListener(listener);
         startBtn.setOnClickListener(listener);
         pausedBtn.setOnClickListener(listener);
         stopBtn.setOnClickListener(listener);
@@ -96,15 +91,6 @@ public class MainActivity extends Activity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.btn_online_play:
-                    new Thread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            player.playUrl(pathText.getText().toString());
-                        }
-                    }).start();
-                    break;
                 case R.id.btn_online_paused:
                     new Thread(new Runnable() {
 

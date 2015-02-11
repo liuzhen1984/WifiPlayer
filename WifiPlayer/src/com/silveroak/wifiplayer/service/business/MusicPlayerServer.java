@@ -27,13 +27,13 @@ import java.util.*;
  * Created by zliu on 14/12/27.
  * *  play:
  * sync, 获取当前CurrentPlayer 信息
- * info,根据url获取music信息
+ * info,根据name获取music信息
  * start,
  * paused,
  * stop,
  * next,
  * previous,
- * delete,  url= all清空， 删除新的
+ * delete,  name= all清空， 删除新的
  * play  当前播放的操作 参数是Music 对象的json串
  * volume
  */
@@ -239,19 +239,19 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         CurrentPlayer currentPlayer = getCurrentPlayer();
         playerInfo.setStatus(currentPlayer.getStatus());
         playerInfo.setType(currentPlayer.getType());
-        playerInfo.setMusic(musicHelper.findByUrl(currentPlayer.getPlayerMusic()));
+        playerInfo.setMusic(musicHelper.findByName(currentPlayer.getPlayerMusic()));
         playerInfo.setVolume(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
         result.setPayload(playerInfo);
         LogUtils.debug(TAG, "CurrentPlayer:" + getCurrentPlayer());
         result.setResult(ErrorCode.SUCCESS);
         return result;
     }
-    public Result info(String url) {
+    public Result info(String name) {
         LogUtils.debug(TAG, "get all");
         Result result = new Result();
         result.setWhat(IHandlerWhatAndKey.UPDATE_INFO);
-        if(url!=null){
-            result.setPayload(musicHelper.findByUrl(url));
+        if(name!=null){
+            result.setPayload(musicHelper.findByName(name));
         }
         result.setResult(ErrorCode.SUCCESS);
         return result;
@@ -288,7 +288,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
                     }
                 }
                 if (music != null) {
-                    playUrl(music);
+                    playUrl(musicHelper.findByName(music));
                     currentPlayer.setStatus(SystemConstant.PLAYER_STATUS.PLAYER);
                     saveCurrentPlayer(currentPlayer);
                     result.setResult(ErrorCode.SUCCESS);
@@ -343,8 +343,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
             return result;
         }
         if (currentPlayer.getPlayerMusic() == null || "".equalsIgnoreCase(currentPlayer.getPlayerMusic())) {
-            playUrl(musicList.get(0));
-            return result;
+            return playUrl(musicHelper.findByName(musicList.get(0)));
         }
 
 
@@ -352,14 +351,13 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
             if (musicList.get(i).equalsIgnoreCase(currentPlayer.getPlayerMusic())) {
                 if (i + 1 >= musicList.size()) {
                     if (currentPlayer.getType().equals(SystemConstant.PLAYER_TYPE.ALL)) {
-                        playUrl(musicList.get(0));
+                        return playUrl(musicHelper.findByName(musicList.get(0)));
                     } else {
                         return result;
                     }
                 } else {
-                    playUrl(musicList.get(i + 1));
+                    return playUrl(musicHelper.findByName(musicList.get(i + 1)));
                 }
-                return result;
             }
         }
         return result;
@@ -378,8 +376,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
             return result;
         }
         if (currentPlayer.getPlayerMusic() == null || "".equalsIgnoreCase(currentPlayer.getPlayerMusic())) {
-            playUrl(musicList.get(0));
-            return result;
+            return playUrl(musicHelper.findByName(musicList.get(0)));
         }
 
         for (int i = 0; i < musicList.size(); i++) {
@@ -387,8 +384,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
                 if (i - 1 < 0) {
                     return result;
                 }
-                playUrl(musicList.get(i - 1));
-                return result;
+                return playUrl(musicHelper.findByName(musicList.get(i - 1)));
             }
         }
         return result;
@@ -419,16 +415,19 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         return result;
     }
 
+    public Result playUrl(String musicStr){
+        Music music = JsonUtils.string2Object(musicStr,Music.class);
+        return playUrl(music);
+    }
+
     /**
-     * @param musicStr url地址
+     * @param music url地址
      */
-    public Result playUrl(String musicStr) {
+    public Result playUrl(Music music) {
         Result result = new Result();
         result.setResult(ErrorCode.SUCCESS);
         result.setWhat(IHandlerWhatAndKey.UPDATE_INFO);
-
         try {
-            Music music = JsonUtils.string2Object(musicStr,Music.class);
             if(music==null){
                 result.setResult(ErrorCode.SYSTEM_ERROR.VALUE_ERROR);
                 result.setWhat(IHandlerWhatAndKey.MESSAGE);
@@ -442,21 +441,21 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
             mediaPlayer.prepare(); // prepare自动播放
 
             CurrentPlayer currentPlayer = getCurrentPlayer();
-            currentPlayer.setPlayerMusic(music.getSongLink());
+            currentPlayer.setPlayerMusic(music.getSongName());
             currentPlayer.setStatus(SystemConstant.PLAYER_STATUS.PLAYER);
             List<String> musics = getCurrentPlayer().getPlayerList();
             boolean isHave = false;
             for (String mu : musics) {
-                if (music.getSongLink().equalsIgnoreCase(mu)) {
+                if (music.getSongName().equalsIgnoreCase(mu)) {
                     isHave = true;
                 }
             }
             if (!isHave) {
-                currentPlayer.getPlayerList().add(music.getSongLink());
+                currentPlayer.getPlayerList().add(music.getSongName());
             }
 //            //todo url 解析内容
 //            parserUrl(url);
-            Music localMusic = musicHelper.findByUrl(music.getSongLink());
+            Music localMusic = musicHelper.findByName(music.getSongName());
             if(localMusic==null){
                 musicHelper.insert(music);
             }
@@ -507,7 +506,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         LogUtils.debug(TAG, "Player complete");
         CurrentPlayer currentPlayer = getCurrentPlayer();
         if (currentPlayer.getType().equals(SystemConstant.PLAYER_TYPE.SINGLE)) {
-            playUrl(currentPlayer.getPlayerMusic());
+            playUrl(musicHelper.findByName(currentPlayer.getPlayerMusic()));
         } else {
             next();
         }

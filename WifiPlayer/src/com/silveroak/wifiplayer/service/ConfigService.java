@@ -22,6 +22,7 @@ public class ConfigService {
     private static ConfigService configService=null;
     private Context context;
     private WifiManager wifiManager;
+    private boolean firstStart = true;
     private boolean isCheckWifi=false;
     private ConfigService(){}
     public static ConfigService getConfigService(Context context){
@@ -42,12 +43,18 @@ public class ConfigService {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
+
                 long sleepTime=5* 1000l;
                 while(true){
-                    if(checkWifi().equals(ConfigStatusEnum.NONE)){
-                        sleepTime = 10*60*1000l;
-                    } else {
-                        sleepTime = 5*1000l;
+                    if(firstStart){
+                        sleepTime = 60*1000l;
+                        firstStart = false;
+                    }else {
+                        if (checkWifi().equals(ConfigStatusEnum.NONE)) {
+                            sleepTime = 3 * 60 * 1000l;
+                        } else {
+                            sleepTime = 5 * 1000l;
+                        }
                     }
                     try {
                         Thread.sleep(sleepTime);
@@ -73,6 +80,7 @@ public class ConfigService {
     public ConfigStatusEnum checkWifi() {
         if (!wifiManager.isWifiEnabled()) {
             wifiManager.setWifiEnabled(true);
+            return STATUS;
         }
         if (STATUS.equals(ConfigStatusEnum.NONE)) {
             ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -82,6 +90,9 @@ public class ConfigService {
                 return ConfigStatusEnum.NONE;
             } else {
                 STATUS = ConfigStatusEnum.AP_STATUS;
+                if(wifiManager.isWifiApEnabled()){
+                    return STATUS;
+                }
                 //todo 开启热点
                 wifiManager.setWifiEnabled(false);
                 WifiConfiguration wifiConfig = NetworkUtils.createWifiInfo(this.wifiManager, "SilverOak-AP", "", WifiKeyMgmtEnum.NONE);

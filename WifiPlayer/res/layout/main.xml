@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Server:"
+                    android:text="@string/app_name"
                     android:id="@+id/textView"/>
             <TextView
                     android:layout_width="wrap_content"
@@ -39,16 +39,6 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:layout_weight="0.97" android:weightSum="1">
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="下载地址"
-                    android:id="@+id/textView2"/>
-            <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/path"/>
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -63,26 +53,21 @@
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" android:weightSum="1">
-                <Button
-                        android:layout_width="106dp"
-                        android:layout_height="wrap_content"
-                        android:text="在线播放"
-                        android:id="@+id/btn_online_play"/>
-                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="播放"
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/player_play"
                         android:id="@+id/btn_online_start"
                         android:layout_weight="0.11"/>
                 <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="暂停"
+                        android:text="@string/player_paused"
                         android:id="@+id/btn_online_paused" android:layout_gravity="center_horizontal"
                         android:layout_weight="0.11"/>
-                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="停止"
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/player_stop"
                         android:id="@+id/btn_online_stop"
                         android:layout_weight="0.11"/>
-                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="上一曲"
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/player_previous"
                         android:id="@+id/btn_online_p" android:layout_weight="0.11"/>
-                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="下一曲"
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/player_next"
                         android:id="@+id/btn_online_n" android:layout_weight="0.11"/>
             </LinearLayout>
             <SeekBar

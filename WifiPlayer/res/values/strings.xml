@@ -5,4 +5,10 @@
     <string name="success">Successful</string>
     <string name="error">Error</string>
     <string name="sdcarderror">SDCARD Error!</string>
+
+    <string name="player_paused">PAUSED</string>
+    <string name="player_play">PLAY</string>
+    <string name="player_stop">STOP</string>
+    <string name="player_next">NEXT</string>
+    <string name="player_previous">PREVIOUS</string>
 </resources>
