@@ -114,6 +114,7 @@ public class UDPService implements  Runnable {
                     }
                 }
             } catch (Exception e) {//IOException
+                closeListen();
                 e.printStackTrace();
                 LogUtils.error(TAG,e);
             }
