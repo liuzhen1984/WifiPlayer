@@ -179,8 +179,9 @@ public class PanelClient {
                     tcpRequest.setUrl(dst);
                     tcpRequest.setPayload(payload);
                     channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
+                }else {
+                    sendMessage("Connected device error!");
                 }
-                sendMessage("Connected device error!");
             }
         }).start();
     }
