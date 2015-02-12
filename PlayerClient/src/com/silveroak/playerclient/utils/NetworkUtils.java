@@ -69,6 +69,7 @@ public class NetworkUtils {
         }
         WifiConfig wifiConfig =new WifiConfig();
         wifiConfig.setSsid(wifiManager.getConnectionInfo().getSSID());
+        wifiConfig.setSsid(wifiConfig.getSsid().substring(1,wifiConfig.getSsid().length()-1));
         ScanResult scanResult = getScanResult(wifiManager,wifiConfig.getSsid());
         if(scanResult!=null && !TextUtils.isEmpty(scanResult.capabilities)){
             if (scanResult.capabilities.contains("WPA") || scanResult.capabilities.contains("wpa")) {

@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.constants.MessageConstant;
-import com.silveroak.playerclient.domain.WifiConfig;
 import com.silveroak.playerclient.service.IHandlerWhatAndKey;
 import com.silveroak.playerclient.service.SearchDeviceService;
 import com.silveroak.playerclient.utils.LogUtils;
@@ -75,9 +74,9 @@ public class PlayerSearchDeviceActivity extends Activity implements IHandlerWhat
                         Intent intent = new Intent();
                         //todo 进入配置页面
                         if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd())) {
-//                            intent.setClass(getApplicationContext(), PlayerConfigureActivity.class);
+                            intent.setClass(PlayerSearchDeviceActivity.this, PlayerConfigureActivity.class);
                             msg("Config device ...");
-                            SearchDeviceService.init(getApplicationContext()).configDevice(new WifiConfig());
+                            startActivity(intent);
 
                         } else
                             //todo 进入列表页面

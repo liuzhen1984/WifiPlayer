@@ -15,6 +15,7 @@ import java.util.Map;
 /**
  * Created by zliu on 14/12/26.
  *    music: add,delete,collect
+ *    music: sys_version
  */
 public class MusicService implements IProcessService {
     private final static String TAG = MusicService.class.getSimpleName();
@@ -56,6 +57,8 @@ public class MusicService implements IProcessService {
                 return delete(params);
             } else if ("collect".equals(type)) {
                 return collect(JsonUtils.string2Map(params));
+            } else if ("sys_version".equals(type)) {
+
             } else {
                 result.setResult(ErrorCode.USER_ERROR.URL_INVALID);
             }

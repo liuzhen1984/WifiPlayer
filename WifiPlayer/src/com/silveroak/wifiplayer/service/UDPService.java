@@ -74,7 +74,7 @@ public class UDPService implements  Runnable {
                     LogUtils.debug("UDP Demo", srcIp
                             + ":" + strMsg);
                     if(strMsg!=null&& strMsg.startsWith("find")) {
-                        if(ConfigService.getConfigService(context).STATUS.equals(ConfigStatusEnum.NONE)){
+                        if(ConfigService.getConfigService(context).STATUS.equals(ConfigStatusEnum.NONE) || ConfigService.getConfigService(context).STATUS.equals(ConfigStatusEnum.DO_CONFIG)){
                             if (ServerCache.getAliveSet().size() > 5) {
                                 result.setResult(ErrorCode.SYSTEM_ERROR.MAX_CONNECT);
                                 result.setPayload(null);

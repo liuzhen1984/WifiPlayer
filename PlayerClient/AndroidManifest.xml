@@ -10,7 +10,7 @@
                  android:name=".ui.BootApplication"
                  android:icon="@drawable/ic_launcher">
         <activity android:name="com.silveroak.playerclient.ui.activity.PlayerSearchDeviceActivity"
-                  android:label="@string/app_name">
+                  android:label="@string/search_device">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -20,7 +20,7 @@
                   android:label="@string/app_name">
         </activity>
         <activity android:name="com.silveroak.playerclient.ui.activity.PlayerConfigureActivity"
-                  android:label="@string/app_name">
+                  android:label="@string/config_devcie">
         </activity>
     </application>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
