@@ -1,7 +1,7 @@
 package com.silveroak.playerclient.ui.activity;
 
-import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.ui.base.PlayerBaseSearchBarActivity;
+import com.silveroak.playerclient.ui.base.PlayerBaseSearchBarFragment;
 import com.silveroak.playerclient.ui.fragment.PlayerMusicListFragment;
 
 /**
@@ -9,7 +9,7 @@ import com.silveroak.playerclient.ui.fragment.PlayerMusicListFragment;
  */
 public class PlayerDeviceMusicListActivity extends PlayerBaseSearchBarActivity {
     @Override
-    protected PlayerBaseFragment createFragment() {
+    protected PlayerBaseSearchBarFragment createFragment() {
         return PlayerMusicListFragment.newInstance();
     }
 }
