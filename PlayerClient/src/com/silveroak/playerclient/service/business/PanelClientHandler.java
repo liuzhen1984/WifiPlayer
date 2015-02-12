@@ -20,6 +20,7 @@ import com.silveroak.playerclient.ClientActivity;
 import com.silveroak.playerclient.constants.MessageConstant;
 import com.silveroak.playerclient.domain.ErrorCode;
 import com.silveroak.playerclient.domain.Result;
+import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.utils.JsonUtils;
 import com.silveroak.playerclient.utils.LogUtils;
 import io.netty.channel.ChannelHandlerContext;
@@ -64,7 +65,7 @@ public class PanelClientHandler  extends SimpleChannelInboundHandler<Object> {
         bundle.putString(ClientActivity.MESSAGE_KEY, JsonUtils.object2String(result.getPayload()));
         toUI.setData(bundle);
         toUI.what = result.getWhat();
-        ClientActivity.getHandler().sendMessage(toUI);
+        PlayerBaseFragment.sendMessages(toUI);
         return;
     }
 
