@@ -11,6 +11,7 @@ public class PlayerBaseActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initTitle();
+        initContentView();
         initFragment();
     }
 
@@ -18,5 +19,11 @@ public class PlayerBaseActivity extends Activity {
 
     }
 
-    protected void initFragment() {}
+    protected void initContentView(){
+
+    }
+
+    protected void initFragment() {
+
+    }
 }

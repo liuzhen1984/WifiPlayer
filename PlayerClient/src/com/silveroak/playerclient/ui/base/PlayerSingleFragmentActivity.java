@@ -1,7 +1,6 @@
 package com.silveroak.playerclient.ui.base;
 
 import android.app.FragmentManager;
-import android.os.Bundle;
 import com.silveroak.playerclient.R;
 
 /**
@@ -9,8 +8,8 @@ import com.silveroak.playerclient.R;
  */
 public class PlayerSingleFragmentActivity extends PlayerBaseActivity {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void initContentView() {
+        super.initContentView();
         setContentView(R.layout.activity_single_fragment);
     }
 
@@ -23,7 +22,7 @@ public class PlayerSingleFragmentActivity extends PlayerBaseActivity {
         if (fragment == null) {
             fragment = createFragment();
             fragment.mActivity = this;
-            fm.beginTransaction().add(R.id.container, fragment);
+            fm.beginTransaction().add(R.id.container, fragment).commit();
         }
     }
 
