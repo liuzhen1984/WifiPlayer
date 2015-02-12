@@ -20,7 +20,7 @@ import com.silveroak.playerclient.preference.StorageUtils;
 import com.silveroak.playerclient.preference.data.SystemInfo;
 import com.silveroak.playerclient.service.business.PanelClient;
 import com.silveroak.playerclient.ui.activity.PlayerConfigureActivity;
-import com.silveroak.playerclient.ui.activity.PlayerSearchDeviceActivity;
+import com.silveroak.playerclient.ui.fragment.PlayerSearchDeviceFragment;
 import com.silveroak.playerclient.utils.JsonUtils;
 import com.silveroak.playerclient.utils.LogUtils;
 import com.silveroak.playerclient.utils.NetworkUtils;
@@ -341,10 +341,10 @@ public class SearchDeviceService {
     private void sendToSearchMessage(String msg){
         Message toUI = new Message();
         Bundle bundle = new Bundle();
-        bundle.putString(PlayerSearchDeviceActivity.MESSAGE_KEY, msg);
+        bundle.putString(PlayerSearchDeviceFragment.MESSAGE_KEY, msg);
         toUI.setData(bundle);
-        toUI.what = PlayerSearchDeviceActivity.SEARCH_DEVICE_MESSAGE;
-        PlayerSearchDeviceActivity.getHandler().sendMessage(toUI);
+        toUI.what = PlayerSearchDeviceFragment.SEARCH_DEVICE_MESSAGE;
+        PlayerSearchDeviceFragment.getHandler().sendMessage(toUI);
     }
     private void sendToConfigMessage(String msg){
         Message toUI = new Message();
