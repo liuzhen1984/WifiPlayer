@@ -19,8 +19,7 @@ import com.silveroak.playerclient.domain.WifiConfig;
 import com.silveroak.playerclient.preference.StorageUtils;
 import com.silveroak.playerclient.preference.data.SystemInfo;
 import com.silveroak.playerclient.service.business.PanelClient;
-import com.silveroak.playerclient.ui.activity.PlayerConfigureActivity;
-import com.silveroak.playerclient.ui.fragment.PlayerSearchDeviceFragment;
+import com.silveroak.playerclient.ui.fragment.PlayerBaseFragment;
 import com.silveroak.playerclient.utils.JsonUtils;
 import com.silveroak.playerclient.utils.LogUtils;
 import com.silveroak.playerclient.utils.NetworkUtils;
@@ -114,13 +113,13 @@ public class SearchDeviceService {
                             new Thread(runnable).start();
                             LISTEN_STATUS = 0;
                             LogUtils.debug(TAG,"Connected wifi player server successful");
-                            sendToSearchMessage(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
+                            sendMessage(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
                         } else{
                             LISTEN_STATUS = 1;
                             LogUtils.debug(TAG,"Connected wifi player server error: "+result.getPayload());
                         }
                     }else  if( result.getResult()==ErrorCode.SYSTEM_ERROR.WIFI_DO_CONFIG){
-                        sendToSearchMessage(MessageConstant.SEARCH_DEVICE_CMD.DO_CONFIG_WIFI.getCmd());
+                        sendMessage(MessageConstant.SEARCH_DEVICE_CMD.DO_CONFIG_WIFI.getCmd());
                         LISTEN_STATUS = 1;
                     }else  if(result.getResult()==ErrorCode.SYSTEM_ERROR.WIFI_CONFIG_ERROR ){
                         LISTEN_STATUS = 3;
@@ -252,7 +251,7 @@ public class SearchDeviceService {
                 }catch (Exception ex){
                 }finally {
                     isConfig = false;
-                    sendToConfigMessage(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
+                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
                 }
             }
         };
@@ -285,7 +284,7 @@ public class SearchDeviceService {
     public void search(){
         if(!wifiManager.isWifiEnabled()){
             //todo 通知前台没有找到设备
-            sendToSearchMessage(MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
+            sendMessage(MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
             return;
         }
         listen();
@@ -296,7 +295,7 @@ public class SearchDeviceService {
                 WifiConfig wifiConfig = NetworkUtils.getWifiConfig(wifiManager);
                 if(wifiConfig!=null && wifiConfig.getSsid()!=null && wifiConfig.getSsid().equalsIgnoreCase(SystemConstant.DEFAULT_AP)){
                     //todo 通知前台连接AP成功，进入配置页面
-                    sendToSearchMessage(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
+                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
                     return;
                 }
                 while (true) {
@@ -320,17 +319,17 @@ public class SearchDeviceService {
                 if(LISTEN_STATUS==0){
                     //配置完成
                     //todo 通知前台连接成功
-                    sendToSearchMessage(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
+                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
                     return;
                 }
                 if (searchDeviceAP()) {
                     //todo 通知前台连接AP成功，进入配置页面
-                    sendToSearchMessage(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
+                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
                     return;
 
                 } else {
                     //todo 通知前台没有找到设备
-                    sendToSearchMessage(MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
+                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
                     return;
                 }
             }
@@ -338,20 +337,12 @@ public class SearchDeviceService {
         new Thread(runnable).start();
     }
 
-    private void sendToSearchMessage(String msg){
+    private void sendMessage(String msg){
         Message toUI = new Message();
         Bundle bundle = new Bundle();
-        bundle.putString(PlayerSearchDeviceFragment.MESSAGE_KEY, msg);
+        bundle.putString(PlayerBaseFragment.MESSAGE_KEY, msg);
         toUI.setData(bundle);
-        toUI.what = PlayerSearchDeviceFragment.SEARCH_DEVICE_MESSAGE;
-        PlayerSearchDeviceFragment.getHandler().sendMessage(toUI);
-    }
-    private void sendToConfigMessage(String msg){
-        Message toUI = new Message();
-        Bundle bundle = new Bundle();
-        bundle.putString(PlayerConfigureActivity.MESSAGE_KEY, msg);
-        toUI.setData(bundle);
-        toUI.what = PlayerConfigureActivity.CONFIG_DEVICE_MESSAGE;
-        PlayerConfigureActivity.getHandler().sendMessage(toUI);
+        toUI.what = PlayerBaseFragment.SEARCH_DEVICE_MESSAGE;
+        PlayerBaseFragment.sendMessages(toUI);
     }
 }
