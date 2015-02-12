@@ -16,7 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.silveroak.playerclient.ui.activity.PlayerDeviceMusicActivity"
+        <activity android:name=".ui.activity.PlayerDeviceMusicListActivity"
                   android:label="@string/app_name">
         </activity>
         <activity android:name="com.silveroak.playerclient.ui.activity.PlayerConfigureActivity"

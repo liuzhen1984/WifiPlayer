@@ -13,7 +13,7 @@ import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.constants.MessageConstant;
 import com.silveroak.playerclient.service.SearchDeviceService;
 import com.silveroak.playerclient.ui.activity.PlayerConfigureActivity;
-import com.silveroak.playerclient.ui.activity.PlayerDeviceMusicActivity;
+import com.silveroak.playerclient.ui.activity.PlayerDeviceMusicListActivity;
 import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.utils.LogUtils;
 
@@ -79,7 +79,7 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
                 } else
                     //todo 进入列表页面
                     if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd())) {
-                        intent.setClass(mActivity, PlayerDeviceMusicActivity.class);
+                        intent.setClass(mActivity, PlayerDeviceMusicListActivity.class);
                         SearchDeviceService.init(mActivity.getApplicationContext()).closeListen();
                         startActivityForResult(intent, 0);
                         mActivity.finish();
