@@ -3,11 +3,13 @@ package com.silveroak.playerclient.ui.base;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.service.IHandlerWhatAndKey;
 
 import java.util.ArrayList;
@@ -22,7 +24,9 @@ public class PlayerBaseFragment extends Fragment  implements IHandlerWhatAndKey 
     private Handler handler = null;
 
     protected void msg(String msg) {
+        Looper.prepare();
         Toast.makeText(mActivity, msg, Toast.LENGTH_LONG).show();
+        Looper.loop();
     }
 
     @Override
