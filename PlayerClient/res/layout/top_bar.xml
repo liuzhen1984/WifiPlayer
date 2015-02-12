@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="fill_parent"
-              android:layout_height="wrap_content">
+              android:layout_height="wrap_content"
+              android:background="@android:color/white">
 
     <ImageButton
             android:layout_width="wrap_content"
@@ -10,19 +11,22 @@
             android:id="@+id/imgBtnBack"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
+            android:src="@drawable/back"
             />
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25sp"
-            android:text="BedRoom Player"
+            android:text="Silveroak Player"
             android:id="@+id/tvPlayerName"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/black"/>
     <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imgBtnConfig"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:src="@drawable/set"/>
 
 </RelativeLayout>

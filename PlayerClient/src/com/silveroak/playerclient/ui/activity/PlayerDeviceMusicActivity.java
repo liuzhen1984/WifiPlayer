@@ -9,14 +9,14 @@ import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.service.IHandlerWhatAndKey;
 
 /**
- * Created by John on 2015/2/11.
+ * Created by John on 2015/2/12.
  */
-public class PlayerMusicPlayActivity extends Activity implements IHandlerWhatAndKey {
+public class PlayerDeviceMusicActivity extends Activity  implements IHandlerWhatAndKey {
 
-    private static final String TAG = PlayerMusicPlayActivity.class.getSimpleName();
+    private static final String TAG = PlayerDeviceMusicActivity.class.getSimpleName();
 
 
-    public static PlayerMusicPlayActivity THIS=null;
+    public static PlayerDeviceMusicActivity THIS=null;
     private Handler handler = null;
 
     public static Handler getHandler(){
@@ -28,7 +28,7 @@ public class PlayerMusicPlayActivity extends Activity implements IHandlerWhatAnd
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.player_music_play);
+        setContentView(R.layout.player_device_music);
         THIS = this;
 
         handler =  new Handler(){
@@ -43,4 +43,7 @@ public class PlayerMusicPlayActivity extends Activity implements IHandlerWhatAnd
     private void msg(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
+
+
+
 }

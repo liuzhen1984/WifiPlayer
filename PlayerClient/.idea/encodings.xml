@@ -6,6 +6,7 @@
     <file url="file://$PROJECT_DIR$/res/drawable-hdpi/play_song.gif" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/res/drawable-hdpi/pre_song.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/res/drawable-hdpi/refresh_push.png" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/res/drawable-hdpi/set.png" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/com/silveroak/playerclient/utils/EncryptUtil.java" charset="UTF-8" />
   </component>
 </project>
