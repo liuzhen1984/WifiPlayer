@@ -10,6 +10,7 @@ public interface IHandlerWhatAndKey {
 
 
     public static final int SEARCH_DEVICE_MESSAGE = 101;
+    public static final int CONFIG_DEVICE_MESSAGE = 102;
 
 
 
