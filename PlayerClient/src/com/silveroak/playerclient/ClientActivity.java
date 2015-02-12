@@ -46,15 +46,16 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
 
     private StorageUtils storageUtils;
 
-    public static ClientActivity THIS=null;
+    public static ClientActivity THIS = null;
     private Handler handler = null;
 
-    public static Handler getHandler(){
-        if(THIS!=null) {
+    public static Handler getHandler() {
+        if (THIS != null) {
             return THIS.handler;
         }
         return null;
     }
+
     private TextView showIp;
 
     public static boolean isFind = false;
@@ -65,12 +66,12 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
         super.onCreate(savedInstanceState);
         THIS = this;
         setContentView(R.layout.main);
-        handler =  new Handler(){
+        handler = new Handler() {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case PROCESSING: // 更新进度
                         try {
-                            LogUtils.debug(TAG,"processing");
+                            LogUtils.debug(TAG, "processing");
                             String strMsg = msg.getData().getString(MESSAGE_KEY);
                             Map<String, Object> seekMap = JsonUtils.string2Map(strMsg);
                             long pos = 0l;
@@ -81,15 +82,15 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                                 pos = musicProgress.getMax() * position / duration;
                                 musicProgress.setProgress((int) pos);
                             }
-                        }catch (Exception ex){
+                        } catch (Exception ex) {
                             ex.toString();
                         }
                         break;
                     case UPDATE_INFO:
-                        LogUtils.debug(TAG,"UPDATE_INFO");
+                        LogUtils.debug(TAG, "UPDATE_INFO");
                         break;
                     case MESSAGE: // 消息显示
-                        LogUtils.debug(TAG,msg.getData().getString(MESSAGE_KEY));
+                        LogUtils.debug(TAG, msg.getData().getString(MESSAGE_KEY));
                         resultView.setText(String.valueOf(msg.getData().getString(MESSAGE_KEY)));
                         break;
                     default:
@@ -98,7 +99,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
             }
         };
 
-        storageUtils =  StorageUtils.getInstance(getApplicationContext());
+        storageUtils = StorageUtils.getInstance(getApplicationContext());
         searchText = (EditText) findViewById(R.id.search);
 
         pathText = (EditText) findViewById(R.id.path);
@@ -135,7 +136,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                            SearchDeviceService.init(getApplication()).search();
+                                SearchDeviceService.init(getApplication()).search();
                             }
                         }).start();
                         break;
@@ -152,7 +153,8 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                         }).start();
                         break;
                 }
-                return true;            }
+                return true;
+            }
         });
 
         configWifiBtn.setOnClickListener(new View.OnClickListener() {
@@ -166,7 +168,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                         wifiConfig.setSsid("SilverOakLabs");
                         wifiConfig.setPassword("Good2Great");
                         wifiConfig.setKeyMgmt(WifiKeyMgmtEnum.WPA);
-                        SearchDeviceService.init(getApplicationContext()).config(wifiConfig);
+                        SearchDeviceService.init(getApplicationContext()).configDevice(wifiConfig);
                         isConfig = false;
                     }
                 }).start();
@@ -178,19 +180,19 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
             @Override
             public void run() {
                 String msg = "";
-                SystemInfo systemInfo = storageUtils.pullSettingData(StorageUtils._CURRENT_PLAYER_LIST,SystemInfo.key(),SystemInfo.class);
-                if(systemInfo!=null && systemInfo.getPort()!=null&&systemInfo.getServer()!=null) {
+                SystemInfo systemInfo = storageUtils.pullSettingData(StorageUtils._CURRENT_PLAYER_LIST, SystemInfo.key(), SystemInfo.class);
+                if (systemInfo != null && systemInfo.getPort() != null && systemInfo.getServer() != null) {
                     if (!PanelClient.init(getApplicationContext()).start(systemInfo)) {
                         msg = "Not connected to wifi player server";
                     } else {
                         msg = "Already connected to wifi player server:" + systemInfo.getServer() + ":" + systemInfo.getPort();
                     }
-                } else{
+                } else {
                     msg = "Not connected to wifi player server";
                 }
                 Message toUI = new Message();
                 Bundle bundle = new Bundle();
-                bundle.putString(ClientActivity.MESSAGE_KEY,msg);
+                bundle.putString(ClientActivity.MESSAGE_KEY, msg);
                 toUI.setData(bundle);
                 toUI.what = ClientActivity.MESSAGE;
                 ClientActivity.getHandler().sendMessage(toUI);
@@ -204,7 +206,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
 //            LocalHttpServer.start();
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtils.error(TAG,e);
+            LogUtils.error(TAG, e);
         }
 
     }
@@ -216,22 +218,22 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
             switch (v.getId()) {
                 case R.id.bt_search:
                     final String searchStr = searchText.getText().toString();
-                    if(searchStr.length()>0) {
+                    if (searchStr.length() > 0) {
 
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                               //todo 调用百度获取接口
+                                //todo 调用百度获取接口
                                 Music music = SearchMusic.getSearchMusic(getApplicationContext()).getMusic(searchStr);
-                                if(music!=null){
-                                    if(channel!=null){
-                                        TcpRequest  tcpRequest = new TcpRequest();
+                                if (music != null) {
+                                    if (channel != null) {
+                                        TcpRequest tcpRequest = new TcpRequest();
                                         tcpRequest.setUrl("/play/play");
                                         tcpRequest.setPayload(JsonUtils.object2String(music));
                                         channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
                                     }
-                                } else{
-                                    LogUtils.debug(TAG,"No find " + searchStr);
+                                } else {
+                                    LogUtils.debug(TAG, "No find " + searchStr);
                                 }
                             }
                         }).start();
@@ -242,8 +244,8 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
 
                         @Override
                         public void run() {
-                            if(channel!=null){
-                                TcpRequest  tcpRequest = new TcpRequest();
+                            if (channel != null) {
+                                TcpRequest tcpRequest = new TcpRequest();
                                 tcpRequest.setUrl("/play/play");
                                 tcpRequest.setPayload(pathText.getText().toString());
                                 channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
@@ -256,8 +258,8 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
 
                         @Override
                         public void run() {
-                            if(channel!=null){
-                                TcpRequest  tcpRequest = new TcpRequest();
+                            if (channel != null) {
+                                TcpRequest tcpRequest = new TcpRequest();
                                 tcpRequest.setUrl("/play/paused");
                                 channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
                             }
@@ -269,8 +271,8 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
 
                         @Override
                         public void run() {
-                            if(channel!=null){
-                                TcpRequest  tcpRequest = new TcpRequest();
+                            if (channel != null) {
+                                TcpRequest tcpRequest = new TcpRequest();
                                 tcpRequest.setUrl("/play/stop");
                                 channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
                             }
@@ -282,8 +284,8 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
 
                         @Override
                         public void run() {
-                            if(channel!=null){
-                                TcpRequest  tcpRequest = new TcpRequest();
+                            if (channel != null) {
+                                TcpRequest tcpRequest = new TcpRequest();
                                 tcpRequest.setUrl("/play/start");
                                 channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
                             }
@@ -295,8 +297,8 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
 
                         @Override
                         public void run() {
-                            if(channel!=null){
-                                TcpRequest  tcpRequest = new TcpRequest();
+                            if (channel != null) {
+                                TcpRequest tcpRequest = new TcpRequest();
                                 tcpRequest.setUrl("/play/next");
                                 channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
                             }
@@ -308,8 +310,8 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
 
                         @Override
                         public void run() {
-                            if(channel!=null){
-                                TcpRequest  tcpRequest = new TcpRequest();
+                            if (channel != null) {
+                                TcpRequest tcpRequest = new TcpRequest();
                                 tcpRequest.setUrl("/play/previous");
                                 channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
                             }
@@ -352,14 +354,14 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(PanelClient.getClient()==null){
+        if (PanelClient.getClient() == null) {
 
-            LogUtils.warn(TAG,"Panel client to wifi player server");
+            LogUtils.warn(TAG, "Panel client to wifi player server");
             msg("Panel client to wifi player server");
-             return false;
+            return false;
         }
-        if(PanelClient.getClient().getChannel()==null||!PanelClient.getClient().getChannel().isOpen()){
-            LogUtils.warn(TAG,"Panel client to wifi player server");
+        if (PanelClient.getClient().getChannel() == null || !PanelClient.getClient().getChannel().isOpen()) {
+            LogUtils.warn(TAG, "Panel client to wifi player server");
             msg("Panel client to wifi player server");
             return false;
 
@@ -382,7 +384,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
         return super.onKeyDown(keyCode, event);
     }
 
-    private void msg(String msg){
+    private void msg(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 }

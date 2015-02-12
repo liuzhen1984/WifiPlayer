@@ -4,6 +4,8 @@ package com.silveroak.wifiplayer.constants;
  * Created by zliu on 14/12/29.
  */
 public class SystemConstant {
+    public final static String DEFAULT_AP = "SilverOak-AP";
+
     public final static String CURRENT_PLAYER_LIST_NAME = "current_player_list";
 
     public interface PORT{

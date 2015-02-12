@@ -110,9 +110,9 @@ public class NetworkUtils {
         }
 // 没有密码：
         if (type.equals(WifiKeyMgmtEnum.NONE)) {
-            config.wepKeys[0] = "";
+//            config.wepKeys[0] = "";
             config.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-            config.wepTxKeyIndex = 0;
+//            config.wepTxKeyIndex = 0;
         }
 // WEP方式加密
         if (type.equals(WifiKeyMgmtEnum.WEP)) {

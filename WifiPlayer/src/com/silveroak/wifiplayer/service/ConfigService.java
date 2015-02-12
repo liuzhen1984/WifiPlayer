@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import com.silveroak.wifiplayer.constants.ConfigStatusEnum;
+import com.silveroak.wifiplayer.constants.SystemConstant;
 import com.silveroak.wifiplayer.constants.WifiKeyMgmtEnum;
 import com.silveroak.wifiplayer.domain.WifiConfig;
 import com.silveroak.wifiplayer.utils.LogUtils;
@@ -95,7 +96,7 @@ public class ConfigService {
                 }
                 //todo 开启热点
                 wifiManager.setWifiEnabled(false);
-                WifiConfiguration wifiConfig = NetworkUtils.createWifiInfo(this.wifiManager, "SilverOak-AP", "", WifiKeyMgmtEnum.NONE);
+                WifiConfiguration wifiConfig = NetworkUtils.createWifiInfo(this.wifiManager, SystemConstant.DEFAULT_AP, "", WifiKeyMgmtEnum.NONE);
                 wifiManager.setWifiApEnabled(wifiConfig, true);
                 return ConfigStatusEnum.AP_STATUS;
             }
@@ -122,7 +123,7 @@ public class ConfigService {
     public ConfigStatusEnum configWifi(final WifiConfig wifiConfig){
         if(wifiConfig!=null){
             STATUS = ConfigStatusEnum.DO_CONFIG;
-            final WifiConfiguration wc= NetworkUtils.createWifiInfo(this.wifiManager, "SilverOak-AP", "", WifiKeyMgmtEnum.NONE);
+            final WifiConfiguration wc= NetworkUtils.createWifiInfo(this.wifiManager, SystemConstant.DEFAULT_AP, "", WifiKeyMgmtEnum.NONE);
             wifiManager.setWifiApEnabled(wc,false);
             // 设置wifi
             wifiManager.setWifiEnabled(true);

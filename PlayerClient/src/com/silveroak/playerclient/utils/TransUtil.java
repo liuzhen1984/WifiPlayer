@@ -219,8 +219,12 @@ public class TransUtil {
 
     public static int ipToInt(String ip) {
         String[] ips = ip.split("\\.");
-        return (Integer.parseInt(ips[3]) << 24) + (Integer.parseInt(ips[2]) << 16)
-                + (Integer.parseInt(ips[1]) << 8) + Integer.parseInt(ips[0]);
+        try {
+            return (Integer.parseInt(ips[3]) << 24) + (Integer.parseInt(ips[2]) << 16)
+                    + (Integer.parseInt(ips[1]) << 8) + Integer.parseInt(ips[0]);
+        }catch (Exception ex){
+            return 0;
+        }
     }
 
     /**

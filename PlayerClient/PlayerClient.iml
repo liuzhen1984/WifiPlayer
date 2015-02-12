@@ -20,7 +20,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="jdk" jdkName="Maven Android API 19 Platform" jdkType="Android SDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: android:android:4.4.2_r3" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-all:4.0.23.Final" level="project" />

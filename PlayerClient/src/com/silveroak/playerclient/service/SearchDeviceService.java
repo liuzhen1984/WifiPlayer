@@ -1,6 +1,8 @@
 package com.silveroak.playerclient.service;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -176,19 +178,80 @@ public class SearchDeviceService {
 
     //获取到并连接
     private boolean searchDeviceAP(){
-        ScanResult scanResult = NetworkUtils.getScanResult(wifiManager,"SilverOak-AP");
+        ScanResult scanResult = NetworkUtils.getScanResult(wifiManager,SystemConstant.DEFAULT_AP);
         if(scanResult==null){
             return false;
         }
-        WifiConfiguration wifiConfiguration = NetworkUtils.createWifiInfo(wifiManager,scanResult.SSID,"", WifiKeyMgmtEnum.NONE);
-        int addNetwork = wifiManager.addNetwork(wifiConfiguration);
-        wifiManager.enableNetwork(addNetwork, true);
-        wifiManager.saveConfiguration();
         return true;
     }
 
+    private void connectDeviceAP(){
+        WifiConfig wifiConfig = NetworkUtils.getWifiConfig(wifiManager);
+        if(wifiConfig!=null && wifiConfig.getSsid()!=null && wifiConfig.getSsid().equalsIgnoreCase(SystemConstant.DEFAULT_AP)){
+            return;
+        }
+        WifiConfiguration wifiConfiguration = NetworkUtils.IsExsits(wifiManager, SystemConstant.DEFAULT_AP);
+        if(wifiConfiguration==null) {
+            wifiConfiguration = NetworkUtils.createWifiInfo(wifiManager, SystemConstant.DEFAULT_AP, "", WifiKeyMgmtEnum.NONE);
+        }
+        int addNetwork = wifiManager.addNetwork(wifiConfiguration);
+//        wifiManager.saveConfiguration();
+        wifiManager.enableNetwork(addNetwork, true);
+//        wifiManager.connect(wifiConfiguration, new WifiManager.ActionListener() {
+//            @Override
+//            public void onFailure(int i) {
+//                LogUtils.debug(TAG,"connect ap failure");
+//            }
+//
+//            @Override
+//            public void onSuccess() {
+//                LogUtils.debug(TAG,"connect ap successful");
+//            }
+//        });
+    }
+    private boolean isConfig=false;
+    public void configDevice(final WifiConfig wifiConfig){
+        if(isConfig){
+            return;
+        }
+        isConfig = true;
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if(!wifiManager.isWifiEnabled()){
+                        wifiManager.setWifiEnabled(true);
+                        Thread.sleep(3000l);
+                    }
+                    connectDeviceAP();
+                    ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                    while (true) {
+                        NetworkInfo.State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
+                        if (wifi == NetworkInfo.State.CONNECTED) {
+                            wifiConfig.setSsid("SilverOakLabs");
+                            wifiConfig.setPassword("Good2Great");
+                            wifiConfig.setKeyMgmt(WifiKeyMgmtEnum.WPA);
+                            config(wifiConfig);
+                            return;
+                        } else {
+                            try {
+                                Thread.sleep(2000l);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }catch (Exception ex){
+                }finally {
+                    isConfig = false;
+                }
+            }
+        };
+        new Thread(runnable).start();
+    }
+
     //如果返回没有配置，就需要返回让用户触发
-    public void config(WifiConfig wifiConfig){
+    private void config(WifiConfig wifiConfig){
         send("config===" + JsonUtils.object2String(wifiConfig));
     }
 
@@ -211,11 +274,22 @@ public class SearchDeviceService {
     }
 
     public void search(){
+        if(!wifiManager.isWifiEnabled()){
+            //todo 通知前台没有找到设备
+            sendMessage(MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
+            return;
+        }
         listen();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 int count = 0;
+                WifiConfig wifiConfig = NetworkUtils.getWifiConfig(wifiManager);
+                if(wifiConfig!=null && wifiConfig.getSsid()!=null && wifiConfig.getSsid().equalsIgnoreCase(SystemConstant.DEFAULT_AP)){
+                    //todo 通知前台连接AP成功，进入配置页面
+                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
+                    return;
+                }
                 while (true) {
                     send("find");
                     //重复3次
@@ -241,11 +315,6 @@ public class SearchDeviceService {
                     return;
                 }
                 if (searchDeviceAP()) {
-                    try {
-                        Thread.sleep(5000l);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     //todo 通知前台连接AP成功，进入配置页面
                     sendMessage(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
                     return;

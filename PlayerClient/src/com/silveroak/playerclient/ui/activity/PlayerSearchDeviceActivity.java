@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.constants.MessageConstant;
+import com.silveroak.playerclient.domain.WifiConfig;
 import com.silveroak.playerclient.service.IHandlerWhatAndKey;
 import com.silveroak.playerclient.service.SearchDeviceService;
 import com.silveroak.playerclient.utils.LogUtils;
@@ -25,11 +26,11 @@ public class PlayerSearchDeviceActivity extends Activity implements IHandlerWhat
     private TextView tvSearchDevicehint;
     private ImageButton imgBtnRefreshSearch;
 
-    public static PlayerSearchDeviceActivity THIS=null;
+    public static PlayerSearchDeviceActivity THIS = null;
     private Handler handler = null;
 
-    public static Handler getHandler(){
-        if(THIS!=null) {
+    public static Handler getHandler() {
+        if (THIS != null) {
             return THIS.handler;
         }
         return null;
@@ -49,11 +50,11 @@ public class PlayerSearchDeviceActivity extends Activity implements IHandlerWhat
         imgBtnRefreshSearch.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     v.setBackgroundResource(R.drawable.refresh_push);
                     //TODO 调用查找设备的方法
                     SearchDeviceService.init(getApplicationContext()).search();
-                }else if(event.getAction()==MotionEvent.ACTION_UP){
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
 //                    SearchDeviceService.init(getApplicationContext()).closeListen();
                     v.setBackgroundResource(R.drawable.refresh);
                 }
@@ -62,36 +63,37 @@ public class PlayerSearchDeviceActivity extends Activity implements IHandlerWhat
         });
 
 
-        handler =  new Handler(){
+        handler = new Handler() {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case SEARCH_DEVICE_MESSAGE: // 命令处理
-                        LogUtils.debug(TAG,msg.getData().getString(MESSAGE_KEY));
+                        LogUtils.debug(TAG, msg.getData().getString(MESSAGE_KEY));
                         String cmd = msg.getData().getString(MESSAGE_KEY);
-                        if(cmd==null){
+                        if (cmd == null) {
                             return;
                         }
                         Intent intent = new Intent();
                         //todo 进入配置页面
-                        if(cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd())){
-                            intent.setClass(getApplicationContext(),PlayerConfigureActivity.class);
-                            startActivity(intent);
+                        if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd())) {
+//                            intent.setClass(getApplicationContext(), PlayerConfigureActivity.class);
+                            msg("Config device ...");
+                            SearchDeviceService.init(getApplicationContext()).configDevice(new WifiConfig());
+
                         } else
                             //todo 进入列表页面
-                            if(cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd())){
-                            intent.setClass(PlayerSearchDeviceActivity.this, PlayerMusicListActivity.class);
-                            SearchDeviceService.init(getApplicationContext()).closeListen();
-                            msg("Connect device successful");
-//                            startActivity(intent);
-                        } else
-                                if(cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.DO_CONFIG_WIFI.getCmd())){
-                                    msg("正在配置稍后重试");
-                                    SearchDeviceService.init(getApplicationContext()).search();
-                                }
-                            else{
-                            //todo 没有找到设备，及热点，停留在次页面
-                            msg("No find device");
-                        }
+                            if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd())) {
+                                intent.setClass(PlayerSearchDeviceActivity.this, PlayerDeviceMusicActivity.class);
+                                SearchDeviceService.init(getApplicationContext()).closeListen();
+                                msg("Connect device successful");
+                                startActivityForResult(intent, 0);
+                                finish();
+                            } else if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.DO_CONFIG_WIFI.getCmd())) {
+                                msg("正在配置稍后重试");
+                                SearchDeviceService.init(getApplicationContext()).search();
+                            } else {
+                                //todo 没有找到设备，及热点，停留在次页面
+                                msg("No find device");
+                            }
                         break;
                     default:
                         break;
@@ -99,7 +101,8 @@ public class PlayerSearchDeviceActivity extends Activity implements IHandlerWhat
             }
         };
     }
-    private void msg(String msg){
+
+    private void msg(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 }
