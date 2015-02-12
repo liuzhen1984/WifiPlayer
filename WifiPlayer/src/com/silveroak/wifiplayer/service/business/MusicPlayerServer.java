@@ -20,6 +20,7 @@ import com.silveroak.wifiplayer.utils.JsonUtils;
 import com.silveroak.wifiplayer.utils.LogUtils;
 import com.silveroak.wifiplayer.utils.NetworkUtils;
 import io.netty.channel.Channel;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -28,13 +29,15 @@ import java.util.*;
  * *  play:
  * sync, 获取当前CurrentPlayer 信息
  * info,根据name获取music信息
+ * list,获取播放列表
  * start,
  * paused,
  * stop,
  * next,
  * previous,
  * delete,  name= all清空， 删除新的
- * play  当前播放的操作 参数是Music 对象的json串
+ * play  传过来字符串 music id
+ * add  当前播放的操作 参数是Music 对象的json串
  * volume
  */
 public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
@@ -181,6 +184,8 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
                 return sync();
             } else if ("sync".equals(type)) {
                 return sync();
+            } else if ("list".equals(type)) {
+                return playList();
             } else if ("info".equals(type)) {
                 return info(params);
             } else if ("start".equals(type)) {
@@ -194,7 +199,9 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
             } else if ("previous".equals(type)) {
                 return previous();
             } else if ("play".equals(type)) {
-                return playUrl(params);
+                play(params);
+            } else if ("add".equals(type)) {
+                return addMusic(params);
             } else if ("delete".equals(type)) {
                 return delete(params);
             } else if ("volume".equals(type)) {
@@ -232,7 +239,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
     }
 
     public Result sync() {
-        LogUtils.debug(TAG, "get all");
+        LogUtils.debug(TAG, "sync");
         Result result = new Result();
         result.setWhat(IHandlerWhatAndKey.UPDATE_INFO);
         PlayerInfo playerInfo = new PlayerInfo();
@@ -247,7 +254,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         return result;
     }
     public Result info(String name) {
-        LogUtils.debug(TAG, "get all");
+        LogUtils.debug(TAG, "info");
         Result result = new Result();
         result.setWhat(IHandlerWhatAndKey.UPDATE_INFO);
         if(name!=null){
@@ -258,7 +265,22 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
     }
 
     public Result playList(){
-        return null;
+        LogUtils.debug(TAG, "play list");
+        Result result = new Result();
+        result.setWhat(IHandlerWhatAndKey.UPDATE_INFO);
+        CurrentPlayer currentPlayer = getCurrentPlayer();
+        if(currentPlayer!=null && currentPlayer.getPlayerList()!=null) {
+            List<Music> musicList = new ArrayList<Music>();
+            for (String name : currentPlayer.getPlayerList()) {
+                Music music = musicHelper.findByName(name);
+                if (music != null) {
+                    musicList.add(music);
+                }
+            }
+            result.setPayload(musicList);
+        }
+        result.setResult(ErrorCode.SUCCESS);
+        return result;
     }
 
     public Result start() {
@@ -401,7 +423,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         List<String> musicList = currentPlayer.getPlayerList();
         if ("all".equalsIgnoreCase(url)) {
             currentPlayer.setPlayerList(new ArrayList<String>());
-            //todo 清楚内容
+            //todo 清除内容
         } else {
             for (String music : musicList) {
                 if (music.equalsIgnoreCase(url)) {
@@ -414,9 +436,30 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         saveCurrentPlayer(currentPlayer);
         return result;
     }
+    //id
+    public Result play(String param){
+        if(param!=null){
+            try {
+                Music music = musicHelper.findById(Long.parseLong(param));
+                return playUrl(music);
+            }catch (Exception ex){};
+        }
+        Result result = new Result();
+        result.setWhat(IHandlerWhatAndKey.MESSAGE);
+        result.setResult(ErrorCode.USER_ERROR.PARAMS_FORMAT);
+        return result;
+    }
 
-    public Result playUrl(String musicStr){
+    public Result addMusic(String musicStr){
         Music music = JsonUtils.string2Object(musicStr,Music.class);
+        if(music==null
+                || StringUtils.isEmpty(music.getSongLink())
+                || StringUtils.isEmpty(music.getSongName())
+                )   {
+            Result result = new Result();
+            result.setWhat(IHandlerWhatAndKey.MESSAGE);
+            result.setResult(ErrorCode.USER_ERROR.PARAMS_FORMAT);
+        }
         return playUrl(music);
     }
 

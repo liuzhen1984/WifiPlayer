@@ -152,6 +152,24 @@ public class PanelClient {
 			channelFuture = null;
 		}
 	}
+
+    /**
+     * /play/*       参数
+         * sync,     获取当前CurrentPlayer 信息
+         * info,     根据name获取music信息
+         * list,     获取播放列表
+         * start,
+         * paused,
+         * stop,
+         * next,
+         * previous,
+         * delete,    name= all清空， 删除新的
+         * play      传过来字符串 music id
+         * add       当前播放的操作 参数是Music 对象的json串
+         * volume    1 /-1
+     * @param dst
+     * @param payload
+     */
     public void sendTo(final String dst, final String payload){
         new Thread(new Runnable() {
             @Override

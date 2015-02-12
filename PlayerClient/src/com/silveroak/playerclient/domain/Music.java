@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by zliu on 14/12/9.
  */
 public class Music implements Serializable{
+    private static final long serialVersionUID = -898978111168199992L;
     private long _id;
     private String songName;
     private String artistName;

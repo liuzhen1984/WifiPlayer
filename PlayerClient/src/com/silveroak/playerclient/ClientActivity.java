@@ -228,7 +228,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                                 if (music != null) {
                                     if (channel != null) {
                                         TcpRequest tcpRequest = new TcpRequest();
-                                        tcpRequest.setUrl("/play/play");
+                                        tcpRequest.setUrl("/play/add");
                                         tcpRequest.setPayload(JsonUtils.object2String(music));
                                         channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
                                     }
@@ -246,7 +246,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                         public void run() {
                             if (channel != null) {
                                 TcpRequest tcpRequest = new TcpRequest();
-                                tcpRequest.setUrl("/play/play");
+                                tcpRequest.setUrl("/play/add");
                                 tcpRequest.setPayload(pathText.getText().toString());
                                 channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
                             }

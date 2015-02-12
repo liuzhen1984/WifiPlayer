@@ -16,7 +16,6 @@ package com.silveroak.playerclient.service.business;/*
 
 import android.os.Bundle;
 import android.os.Message;
-import com.silveroak.playerclient.ClientActivity;
 import com.silveroak.playerclient.constants.MessageConstant;
 import com.silveroak.playerclient.domain.ErrorCode;
 import com.silveroak.playerclient.domain.Result;
@@ -56,13 +55,13 @@ public class PanelClientHandler  extends SimpleChannelInboundHandler<Object> {
         Message toUI = new Message();
         Bundle bundle = new Bundle();
         if(result.getResult()!= ErrorCode.SUCCESS){
-            bundle.putString(ClientActivity.MESSAGE_KEY, result.getResult() + "");
+            bundle.putString(PlayerBaseFragment.MESSAGE_KEY, result.getResult() + "");
             toUI.setData(bundle);
-            toUI.what = ClientActivity.MESSAGE;
+            toUI.what = PlayerBaseFragment.MESSAGE;
             return;
         }
         LogUtils.debug(TAG, msg.toString());
-        bundle.putString(ClientActivity.MESSAGE_KEY, JsonUtils.object2String(result.getPayload()));
+        bundle.putString(PlayerBaseFragment.MESSAGE_KEY, JsonUtils.object2String(result.getPayload()));
         toUI.setData(bundle);
         toUI.what = result.getWhat();
         PlayerBaseFragment.sendMessages(toUI);

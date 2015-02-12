@@ -11,9 +11,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"/>
-        <ImageButton android:id="@+id/imgBtnSearch"
+        <Button android:id="@+id/imgBtnSearch"
                      android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"/>
+                     android:layout_height="wrap_content" android:text="Play"/>
     </LinearLayout>
     <FrameLayout android:id="@+id/contentContainer"
                  android:layout_width="match_parent"
