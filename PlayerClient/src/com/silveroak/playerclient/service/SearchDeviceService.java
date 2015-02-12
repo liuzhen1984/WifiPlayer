@@ -113,13 +113,13 @@ public class SearchDeviceService {
                             new Thread(runnable).start();
                             LISTEN_STATUS = 0;
                             LogUtils.debug(TAG,"Connected wifi player server successful");
-                            sendMessage(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
+                            sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
                         } else{
                             LISTEN_STATUS = 1;
                             LogUtils.debug(TAG,"Connected wifi player server error: "+result.getPayload());
                         }
                     }else  if( result.getResult()==ErrorCode.SYSTEM_ERROR.WIFI_DO_CONFIG){
-                        sendMessage(MessageConstant.SEARCH_DEVICE_CMD.DO_CONFIG_WIFI.getCmd());
+                        sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.DO_CONFIG_WIFI.getCmd());
                         LISTEN_STATUS = 1;
                     }else  if(result.getResult()==ErrorCode.SYSTEM_ERROR.WIFI_CONFIG_ERROR ){
                         LISTEN_STATUS = 3;
@@ -251,7 +251,7 @@ public class SearchDeviceService {
                 }catch (Exception ex){
                 }finally {
                     isConfig = false;
-                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
+                    sendMessage(PlayerBaseFragment.CONFIG_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
                 }
             }
         };
@@ -284,7 +284,7 @@ public class SearchDeviceService {
     public void search(){
         if(!wifiManager.isWifiEnabled()){
             //todo 通知前台没有找到设备
-            sendMessage(MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
+            sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
             return;
         }
         listen();
@@ -295,7 +295,7 @@ public class SearchDeviceService {
                 WifiConfig wifiConfig = NetworkUtils.getWifiConfig(wifiManager);
                 if(wifiConfig!=null && wifiConfig.getSsid()!=null && wifiConfig.getSsid().equalsIgnoreCase(SystemConstant.DEFAULT_AP)){
                     //todo 通知前台连接AP成功，进入配置页面
-                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
+                    sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
                     return;
                 }
                 while (true) {
@@ -319,17 +319,17 @@ public class SearchDeviceService {
                 if(LISTEN_STATUS==0){
                     //配置完成
                     //todo 通知前台连接成功
-                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
+                    sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
                     return;
                 }
                 if (searchDeviceAP()) {
                     //todo 通知前台连接AP成功，进入配置页面
-                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
+                    sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
                     return;
 
                 } else {
                     //todo 通知前台没有找到设备
-                    sendMessage(MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
+                    sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
                     return;
                 }
             }
@@ -337,12 +337,12 @@ public class SearchDeviceService {
         new Thread(runnable).start();
     }
 
-    private void sendMessage(String msg){
+    private void sendMessage(int what,String msg){
         Message toUI = new Message();
         Bundle bundle = new Bundle();
         bundle.putString(PlayerBaseFragment.MESSAGE_KEY, msg);
         toUI.setData(bundle);
-        toUI.what = PlayerBaseFragment.SEARCH_DEVICE_MESSAGE;
+        toUI.what = what;
         PlayerBaseFragment.sendMessages(toUI);
     }
 }

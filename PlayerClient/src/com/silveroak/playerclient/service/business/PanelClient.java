@@ -20,8 +20,11 @@ import java.util.List;
  */
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Message;
 import com.silveroak.playerclient.domain.TcpRequest;
 import com.silveroak.playerclient.preference.data.SystemInfo;
+import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.utils.JsonUtils;
 import com.silveroak.playerclient.utils.LogUtils;
 import io.netty.bootstrap.Bootstrap;
@@ -149,4 +152,28 @@ public class PanelClient {
 			channelFuture = null;
 		}
 	}
+    public void sendTo(final String dst, final String payload){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (channel != null) {
+                    TcpRequest tcpRequest = new TcpRequest();
+                    tcpRequest.setUrl(dst);
+                    tcpRequest.setPayload(payload);
+                    channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
+                }
+                sendMessage("Connected device error!");
+            }
+        }).start();
+    }
+
+
+    private void sendMessage(String msg){
+        Message toUI = new Message();
+        Bundle bundle = new Bundle();
+        bundle.putString(PlayerBaseFragment.MESSAGE_KEY, msg);
+        toUI.setData(bundle);
+        toUI.what = PlayerBaseFragment.MESSAGE;
+        PlayerBaseFragment.sendMessages(toUI);
+    }
 }
