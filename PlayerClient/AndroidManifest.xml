@@ -22,6 +22,7 @@
         <activity android:name="com.silveroak.playerclient.ui.activity.PlayerConfigureActivity"
                   android:label="@string/config_devcie">
         </activity>
+        <activity android:name=".ui.activity.PlayerBaseActivity"/>
     </application>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />

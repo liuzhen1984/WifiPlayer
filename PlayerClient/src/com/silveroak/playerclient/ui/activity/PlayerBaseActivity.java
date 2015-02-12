@@ -10,5 +10,13 @@ public class PlayerBaseActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initTitle();
+        initFragment();
     }
+
+    protected void initTitle() {
+
+    }
+
+    protected void initFragment() {}
 }
