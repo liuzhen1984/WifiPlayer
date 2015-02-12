@@ -33,7 +33,7 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.player_search_device, null);
+        View view = inflater.inflate(R.layout.fragment_search_device, null);
 
         tvSearchDevicehint = (TextView) view.findViewById(R.id.tvSearchDevicehint);
         imgBtnRefreshSearch = (ImageButton) view.findViewById(R.id.imgBtnRefreshSearch);

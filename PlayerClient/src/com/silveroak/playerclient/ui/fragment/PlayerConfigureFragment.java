@@ -38,7 +38,7 @@ public class PlayerConfigureFragment extends PlayerBaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        View view = inflater.inflate(R.layout.player_search_device, null);
+        View view = inflater.inflate(R.layout.fragment_configure_wifi, null);
 
         this.wifiManager = (WifiManager) mActivity.getSystemService(Context.WIFI_SERVICE);;
 
