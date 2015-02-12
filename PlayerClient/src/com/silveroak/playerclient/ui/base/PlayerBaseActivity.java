@@ -1,4 +1,4 @@
-package com.silveroak.playerclient.ui.activity;
+package com.silveroak.playerclient.ui.base;
 
 import android.app.Activity;
 import android.os.Bundle;

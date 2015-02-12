@@ -1,9 +1,8 @@
-package com.silveroak.playerclient.ui.activity;
+package com.silveroak.playerclient.ui.base;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
 import com.silveroak.playerclient.R;
-import com.silveroak.playerclient.ui.fragment.PlayerBaseFragment;
 
 /**
  * Created by John on 2015/2/12.

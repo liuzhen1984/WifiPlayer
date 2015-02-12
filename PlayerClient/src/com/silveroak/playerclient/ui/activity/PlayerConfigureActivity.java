@@ -1,6 +1,7 @@
 package com.silveroak.playerclient.ui.activity;
 
-import com.silveroak.playerclient.ui.fragment.PlayerBaseFragment;
+import com.silveroak.playerclient.ui.base.PlayerSingleFragmentActivity;
+import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.ui.fragment.PlayerConfigureFragment;
 
 /**

@@ -19,7 +19,7 @@ import com.silveroak.playerclient.domain.WifiConfig;
 import com.silveroak.playerclient.preference.StorageUtils;
 import com.silveroak.playerclient.preference.data.SystemInfo;
 import com.silveroak.playerclient.service.business.PanelClient;
-import com.silveroak.playerclient.ui.fragment.PlayerBaseFragment;
+import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.utils.JsonUtils;
 import com.silveroak.playerclient.utils.LogUtils;
 import com.silveroak.playerclient.utils.NetworkUtils;

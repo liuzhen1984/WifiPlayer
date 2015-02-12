@@ -15,6 +15,7 @@ import com.silveroak.playerclient.constants.MessageConstant;
 import com.silveroak.playerclient.domain.WifiConfig;
 import com.silveroak.playerclient.service.SearchDeviceService;
 import com.silveroak.playerclient.ui.activity.PlayerSearchDeviceActivity;
+import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.utils.LogUtils;
 import com.silveroak.playerclient.utils.NetworkUtils;
 
