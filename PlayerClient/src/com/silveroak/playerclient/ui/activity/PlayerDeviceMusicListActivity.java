@@ -27,6 +27,7 @@ public class PlayerDeviceMusicListActivity extends PlayerBaseSearchBarActivity {
     @Override
     protected void initTitle() {
         super.initTitle();
+        setTitle("Music List");
         this.getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 

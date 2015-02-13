@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@android:color/white">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="horizontal">
-        <SearchView android:id="@+id/searchView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="100px"
-                    android:layout_weight="1"
-                    android:queryHint="song name"
-                    android:background="@android:color/darker_gray"/>
-        <Button android:id="@+id/imgBtnSearch"
-                     android:layout_width="wrap_content"
-                     android:layout_height="100px"
-                     android:text="PLAY"
-                     android:background="@android:color/darker_gray"/>
+              android:focusable="true"
+              android:focusableInTouchMode="true"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp">
+
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:iconifiedByDefault="false"
+            android:queryHint="Song Name"/>
+
+        <Button
+            android:id="@+id/imgBtnSearch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PLAY"/>
     </LinearLayout>
-    <FrameLayout android:id="@+id/contentContainer"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_weight="1"></FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"></FrameLayout>
 </LinearLayout>

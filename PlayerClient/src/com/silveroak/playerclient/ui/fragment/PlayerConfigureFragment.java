@@ -69,7 +69,8 @@ public class PlayerConfigureFragment extends PlayerBaseFragment {
                 wifiConfig.setSsid(etSSID.getText().toString());
                 wifiConfig.setPassword(etPassword.getText().toString());
                 SearchDeviceService.init(mActivity.getApplication()).configDevice(wifiConfig);
-                //todo 弹出一个等待图片，锁屏
+                // 弹出一个等待图片，锁屏
+                showProgress();
             }
         });
 
@@ -86,8 +87,9 @@ public class PlayerConfigureFragment extends PlayerBaseFragment {
                 if (cmd == null) {
                     return;
                 }
-                //todo 进入配置页面
+                // 进入配置页面
                 if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd())) {
+                    hideProgress();
                     Intent intent = new Intent();
                     intent.setClass(mActivity,PlayerSearchDeviceActivity.class);
                     startActivity(intent);

@@ -1,48 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Almost Lover"
-            android:layout_alignParentTop="true"
-            android:id="@+id/tvSongName"
-            android:gravity="center"/>
-    <ImageView android:id="@+id/imageCover"
-               android:layout_width="400dp" android:layout_height="400dp"
-               android:layout_centerInParent="true"/>
+        android:id="@+id/tvSongName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="Almost Lover"/>
+
+    <ImageView
+        android:id="@+id/imageCover"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_below="@id/tvSongName"
+        android:layout_centerHorizontal="true"/>
+
     <SeekBar
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/llControl"
-            android:id="@+id/sbSongProcess"
-            android:layout_marginBottom="30dp"/>
+        android:id="@+id/sbSongProcess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/llControl"/>
+
     <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
+        android:id="@+id/llControl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingTop="20dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp">
+
+        <ImageButton
+            android:id="@+id/imgBtnPreviousSong"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_alignParentBottom="true"
-            android:id="@+id/llControl">
+            android:background="@null"
+            android:src="@drawable/pre_song"/>
+
         <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgBtnPreviousSong"
-                android:src="@drawable/pre_song"
-                android:layout_marginRight="50dp"/>
+            android:id="@+id/imgBtnPlayPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/play_song"/>
+
         <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgBtnPlayPause"
-                android:src="@drawable/play_song"/>
-        <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgBtnNextSong"
-                android:src="@drawable/next_song"
-                android:layout_marginLeft="50dp"/>
+            android:id="@+id/imgBtnNextSong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:src="@drawable/next_song"/>
     </LinearLayout>
 </RelativeLayout>

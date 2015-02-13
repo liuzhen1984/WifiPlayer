@@ -19,7 +19,7 @@ public class PlayerConfigureActivity extends PlayerSingleFragmentActivity {
     @Override
     protected void initTitle() {
         super.initTitle();
-        setTitle(R.string.company);
+        setTitle("Wifi Configuration");
         this.getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
