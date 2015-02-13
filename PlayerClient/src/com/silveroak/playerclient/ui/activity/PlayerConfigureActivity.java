@@ -1,7 +1,8 @@
 package com.silveroak.playerclient.ui.activity;
 
-import com.silveroak.playerclient.ui.base.PlayerSingleFragmentActivity;
+import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
+import com.silveroak.playerclient.ui.base.PlayerSingleFragmentActivity;
 import com.silveroak.playerclient.ui.fragment.PlayerConfigureFragment;
 
 /**
@@ -11,5 +12,11 @@ public class PlayerConfigureActivity extends PlayerSingleFragmentActivity {
     @Override
     protected PlayerBaseFragment createFragment() {
         return PlayerConfigureFragment.newInstance();
+    }
+
+    @Override
+    protected void initTitle() {
+        super.initTitle();
+        setTitle(R.string.company);
     }
 }

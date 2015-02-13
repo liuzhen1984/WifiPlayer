@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@android:color/white">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -10,10 +11,14 @@
         <SearchView android:id="@+id/searchView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1"
+                    android:queryHint="song name"
+                    android:background="@android:color/darker_gray"/>
         <Button android:id="@+id/imgBtnSearch"
                      android:layout_width="wrap_content"
-                     android:layout_height="wrap_content" android:text="Play"/>
+                     android:layout_height="wrap_content"
+                     android:text="Play"
+                     android:background="@android:color/darker_gray"/>
     </LinearLayout>
     <FrameLayout android:id="@+id/contentContainer"
                  android:layout_width="match_parent"

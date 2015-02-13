@@ -7,4 +7,5 @@
     <string name="sdcarderror">SDCARD Error!</string>
     <string name="config_devcie">Configuration</string>
     <string name="search_device">Search Device</string>
+    <string name="company">Silveroak</string>
 </resources>
