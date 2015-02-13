@@ -25,10 +25,21 @@ public class PlayerDeviceMusicListActivity extends PlayerBaseSearchBarActivity {
     }
 
     @Override
+    protected void initTitle() {
+        super.initTitle();
+        this.getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         switch (item.getItemId()) {
+            case android.R.id.home:
+                intent = new Intent(this, PlayerDeviceMusicPlayActivity.class);
+                startActivity(intent);
+                break;
             case R.id.action_config:
-                Intent intent = new Intent(this, PlayerConfigureActivity.class);
+                intent = new Intent(this, PlayerConfigureActivity.class);
                 startActivity(intent);
                 break;
             default:
