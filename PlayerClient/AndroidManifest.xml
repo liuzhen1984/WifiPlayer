@@ -19,6 +19,9 @@
         <activity android:name=".ui.activity.PlayerDeviceMusicListActivity"
                   android:label="@string/app_name">
         </activity>
+        <activity android:name=".ui.activity.PlayerDeviceMusicPlayActivity"
+                  android:label="@string/app_name">
+        </activity>
         <activity android:name="com.silveroak.playerclient.ui.activity.PlayerConfigureActivity"
                   android:label="@string/config_devcie">
         </activity>

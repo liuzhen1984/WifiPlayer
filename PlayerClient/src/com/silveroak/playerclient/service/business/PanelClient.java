@@ -51,7 +51,7 @@ public class PanelClient {
 	public static PanelClient getClient(){
 		return panelClient;
 	}
-	public static PanelClient init(Context context){
+	public synchronized static PanelClient init(Context context){
 		if(panelClient==null){
 			panelClient = new PanelClient(context);
 		}
@@ -171,11 +171,15 @@ public class PanelClient {
      * @param payload
      */
     public void sendTo(final String dst, final String payload){
-        if (channel != null) {
+
+        if(channel!=null && !channel.isOpen()){
+            start(this.systemInfo);
+        }
+        if (channelFuture!=null && channelFuture.channel() != null) {
             TcpRequest tcpRequest = new TcpRequest();
             tcpRequest.setUrl(dst);
             tcpRequest.setPayload(payload);
-            channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
+            channelFuture.channel().writeAndFlush(JsonUtils.object2String(tcpRequest));
         }else {
             sendMessage("Connected device error!");
         }

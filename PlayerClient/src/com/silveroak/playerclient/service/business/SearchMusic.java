@@ -48,38 +48,40 @@ public class SearchMusic {
         if(id==null){
             return null;
         }
-        String musicJson = NetworkUtils.requestUrlGet(BAIDU_GET_API+id);
-        Map<String,Object> resultMap = JsonUtils.string2Map(musicJson);
-        if(resultMap!=null && resultMap.containsKey("data")){
-            Map<String,Object> value = (Map<String, Object>) resultMap.get("data");
-            if(value!=null && value.containsKey("songList")){
-                 ArrayList<Object> list = (ArrayList<Object>) value.get("songList");
-                 value = (Map<String, Object>) list.get(0);
-                  Music music = new Music();
-                music.setSongName(String.valueOf(value.get("songName")));
-                music.setArtistName(String.valueOf(value.get("artistName")));
-                music.setAlbumName(String.valueOf(value.get("albumName")));
-                music.setSongPicSmall(String.valueOf(value.get("songPicSmall")));
-                music.setSongPicBig(String.valueOf(value.get("songPicBig")));
-                music.setSongPicRadio(String.valueOf(value.get("songPicRadio")));
-                music.setLrcLink(String.valueOf(value.get("lrcLink")));
-                music.setSongLink(String.valueOf(value.get("songLink")));
-                music.setFormat(String.valueOf(value.get("format")));
-                if(value.containsKey("rate")){
-                    if( !String.valueOf(value.get("rate")).equals("")){
-                        music.setRate(Integer.valueOf(String.valueOf(value.get("rate"))));
+        try {
+            String musicJson = NetworkUtils.requestUrlGet(BAIDU_GET_API + id);
+            Map<String, Object> resultMap = JsonUtils.string2Map(musicJson);
+            if (resultMap != null && resultMap.containsKey("data")) {
+                Map<String, Object> value = (Map<String, Object>) resultMap.get("data");
+                if (value != null && value.containsKey("songList")) {
+                    ArrayList<Object> list = (ArrayList<Object>) value.get("songList");
+                    value = (Map<String, Object>) list.get(0);
+                    Music music = new Music();
+                    music.setSongName(String.valueOf(value.get("songName")));
+                    music.setArtistName(String.valueOf(value.get("artistName")));
+                    music.setAlbumName(String.valueOf(value.get("albumName")));
+                    music.setSongPicSmall(String.valueOf(value.get("songPicSmall")));
+                    music.setSongPicBig(String.valueOf(value.get("songPicBig")));
+                    music.setSongPicRadio(String.valueOf(value.get("songPicRadio")));
+                    music.setLrcLink(String.valueOf(value.get("lrcLink")));
+                    music.setSongLink(String.valueOf(value.get("songLink")));
+                    music.setFormat(String.valueOf(value.get("format")));
+                    if (value.containsKey("rate")) {
+                        if (!String.valueOf(value.get("rate")).equals("")) {
+                            music.setRate(Integer.valueOf(String.valueOf(value.get("rate"))));
+                        }
                     }
-                }
-                if(value.containsKey("size")){
-                    if( !String.valueOf(value.get("size")).equals("")){
-                        music.setSize(Integer.valueOf(String.valueOf(value.get("size"))));
+                    if (value.containsKey("size")) {
+                        if (!String.valueOf(value.get("size")).equals("")) {
+                            music.setSize(Integer.valueOf(String.valueOf(value.get("size"))));
+                        }
                     }
+                    music.setResourceType(String.valueOf(value.get("resourceType")));
+                    music.setRelateStatus(String.valueOf(value.get("relateStatus")));
+                    return music;
                 }
-                music.setResourceType(String.valueOf(value.get("resourceType")));
-                music.setRelateStatus(String.valueOf(value.get("relateStatus")));
-                return  music;
             }
-        }
+        }catch (Exception ex){}
         return null;
 
     }

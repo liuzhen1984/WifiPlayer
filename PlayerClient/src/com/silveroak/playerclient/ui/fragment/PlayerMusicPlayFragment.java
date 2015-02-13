@@ -1,5 +1,6 @@
 package com.silveroak.playerclient.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import com.silveroak.playerclient.domain.Music;
 import com.silveroak.playerclient.domain.PlayerInfo;
 import com.silveroak.playerclient.service.business.PanelClient;
 import com.silveroak.playerclient.service.business.SearchMusic;
+import com.silveroak.playerclient.ui.activity.PlayerSearchDeviceActivity;
 import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.ui.base.PlayerBaseSearchBarFragment;
 import com.silveroak.playerclient.utils.JsonUtils;
@@ -38,8 +40,9 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
     private ImageButton nextButton;
     private ImageButton previousButton;
     private ImageButton playButton;
+    private PanelClient panelClient;
 
-    private SystemConstant.PLAYER_STATUS PLAYER_STATUS;
+    private SystemConstant.PLAYER_STATUS PLAYER_STATUS= SystemConstant.PLAYER_STATUS.PAUSED;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +61,12 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
 
         musicInfo.setText("No music");
         processSeekBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
+        panelClient = PanelClient.getClient();
+        if(panelClient==null){
+            Intent intent = new Intent();
+            intent.setClass(mActivity, PlayerSearchDeviceActivity.class);
+            startActivity(intent);
+        }
         syncInfo();
         return v;
     }
@@ -77,7 +86,9 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                     //todo 调用百度获取接口
                     Music music = SearchMusic.getSearchMusic(mActivity.getApplicationContext()).getMusic(searchTxt);
                     if (music != null) {
-                        PanelClient.init(mActivity.getApplicationContext()).sendTo("/play/add",JsonUtils.object2String(music));
+                        if(panelClient!=null){
+                           panelClient.sendTo("/play/add", JsonUtils.object2String(music));
+                        }
                     } else {
                         LogUtils.debug(TAG, "No find ");
                         sendToUIMessage("No find " + searchTxt);
@@ -149,7 +160,9 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
             @Override
             public void run() {
                  while (isSync){
-                     PanelClient.init(mActivity.getApplicationContext()).sendTo("/play/sync","");
+                     if(panelClient!=null) {
+                         panelClient.sendTo("/play/sync", "");
+                     }
                      try {
                          Thread.sleep(5000l);
                      } catch (InterruptedException e) {
@@ -169,8 +182,14 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                 case R.id.imgBtnPlayPause:
                     if(PLAYER_STATUS.equals(SystemConstant.PLAYER_STATUS.PAUSED)){
                         PanelClient.getClient().sendTo("/play/start",null);
+                        PLAYER_STATUS = SystemConstant.PLAYER_STATUS.PLAYER;
+                        playButton.setImageDrawable(getResources().getDrawable(R.drawable.pause_song));
                     } else{
                         PanelClient.getClient().sendTo("/play/paused",null);
+                        PLAYER_STATUS = SystemConstant.PLAYER_STATUS.PAUSED;
+                        playButton.setImageDrawable(getResources().getDrawable(R.drawable.play_song));
+
+
                     }
                     break;
                 case R.id.imgBtnNextSong:

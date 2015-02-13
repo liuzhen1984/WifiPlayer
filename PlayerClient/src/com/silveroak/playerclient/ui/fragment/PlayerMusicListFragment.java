@@ -15,6 +15,7 @@ import com.silveroak.playerclient.domain.Music;
 import com.silveroak.playerclient.service.business.PanelClient;
 import com.silveroak.playerclient.service.business.SearchMusic;
 import com.silveroak.playerclient.ui.activity.PlayerDeviceMusicPlayActivity;
+import com.silveroak.playerclient.ui.activity.PlayerSearchDeviceActivity;
 import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.ui.base.PlayerBaseSearchBarFragment;
 import com.silveroak.playerclient.utils.JsonUtils;
@@ -30,6 +31,8 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
     private final static String TAG = PlayerMusicListFragment.class.getSimpleName();
     private ListView musicListView;
 
+    private PanelClient panelClient;
+
     public static PlayerMusicListFragment newInstance() {
         return new PlayerMusicListFragment();
     }
@@ -38,15 +41,32 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_music_list, null);
-        PanelClient.init(mActivity.getApplicationContext()).sendTo("/play/list","");
+
+        panelClient = PanelClient.getClient();
+        if(panelClient==null){
+            Intent intent = new Intent();
+            intent.setClass(mActivity, PlayerSearchDeviceActivity.class);
+            startActivity(intent);
+        }
+        if(panelClient!=null){
+            panelClient.sendTo("/play/list", "");
+        }
 
         musicListView = (ListView) v.findViewById(R.id.music_list_view);
-
+        MUSIC_LIST = new ArrayList<String>();
+        MUSIC_LIST.add("music 1");
+        MUSIC_LIST.add("music 2");
+        MUSIC_LIST.add("music 3");
+        MUSIC_LIST.add("music 4");
+        MusicListAdapter musicListAdapter = new MusicListAdapter(MUSIC_LIST);
+        musicListView.setAdapter(musicListAdapter);
         musicListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String music = MUSIC_LIST.get(position);
-                PanelClient.init(mActivity.getApplicationContext()).sendTo("/play/play_name",music);
+                if(panelClient!=null) {
+                    panelClient.sendTo("/play/play_name", music);
+                }
                 Intent intent = new Intent();
                 intent.setClass(mActivity, PlayerDeviceMusicPlayActivity.class);
                 startActivity(intent);
@@ -64,10 +84,12 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
                     //todo 调用百度获取接口
                     Music music = SearchMusic.getSearchMusic(mActivity.getApplicationContext()).getMusic(searchTxt);
                     if (music != null) {
-                        PanelClient.init(mActivity.getApplicationContext()).sendTo("/play/add",JsonUtils.object2String(music));
-                        Intent intent = new Intent();
-                        intent.setClass(mActivity, PlayerDeviceMusicPlayActivity.class);
-                        startActivity(intent);
+                        if(panelClient!=null) {
+                            panelClient.sendTo("/play/add", JsonUtils.object2String(music));
+                            Intent intent = new Intent();
+                            intent.setClass(mActivity, PlayerDeviceMusicPlayActivity.class);
+                            startActivity(intent);
+                        }
                     } else {
                         LogUtils.debug(TAG, "No find ");
                         sendToUIMessage("No find " + searchTxt);

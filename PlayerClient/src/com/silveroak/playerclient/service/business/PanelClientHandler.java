@@ -35,6 +35,7 @@ public class PanelClientHandler  extends SimpleChannelInboundHandler<Object> {
     private static final String TAG =
             PanelClientHandler.class.getSimpleName();
 
+    private String tempStr="";
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         LogUtils.debug(TAG, "From client msg:" + msg);
@@ -45,7 +46,12 @@ public class PanelClientHandler  extends SimpleChannelInboundHandler<Object> {
         if(MessageConstant.HB_STR.equalsIgnoreCase(strMsg)){
             return;
         }
-
+        tempStr = tempStr+strMsg;
+        if(!tempStr.endsWith("}")){
+            return;
+        }
+        strMsg = tempStr;
+        tempStr = "";
         //todo 返回给前台activity显示
         Result result = JsonUtils.string2Object(strMsg,Result.class);
         if(result==null){
