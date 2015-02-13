@@ -52,7 +52,7 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
     }
 
     private void searchDevice() {
-        if (!isSearching) {
+        if (!isSearching && mActivity != null) {
             isSearching = true;
             ((AnimationDrawable) imgBtnRefreshSearch.getDrawable()).start();
             SearchDeviceService.init(mActivity.getApplicationContext()).search();
@@ -74,9 +74,10 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
                 //todo 进入配置页面
                 if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd())) {
                     intent.setClass(mActivity, PlayerConfigureActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
+                    mActivity.finish();
                     msg("Config device ...");
-
                 } else
                     //todo 进入列表页面
                     if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd())) {
@@ -85,12 +86,16 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         msg("Connect device successful");
+                        isSearching = false;
+                        ((AnimationDrawable)imgBtnRefreshSearch.getDrawable()).stop();
                     } else if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.DO_CONFIG_WIFI.getCmd())) {
                         msg("正在配置稍后重试");
-                        SearchDeviceService.init(mActivity.getApplicationContext()).search();
+                        isSearching = false;
+                        searchDevice();
                     } else {
                         //todo 没有找到设备，及热点，停留在次页面
                         msg("No find device");
+                        isSearching = false;
                         ((AnimationDrawable)imgBtnRefreshSearch.getDrawable()).stop();
                     }
                 break;
