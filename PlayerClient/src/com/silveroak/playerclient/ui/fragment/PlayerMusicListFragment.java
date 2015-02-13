@@ -55,6 +55,7 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
             Intent intent = new Intent();
             intent.setClass(mActivity, PlayerSearchDeviceActivity.class);
             startActivity(intent);
+            return v;
         }
 
         musicListView = (ListView) v.findViewById(R.id.music_list_view);
@@ -127,6 +128,11 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
                     MusicListAdapter musicListAdapter = new MusicListAdapter(MUSIC_LIST);
                     musicListView.setAdapter(musicListAdapter);
                 }
+                break;
+            case CONNECT_DEVICE_ERROR:
+                Intent intent = new Intent();
+                intent.setClass(mActivity, PlayerSearchDeviceActivity.class);
+                startActivity(intent);
                 break;
             case MESSAGE: // 消息显示
                 LogUtils.debug(TAG, message.getData().getString(MESSAGE_KEY));

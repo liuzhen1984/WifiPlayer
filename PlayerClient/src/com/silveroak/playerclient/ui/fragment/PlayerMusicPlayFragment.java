@@ -157,6 +157,11 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                     musicInfo.setText(playerInfo.getMusic().getSongName()+"  Artiste:"+playerInfo.getMusic().getArtistName());
                 }
                 break;
+            case CONNECT_DEVICE_ERROR:
+                Intent intent = new Intent();
+                intent.setClass(mActivity, PlayerSearchDeviceActivity.class);
+                startActivity(intent);
+                break;
             case MESSAGE: // 消息显示
                 LogUtils.debug(TAG, message.getData().getString(MESSAGE_KEY));
                 msg(message.getData().getString(MESSAGE_KEY));

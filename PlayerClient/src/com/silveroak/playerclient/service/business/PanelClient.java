@@ -177,17 +177,21 @@ public class PanelClient {
                 if (channel != null && !channel.isOpen()) {
                     start(systemInfo);
                 }
-                if (channelFuture != null && channelFuture.channel() != null) {
+                if (channel != null) {
                     TcpRequest tcpRequest = new TcpRequest();
                     tcpRequest.setUrl(dst);
                     tcpRequest.setPayload(payload);
-                    channelFuture.channel().writeAndFlush(JsonUtils.object2String(tcpRequest));
+                    channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
                 } else {
+                    Message toUI = new Message();
+                    Bundle bundle = new Bundle();
+                    toUI.setData(bundle);
+                    toUI.what = PlayerBaseFragment.CONNECT_DEVICE_ERROR;
+                    PlayerBaseFragment.sendMessages(toUI);
                     sendMessage("Connected device error!");
                 }
             }
         }).start();
-
 
     }
 
