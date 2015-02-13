@@ -78,12 +78,6 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        mMusicCover.setImageDrawable(getResources().getDrawable(R.drawable.no_music));
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         isSync=false;
@@ -149,7 +143,7 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                          @Override
                          public void onLoadImage(Bitmap bm, String imageUrl) {
                              if (bm == null) {
-
+                                 mMusicCover.setImageDrawable(getResources().getDrawable(R.drawable.no_music));
                              } else {
                                  mMusicCover.setImageBitmap(bm);
                              }

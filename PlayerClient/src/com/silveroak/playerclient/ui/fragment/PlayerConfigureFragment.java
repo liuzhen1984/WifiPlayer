@@ -62,7 +62,7 @@ public class PlayerConfigureFragment extends PlayerBaseFragment {
             @Override
             public void onClick(View v) {
                 WifiConfig wc = NetworkUtils.getWifiConfig(wifiManager);
-                if(wifiConfig==null || !SystemConstant.DEFAULT_AP.equals(wc.getSsid())){
+                if(wifiConfig==null || !wc.getSsid().contains(SystemConstant.DEFAULT_AP)){
                     msg("Please connect 'SilverOak-AP' ... ");
                     return;
                 }

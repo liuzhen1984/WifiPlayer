@@ -192,7 +192,7 @@ public class SearchDeviceService {
 
     private void connectDeviceAP(){
         WifiConfig wifiConfig = NetworkUtils.getWifiConfig(wifiManager);
-        if(wifiConfig!=null && wifiConfig.getSsid()!=null && wifiConfig.getSsid().equalsIgnoreCase(SystemConstant.DEFAULT_AP)){
+        if(wifiConfig!=null && wifiConfig.getSsid()!=null && wifiConfig.getSsid().contains(SystemConstant.DEFAULT_AP)){
             return;
         }
         WifiConfiguration wifiConfiguration = NetworkUtils.IsExsits(wifiManager, SystemConstant.DEFAULT_AP);
@@ -232,7 +232,7 @@ public class SearchDeviceService {
                         Thread.sleep(3000l);
                     }
                     WifiConfig currentWc = NetworkUtils.getWifiConfig(wifiManager);
-                    if(currentWc!=null && currentWc.getSsid()!=null && currentWc.getSsid().equalsIgnoreCase(SystemConstant.DEFAULT_AP)){
+                    if(currentWc!=null && currentWc.getSsid()!=null && !currentWc.getSsid().contains(SystemConstant.DEFAULT_AP)){
                         return;
                     }
                     ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -298,7 +298,7 @@ public class SearchDeviceService {
             public void run() {
                 int count = 0;
                 WifiConfig wifiConfig = NetworkUtils.getWifiConfig(wifiManager);
-                if(wifiConfig!=null && wifiConfig.getSsid()!=null && wifiConfig.getSsid().equalsIgnoreCase(SystemConstant.DEFAULT_AP)){
+                if(wifiConfig!=null && wifiConfig.getSsid()!=null && wifiConfig.getSsid().contains(SystemConstant.DEFAULT_AP)){
                     //todo 通知前台连接AP成功，进入配置页面
                     sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
                     return;

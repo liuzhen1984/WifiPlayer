@@ -36,8 +36,11 @@ public class Utils
         };
 
         // 之前根据url写入本地缓存的路径
-
-        String path = "covers/" + url.substring(url.lastIndexOf("/"));
+        int index = url.lastIndexOf("/");
+        if(index<0){
+            return;
+        }
+        String path = "covers/" + url.substring(index);
         File file = new File(path);
         if (file.exists())
         {
