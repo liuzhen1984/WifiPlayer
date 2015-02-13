@@ -1,14 +1,17 @@
 package com.silveroak.playerclient.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import com.jacp.util.Utils;
 import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.constants.SystemConstant;
 import com.silveroak.playerclient.domain.Music;
@@ -37,6 +40,8 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
     private SeekBar processSeekBar;
     private TextView musicInfo;
 
+    private ImageView mMusicCover;
+
     private ImageButton nextButton;
     private ImageButton previousButton;
     private ImageButton playButton;
@@ -50,6 +55,7 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
         View v = inflater.inflate(R.layout.fragment_music_play, null);
         processSeekBar = (SeekBar) v.findViewById(R.id.sbSongProcess);
         musicInfo = (TextView) v.findViewById(R.id.tvSongName);
+        mMusicCover = (ImageView) v.findViewById(R.id.imageCover);
         nextButton = (ImageButton) v.findViewById(R.id.imgBtnPreviousSong);
         previousButton = (ImageButton) v.findViewById(R.id.imgBtnPreviousSong);
         playButton = (ImageButton) v.findViewById(R.id.imgBtnPlayPause);
@@ -129,6 +135,16 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
             case UPDATE_PLAY_INFO:
                 LogUtils.debug(TAG, "UPDATE_INFO");
                 PlayerInfo playerInfo = JsonUtils.string2Object(message.getData().getString(MESSAGE_KEY), PlayerInfo.class);
+                new Utils().loadImage(playerInfo.getMusic().getSongPicSmall(), new Utils.OnLoadImageListener() {
+                    @Override
+                    public void onLoadImage(Bitmap bm, String imageUrl) {
+                        if (bm == null) {
+
+                        } else {
+                            mMusicCover.setImageBitmap(bm);
+                        }
+                    }
+                });
                 if(playerInfo!=null){
                     PLAYER_STATUS = playerInfo.getStatus();
                     if(playerInfo.getStatus().equals(SystemConstant.PLAYER_STATUS.PLAYER)){
