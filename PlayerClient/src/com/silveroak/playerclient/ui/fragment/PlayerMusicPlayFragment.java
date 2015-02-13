@@ -135,7 +135,7 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
             case UPDATE_PLAY_INFO:
                 LogUtils.debug(TAG, "UPDATE_INFO");
                 PlayerInfo playerInfo = JsonUtils.string2Object(message.getData().getString(MESSAGE_KEY), PlayerInfo.class);
-                Utils.loadImage(playerInfo.getMusic().getSongPicSmall(), new Utils.OnLoadImageListener() {
+                Utils.loadImage(playerInfo.getMusic().getSongPicBig(), new Utils.OnLoadImageListener() {
                     @Override
                     public void onLoadImage(Bitmap bm, String imageUrl) {
                         if (bm == null) {
