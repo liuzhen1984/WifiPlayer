@@ -10,7 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="400dp"
             android:layout_alignParentTop="true"
-            android:text="Searching Silveroak Wifi Player..."
+            android:text="Connecting WifiPlayer ..."
             android:layout_centerInParent="true"
             android:id="@+id/tvSearchDevicehint"
             android:textColor="@android:color/black"

@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.constants.MessageConstant;
+import com.silveroak.playerclient.constants.SystemConstant;
 import com.silveroak.playerclient.domain.WifiConfig;
 import com.silveroak.playerclient.service.SearchDeviceService;
 import com.silveroak.playerclient.ui.activity.PlayerSearchDeviceActivity;
@@ -60,6 +61,11 @@ public class PlayerConfigureFragment extends PlayerBaseFragment {
         buttonConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                WifiConfig wc = NetworkUtils.getWifiConfig(wifiManager);
+                if(wifiConfig==null || !SystemConstant.DEFAULT_AP.equals(wc.getSsid())){
+                    msg("Please connect 'SilverOak-AP' ... ");
+                    return;
+                }
                 wifiConfig.setSsid(etSSID.getText().toString());
                 wifiConfig.setPassword(etPassword.getText().toString());
                 SearchDeviceService.init(mActivity.getApplication()).configDevice(wifiConfig);

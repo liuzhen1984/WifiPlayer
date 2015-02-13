@@ -87,10 +87,9 @@ public class BusinessServiceHandler extends SimpleChannelInboundHandler<Object> 
                     }
                     strMsg = tempStr;
                 }
-
                 tempStr = "";
                 String r = RouteService.init().tcpRequest(
-                        JsonUtils.string2Object(msg.toString(), TcpRequest.class)
+                        JsonUtils.string2Object(strMsg, TcpRequest.class)
                 );
                 if(r!=null && !"".equalsIgnoreCase(r)){
                     ctx.writeAndFlush(r);
