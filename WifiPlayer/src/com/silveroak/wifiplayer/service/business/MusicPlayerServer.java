@@ -37,6 +37,7 @@ import java.util.*;
  * previous,
  * delete,  name= all清空， 删除新的
  * play  传过来字符串 music id
+ * play_name  传过来字符串 music name
  * add  当前播放的操作 参数是Music 对象的json串
  * volume
  */
@@ -198,6 +199,8 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
                 return next();
             } else if ("previous".equals(type)) {
                 return previous();
+            } else if ("play_name".equals(type)) {
+                playName(params);
             } else if ("play".equals(type)) {
                 play(params);
             } else if ("add".equals(type)) {
@@ -241,7 +244,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
     public Result sync() {
         LogUtils.debug(TAG, "sync");
         Result result = new Result();
-        result.setWhat(IHandlerWhatAndKey.UPDATE_INFO);
+        result.setWhat(IHandlerWhatAndKey.UPDATE_PLAY_INFO);
         PlayerInfo playerInfo = new PlayerInfo();
         CurrentPlayer currentPlayer = getCurrentPlayer();
         playerInfo.setStatus(currentPlayer.getStatus());
@@ -256,7 +259,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
     public Result info(String name) {
         LogUtils.debug(TAG, "info");
         Result result = new Result();
-        result.setWhat(IHandlerWhatAndKey.UPDATE_INFO);
+        result.setWhat(IHandlerWhatAndKey.UPDATE_MUSIC);
         if(name!=null){
             result.setPayload(musicHelper.findByName(name));
         }
@@ -267,15 +270,17 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
     public Result playList(){
         LogUtils.debug(TAG, "play list");
         Result result = new Result();
-        result.setWhat(IHandlerWhatAndKey.UPDATE_INFO);
+        result.setWhat(IHandlerWhatAndKey.UPDATE_LIST);
         CurrentPlayer currentPlayer = getCurrentPlayer();
         if(currentPlayer!=null && currentPlayer.getPlayerList()!=null) {
-            List<Music> musicList = new ArrayList<Music>();
+            List<String> musicList = new ArrayList<String>();
+            int i=0;
             for (String name : currentPlayer.getPlayerList()) {
-                Music music = musicHelper.findByName(name);
-                if (music != null) {
-                    musicList.add(music);
+                if(i>10){
+                    break;
                 }
+                musicList.add(name);
+                i++;
             }
             result.setPayload(musicList);
         }
@@ -436,6 +441,19 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         saveCurrentPlayer(currentPlayer);
         return result;
     }
+    public Result playName(String param){
+        if(param!=null){
+            try {
+                Music music = musicHelper.findByName(param);
+                return playUrl(music);
+            }catch (Exception ex){};
+        }
+        Result result = new Result();
+        result.setWhat(IHandlerWhatAndKey.MESSAGE);
+        result.setResult(ErrorCode.USER_ERROR.PARAMS_FORMAT);
+        return result;
+    }
+
     //id
     public Result play(String param){
         if(param!=null){

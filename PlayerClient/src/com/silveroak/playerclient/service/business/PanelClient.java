@@ -171,19 +171,14 @@ public class PanelClient {
      * @param payload
      */
     public void sendTo(final String dst, final String payload){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (channel != null) {
-                    TcpRequest tcpRequest = new TcpRequest();
-                    tcpRequest.setUrl(dst);
-                    tcpRequest.setPayload(payload);
-                    channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
-                }else {
-                    sendMessage("Connected device error!");
-                }
-            }
-        }).start();
+        if (channel != null) {
+            TcpRequest tcpRequest = new TcpRequest();
+            tcpRequest.setUrl(dst);
+            tcpRequest.setPayload(payload);
+            channel.writeAndFlush(JsonUtils.object2String(tcpRequest));
+        }else {
+            sendMessage("Connected device error!");
+        }
     }
 
 

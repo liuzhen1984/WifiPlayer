@@ -23,9 +23,11 @@ public class PlayerBaseFragment extends Fragment  implements IHandlerWhatAndKey 
     private Handler handler = null;
 
     protected void msg(String msg) {
-        Looper.prepare();
-        Toast.makeText(mActivity, msg, Toast.LENGTH_LONG).show();
-        Looper.loop();
+        try {
+            Looper.prepare();
+            Toast.makeText(mActivity, msg, Toast.LENGTH_LONG).show();
+            Looper.loop();
+        }catch (Exception ex){}
     }
 
     @Override

@@ -10,8 +10,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.constants.SystemConstant;
+import com.silveroak.playerclient.domain.Music;
 import com.silveroak.playerclient.domain.PlayerInfo;
 import com.silveroak.playerclient.service.business.PanelClient;
+import com.silveroak.playerclient.service.business.SearchMusic;
+import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.ui.base.PlayerBaseSearchBarFragment;
 import com.silveroak.playerclient.utils.JsonUtils;
 import com.silveroak.playerclient.utils.LogUtils;
@@ -66,10 +69,31 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
     }
 
     @Override
-    public void handleSearch(String searchTxt) {
-
+    public void handleSearch(final String searchTxt) {
+        if (searchTxt.length() > 0) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    //todo 调用百度获取接口
+                    Music music = SearchMusic.getSearchMusic(mActivity.getApplicationContext()).getMusic(searchTxt);
+                    if (music != null) {
+                        PanelClient.init(mActivity.getApplicationContext()).sendTo("/play/add",JsonUtils.object2String(music));
+                    } else {
+                        LogUtils.debug(TAG, "No find ");
+                        sendToUIMessage("No find " + searchTxt);
+                    }
+                }
+            }).start();
+        }
     }
-
+    private void sendToUIMessage(String msg){
+        Message toUI = new Message();
+        Bundle bundle = new Bundle();
+        bundle.putString(PlayerBaseFragment.MESSAGE_KEY, msg);
+        toUI.setData(bundle);
+        toUI.what = PlayerBaseFragment.MESSAGE;
+        PlayerBaseFragment.sendMessages(toUI);
+    }
     @Override
     protected void handleMsg(Message message) {
         super.handleMsg(message);
@@ -91,7 +115,7 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                     ex.toString();
                 }
                 break;
-            case UPDATE_INFO:
+            case UPDATE_PLAY_INFO:
                 LogUtils.debug(TAG, "UPDATE_INFO");
                 PlayerInfo playerInfo = JsonUtils.string2Object(message.getData().getString(MESSAGE_KEY), PlayerInfo.class);
                 if(playerInfo!=null){

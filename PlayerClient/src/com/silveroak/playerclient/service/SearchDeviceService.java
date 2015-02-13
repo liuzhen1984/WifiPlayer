@@ -66,12 +66,16 @@ public class SearchDeviceService {
         }
     }
     private void StartListen()  {
-        // UDP服务器监听的端口
-        Integer port = SystemConstant.PORT.UDP_SERVER_TO_CLIENT;
-        // 接收的字节大小，客户端发送的数据不能超过这个大小
-        byte[] message = new byte[100];
-        LISTEN_STATUS = 1;
         try {
+            if(wifiManager==null || !wifiManager.isWifiEnabled()){
+                return;
+            }
+            // UDP服务器监听的端口
+            Integer port = SystemConstant.PORT.UDP_SERVER_TO_CLIENT;
+            // 接收的字节大小，客户端发送的数据不能超过这个大小
+            byte[] message = new byte[100];
+            LISTEN_STATUS = 1;
+
             // 建立Socket连接
             datagramSocket = new DatagramSocket(port);
             datagramSocket.setBroadcast(true);
@@ -111,6 +115,7 @@ public class SearchDeviceService {
                                 }
                             };
                             new Thread(runnable).start();
+                            Thread.sleep(2000l);
                             LISTEN_STATUS = 0;
                             LogUtils.debug(TAG,"Connected wifi player server successful");
                             sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
@@ -282,7 +287,7 @@ public class SearchDeviceService {
     }
 
     public void search(){
-        if(!wifiManager.isWifiEnabled()){
+        if(wifiManager==null || !wifiManager.isWifiEnabled()){
             //todo 通知前台没有找到设备
             sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
             return;

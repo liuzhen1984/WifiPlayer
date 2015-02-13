@@ -31,8 +31,12 @@ public class PlayerBaseActivity extends Activity {
     }
 
     protected void msg(String msg) {
-        Looper.prepare();
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-        Looper.loop();
+        try {
+            Looper.prepare();
+            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+            Looper.loop();
+        }catch (Exception ex){
+
+        }
     }
 }
