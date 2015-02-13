@@ -33,14 +33,18 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        searchDevice();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.fragment_search_device, null);
 
         tvSearchDevicehint = (TextView) view.findViewById(R.id.tvSearchDevicehint);
         imgBtnRefreshSearch = (ImageView) view.findViewById(R.id.imgBtnRefreshSearch);
-        searchDevice();
-
         imgBtnRefreshSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

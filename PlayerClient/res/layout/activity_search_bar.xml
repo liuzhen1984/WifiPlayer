@@ -10,14 +10,14 @@
                   android:orientation="horizontal">
         <SearchView android:id="@+id/searchView"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100px"
                     android:layout_weight="1"
                     android:queryHint="song name"
                     android:background="@android:color/darker_gray"/>
         <Button android:id="@+id/imgBtnSearch"
                      android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Play"
+                     android:layout_height="100px"
+                     android:text="PLAY"
                      android:background="@android:color/darker_gray"/>
     </LinearLayout>
     <FrameLayout android:id="@+id/contentContainer"

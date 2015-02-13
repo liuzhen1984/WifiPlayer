@@ -177,7 +177,7 @@ public class PanelClient {
                 if (channel != null && !channel.isOpen()) {
                     start(systemInfo);
                 }
-                if (channel != null) {
+                if (channel != null && channel.isOpen()) {
                     TcpRequest tcpRequest = new TcpRequest();
                     tcpRequest.setUrl(dst);
                     tcpRequest.setPayload(payload);

@@ -51,7 +51,6 @@ public class SearchMusic {
         Matcher matcher = pattern.matcher(url);
         if(matcher.find()) {
             String purl = matcher.group(1);
-            LogUtils.info(TAG,"music url"+purl);
             return purl;
         } else{
             return url;
