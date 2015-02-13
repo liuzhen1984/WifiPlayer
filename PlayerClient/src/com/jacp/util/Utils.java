@@ -19,7 +19,7 @@ public class Utils
      * @param url 图片的url
      * @param listener 回调监听器
      */
-    public void loadImage(final String url, final OnLoadImageListener listener)
+    public static void loadImage(final String url, final OnLoadImageListener listener)
     {
         if (null == url || null == listener)
         {
@@ -35,7 +35,7 @@ public class Utils
         };
 
         // 之前根据url写入本地缓存的路径
-        String path = "";
+        String path = "covers/" + url.substring(url.lastIndexOf("/"));
         File file = new File(path);
         if (file.exists())
         {
@@ -80,7 +80,7 @@ public class Utils
      * @param handler
      * @param bm
      */
-    private void sendMessage(Handler handler, Bitmap bm)
+    private static void sendMessage(Handler handler, Bitmap bm)
     {
         Message msg = handler.obtainMessage();
         msg.obj = bm;
