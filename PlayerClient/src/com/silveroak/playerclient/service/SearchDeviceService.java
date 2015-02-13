@@ -233,6 +233,7 @@ public class SearchDeviceService {
                     }
                     WifiConfig currentWc = NetworkUtils.getWifiConfig(wifiManager);
                     if(currentWc!=null && currentWc.getSsid()!=null && !currentWc.getSsid().contains(SystemConstant.DEFAULT_AP)){
+                        sendMessage(PlayerBaseFragment.CONFIG_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
                         return;
                     }
                     ConnectivityManager conMan = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
