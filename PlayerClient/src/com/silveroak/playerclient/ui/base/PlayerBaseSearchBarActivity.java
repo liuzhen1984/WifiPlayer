@@ -53,11 +53,9 @@ public class PlayerBaseSearchBarActivity extends PlayerBaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (PanelClient.getClient() == null) {
 
-            msg("Panel client to wifi player server");
             return false;
         }
         if (PanelClient.getClient().getChannel() == null || !PanelClient.getClient().getChannel().isOpen()) {
-            msg("Panel client to wifi player server");
             return false;
         }
         TcpRequest tcpRequest = new TcpRequest();

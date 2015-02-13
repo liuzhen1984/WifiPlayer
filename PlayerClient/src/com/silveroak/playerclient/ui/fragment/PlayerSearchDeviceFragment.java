@@ -81,8 +81,8 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
                     if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd())) {
                         intent.setClass(mActivity, PlayerDeviceMusicListActivity.class);
                         SearchDeviceService.init(mActivity.getApplicationContext()).closeListen();
-                        startActivityForResult(intent, 0);
-                        mActivity.finish();
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
                         msg("Connect device successful");
                     } else if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.DO_CONFIG_WIFI.getCmd())) {
                         msg("正在配置稍后重试");

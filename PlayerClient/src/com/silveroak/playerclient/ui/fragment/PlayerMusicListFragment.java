@@ -38,6 +38,14 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        if(panelClient!=null){
+            panelClient.sendTo("/play/list", "");
+        }
+    }
+
+    @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_music_list, null);
@@ -48,18 +56,9 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
             intent.setClass(mActivity, PlayerSearchDeviceActivity.class);
             startActivity(intent);
         }
-        if(panelClient!=null){
-            panelClient.sendTo("/play/list", "");
-        }
 
         musicListView = (ListView) v.findViewById(R.id.music_list_view);
-        MUSIC_LIST = new ArrayList<String>();
-        MUSIC_LIST.add("music 1");
-        MUSIC_LIST.add("music 2");
-        MUSIC_LIST.add("music 3");
-        MUSIC_LIST.add("music 4");
-        MusicListAdapter musicListAdapter = new MusicListAdapter(MUSIC_LIST);
-        musicListView.setAdapter(musicListAdapter);
+
         musicListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -122,15 +121,12 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
 //                }
                 break;
             case UPDATE_LIST:
-                LogUtils.debug(TAG, "UPDATE_LIST");
+                LogUtils.info(TAG, "UPDATE_LIST");
                 MUSIC_LIST = JsonUtils.string2Object(message.getData().getString(MESSAGE_KEY), ArrayList.class);
                 if(MUSIC_LIST!=null){
                     MusicListAdapter musicListAdapter = new MusicListAdapter(MUSIC_LIST);
                     musicListView.setAdapter(musicListAdapter);
-
                 }
-
-
                 break;
             case MESSAGE: // 消息显示
                 LogUtils.debug(TAG, message.getData().getString(MESSAGE_KEY));

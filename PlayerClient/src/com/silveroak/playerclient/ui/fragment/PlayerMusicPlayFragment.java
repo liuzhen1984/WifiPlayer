@@ -130,7 +130,6 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                 LogUtils.debug(TAG, "UPDATE_INFO");
                 PlayerInfo playerInfo = JsonUtils.string2Object(message.getData().getString(MESSAGE_KEY), PlayerInfo.class);
                 if(playerInfo!=null){
-                    musicInfo.setText(playerInfo.getMusic().getSongName()+"  Artiste:"+playerInfo.getMusic().getArtistName());
                     PLAYER_STATUS = playerInfo.getStatus();
                     if(playerInfo.getStatus().equals(SystemConstant.PLAYER_STATUS.PLAYER)){
                         //todo 把图片改为暂停的
@@ -139,6 +138,7 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                         //todo 把图片改为播放的
                         playButton.setImageDrawable(getResources().getDrawable(R.drawable.play_song));
                     }
+                    musicInfo.setText(playerInfo.getMusic().getSongName()+"  Artiste:"+playerInfo.getMusic().getArtistName());
                 }
                 break;
             case MESSAGE: // 消息显示
@@ -188,8 +188,6 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                         PanelClient.getClient().sendTo("/play/paused",null);
                         PLAYER_STATUS = SystemConstant.PLAYER_STATUS.PAUSED;
                         playButton.setImageDrawable(getResources().getDrawable(R.drawable.play_song));
-
-
                     }
                     break;
                 case R.id.imgBtnNextSong:
@@ -197,6 +195,8 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                     break;
                 case R.id.imgBtnPreviousSong:
                     PanelClient.getClient().sendTo("/play/previous",null);
+                    break;
+                default:
                     break;
             }
         }

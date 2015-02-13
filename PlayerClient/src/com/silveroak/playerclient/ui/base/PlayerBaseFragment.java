@@ -3,7 +3,6 @@ package com.silveroak.playerclient.ui.base;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,18 +22,11 @@ public class PlayerBaseFragment extends Fragment  implements IHandlerWhatAndKey 
     private Handler handler = null;
 
     protected void msg(String msg) {
-        try {
-            Looper.prepare();
-            Toast.makeText(mActivity, msg, Toast.LENGTH_LONG).show();
-            Looper.loop();
-        }catch (Exception ex){}
+        Toast.makeText(mActivity, msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (isHandlerNeeded) {
-            initHandler();
-        }
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -48,19 +40,33 @@ public class PlayerBaseFragment extends Fragment  implements IHandlerWhatAndKey 
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onResume() {
+        super.onResume();
+        if (isHandlerNeeded) {
+            initHandler();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
         if (handler != null) {
             handlers.remove(handler);
             handler = null;
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     private static ArrayList<Handler> handlers = new ArrayList<Handler>();
 
     public static void sendMessages(Message msg) {
         for (Handler h : handlers) {
-            h.handleMessage(msg);
+//            h.handleMessage(msg);
+            h.sendMessage(msg);
         }
     }
 

@@ -21,6 +21,9 @@ public class BusinessServiceHandler extends SimpleChannelInboundHandler<Object> 
 
     private static final String TAG =
             BusinessServiceHandler.class.getSimpleName();
+
+    private String tempStr="";
+
     @Override
     public void channelActive(ChannelHandlerContext ctx){
         LogUtils.info(TAG, ctx.channel().remoteAddress().toString());
@@ -52,6 +55,40 @@ public class BusinessServiceHandler extends SimpleChannelInboundHandler<Object> 
             if(MessageConstant.HB_STR.equalsIgnoreCase(msg.toString())){
                 ctx.writeAndFlush(MessageConstant.HB_STR);
             }else {
+                String strMsg = msg.toString();
+                if(strMsg.startsWith("{") && strMsg.endsWith("}")){
+                    tempStr = strMsg;
+                }else{
+                    if(!strMsg.startsWith("{")){
+                        if(tempStr.startsWith("{")){
+                            tempStr = tempStr+strMsg;
+                            if(!strMsg.endsWith("}")){
+                                return;
+                            }
+                        }else{
+                            tempStr="";
+                        }
+                    }else{
+                        //结束不等于} ，但是开始是{表示没有结束
+                        tempStr = tempStr+strMsg;
+                        return;
+                    }
+                }
+                //表示tempStr有缓存
+                if(!"".equals(tempStr)){
+                    strMsg = tempStr;
+                }
+                //否则 strMsg 没有开头也没有结尾
+
+                if(!(strMsg.startsWith("{") && strMsg.endsWith("}"))) {
+                    tempStr = tempStr + msg.toString();
+                    if (!tempStr.endsWith("}")) {
+                        return;
+                    }
+                    strMsg = tempStr;
+                }
+
+                tempStr = "";
                 String r = RouteService.init().tcpRequest(
                         JsonUtils.string2Object(msg.toString(), TcpRequest.class)
                 );

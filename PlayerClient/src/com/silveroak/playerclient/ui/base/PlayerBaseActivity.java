@@ -2,7 +2,6 @@ package com.silveroak.playerclient.ui.base;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Looper;
 import android.widget.Toast;
 
 /**
@@ -19,7 +18,6 @@ public class PlayerBaseActivity extends Activity {
     }
 
     protected void initTitle() {
-
     }
 
     protected void initContentView(){
@@ -30,13 +28,5 @@ public class PlayerBaseActivity extends Activity {
 
     }
 
-    protected void msg(String msg) {
-        try {
-            Looper.prepare();
-            Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-            Looper.loop();
-        }catch (Exception ex){
 
-        }
-    }
 }
