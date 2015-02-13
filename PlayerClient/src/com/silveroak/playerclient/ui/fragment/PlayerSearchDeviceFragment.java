@@ -1,13 +1,13 @@
 package com.silveroak.playerclient.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.constants.MessageConstant;
@@ -24,7 +24,9 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
     private static final String TAG = PlayerSearchDeviceFragment.class.getSimpleName();
 
     private TextView tvSearchDevicehint;
-    private ImageButton imgBtnRefreshSearch;
+    private ImageView imgBtnRefreshSearch;
+
+    private boolean isSearching;
 
     public static PlayerBaseFragment newInstance() {
         return new PlayerSearchDeviceFragment();
@@ -36,26 +38,25 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
         View view = inflater.inflate(R.layout.fragment_search_device, null);
 
         tvSearchDevicehint = (TextView) view.findViewById(R.id.tvSearchDevicehint);
-        imgBtnRefreshSearch = (ImageButton) view.findViewById(R.id.imgBtnRefreshSearch);
-        imgBtnRefreshSearch.setBackgroundResource(R.drawable.refresh);
-        SearchDeviceService.init(mActivity.getApplicationContext()).search();
+        imgBtnRefreshSearch = (ImageView) view.findViewById(R.id.imgBtnRefreshSearch);
+        searchDevice();
 
-        imgBtnRefreshSearch.setOnTouchListener(new View.OnTouchListener() {
+        imgBtnRefreshSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    v.setBackgroundResource(R.drawable.refresh_push);
-                    //TODO 调用查找设备的方法
-                    SearchDeviceService.init(mActivity.getApplicationContext()).search();
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-//                    SearchDeviceService.init(getApplicationContext()).closeListen();
-                    v.setBackgroundResource(R.drawable.refresh);
-                }
-                return false;
+            public void onClick(View view) {
+                searchDevice();
             }
         });
 
         return view;
+    }
+
+    private void searchDevice() {
+        if (!isSearching) {
+            isSearching = true;
+            ((AnimationDrawable) imgBtnRefreshSearch.getDrawable()).start();
+            SearchDeviceService.init(mActivity.getApplicationContext()).search();
+        }
     }
 
     @Override
@@ -90,6 +91,7 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
                     } else {
                         //todo 没有找到设备，及热点，停留在次页面
                         msg("No find device");
+                        ((AnimationDrawable)imgBtnRefreshSearch.getDrawable()).stop();
                     }
                 break;
             default:
