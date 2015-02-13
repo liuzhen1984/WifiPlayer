@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class Utils
      */
     public static void loadImage(final String url, final OnLoadImageListener listener)
     {
-        if (null == url || null == listener)
+        if (StringUtils.isEmpty(url) || null == listener)
         {
             return;
         }
@@ -35,6 +36,7 @@ public class Utils
         };
 
         // 之前根据url写入本地缓存的路径
+
         String path = "covers/" + url.substring(url.lastIndexOf("/"));
         File file = new File(path);
         if (file.exists())

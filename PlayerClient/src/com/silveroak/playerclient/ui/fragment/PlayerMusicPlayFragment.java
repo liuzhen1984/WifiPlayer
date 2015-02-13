@@ -78,6 +78,12 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mMusicCover.setImageDrawable(getResources().getDrawable(R.drawable.no_music));
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         isSync=false;
@@ -93,7 +99,8 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                     Music music = SearchMusic.getSearchMusic(mActivity.getApplicationContext()).getMusic(searchTxt);
                     if (music != null) {
                         if(panelClient!=null){
-                           panelClient.sendTo("/play/add", JsonUtils.object2String(music));
+                            mMusicCover.setImageDrawable(getResources().getDrawable(R.drawable.no_music));
+                            panelClient.sendTo("/play/add", JsonUtils.object2String(music));
                         }
                     } else {
                         LogUtils.debug(TAG, "No find ");
@@ -135,17 +142,20 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
             case UPDATE_PLAY_INFO:
                 LogUtils.debug(TAG, "UPDATE_INFO");
                 PlayerInfo playerInfo = JsonUtils.string2Object(message.getData().getString(MESSAGE_KEY), PlayerInfo.class);
-                Utils.loadImage(playerInfo.getMusic().getSongPicBig(), new Utils.OnLoadImageListener() {
-                    @Override
-                    public void onLoadImage(Bitmap bm, String imageUrl) {
-                        if (bm == null) {
 
-                        } else {
-                            mMusicCover.setImageBitmap(bm);
-                        }
-                    }
-                });
                 if(playerInfo!=null){
+
+                     Utils.loadImage(playerInfo.getMusic().getSongPicBig(), new Utils.OnLoadImageListener() {
+                         @Override
+                         public void onLoadImage(Bitmap bm, String imageUrl) {
+                             if (bm == null) {
+
+                             } else {
+                                 mMusicCover.setImageBitmap(bm);
+                             }
+                         }
+                     });
+
                     PLAYER_STATUS = playerInfo.getStatus();
                     if(playerInfo.getStatus().equals(SystemConstant.PLAYER_STATUS.PLAYER)){
                         //todo 把图片改为暂停的

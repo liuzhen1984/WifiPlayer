@@ -12,6 +12,8 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zliu on 15/2/9.
@@ -44,6 +46,18 @@ public class SearchMusic {
         return null;
     }
 
+    private String parserUrl(String url){
+        Pattern pattern = Pattern.compile("item/(http://.*jpg).jpg$");
+        Matcher matcher = pattern.matcher(url);
+        if(matcher.find()) {
+            String purl = matcher.group(1);
+            LogUtils.info(TAG,"music url"+purl);
+            return purl;
+        } else{
+            return url;
+        }
+    }
+
     public Music get(String id){
         if(id==null){
             return null;
@@ -60,9 +74,11 @@ public class SearchMusic {
                     music.setSongName(String.valueOf(value.get("songName")));
                     music.setArtistName(String.valueOf(value.get("artistName")));
                     music.setAlbumName(String.valueOf(value.get("albumName")));
-                    music.setSongPicSmall(String.valueOf(value.get("songPicSmall")));
-                    music.setSongPicBig(String.valueOf(value.get("songPicBig")));
-                    music.setSongPicRadio(String.valueOf(value.get("songPicRadio")));
+                    music.setSongPicSmall(parserUrl(String.valueOf(value.get("songPicSmall"))));
+                    music.setSongPicBig(parserUrl(String.valueOf(value.get("songPicBig"))));
+                    music.setSongPicRadio(parserUrl(String.valueOf(value.get("songPicRadio"))));
+
+
                     music.setLrcLink(String.valueOf(value.get("lrcLink")));
                     music.setSongLink(String.valueOf(value.get("songLink")));
                     music.setFormat(String.valueOf(value.get("format")));
