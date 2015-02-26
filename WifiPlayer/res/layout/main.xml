@@ -74,11 +74,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/music_progress" android:indeterminate="false"/>
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/version_tv" android:layout_gravity="center_horizontal"/>
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>

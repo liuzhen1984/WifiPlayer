@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
     private static final int FAILURE = -1;
 
     private TextView resultView;
-    private TextView versionView;
+    private TextView welcomeView;
     private ProgressBar progressBar;
     private Button startBtn;
     private Button pausedBtn;
@@ -66,7 +66,8 @@ public class MainActivity extends Activity {
         showIp.append(SysTools.getLocalIP(getApplicationContext()) + ":" + SystemConstant.PORT.TCP_SERVER_PORT);
 
         resultView = (TextView) findViewById(R.id.resultView);
-        versionView = (TextView) findViewById(R.id.version_tv);
+        welcomeView = (TextView) findViewById(R.id.welcome);
+        welcomeView.append(SysTools.getVersion(getApplicationContext().getPackageManager()));
         startBtn = (Button) findViewById(R.id.btn_online_start);
         pausedBtn = (Button) findViewById(R.id.btn_online_paused);
         stopBtn = (Button) findViewById(R.id.btn_online_stop);
@@ -74,7 +75,6 @@ public class MainActivity extends Activity {
         pBtn = (Button) findViewById(R.id.btn_online_p);
         nBtn = (Button) findViewById(R.id.btn_online_n);
 
-        versionView.setText("Version: "+SysTools.getVersion(getPackageManager()));
 
         ButtonClickListener listener = new ButtonClickListener();
         startBtn.setOnClickListener(listener);
