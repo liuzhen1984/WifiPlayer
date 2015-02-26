@@ -141,7 +141,7 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
             int currentProgress = seekBar.getMax()
                     * mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration();
 
-            if (currentProgress >= 100) {
+            if (currentProgress >= 99) {
                 new Runnable() {
                     @Override
                     public void run() {
