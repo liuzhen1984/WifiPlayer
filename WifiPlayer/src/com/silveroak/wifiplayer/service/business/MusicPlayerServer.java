@@ -414,7 +414,11 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         for (int i = 0; i < musicList.size(); i++) {
             if (musicList.get(i).equalsIgnoreCase(currentPlayer.getPlayerMusic())) {
                 if (i - 1 < 0) {
-                    return result;
+                    if (currentPlayer.getType().equals(SystemConstant.PLAYER_TYPE.ALL)) {
+                        return playUrl(musicHelper.findByName(musicList.get(musicList.size()-1)));
+                    } else {
+                        return result;
+                    }
                 }
                 return playUrl(musicHelper.findByName(musicList.get(i - 1)));
             }

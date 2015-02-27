@@ -18,8 +18,7 @@ public class SystemConstant {
     public enum PLAYER_TYPE{
         SINGLE(1),
         RANDOM(2),
-        ORDER(3),
-        ALL(4);
+        ALL(3);
         private int type;
         PLAYER_TYPE(int type){
             this.type = type;

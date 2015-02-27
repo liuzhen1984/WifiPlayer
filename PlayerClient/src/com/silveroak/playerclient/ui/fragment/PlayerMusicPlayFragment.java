@@ -51,7 +51,6 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
     private SystemConstant.PLAYER_TYPE[] TYPE_LIST={
             SystemConstant.PLAYER_TYPE.SINGLE,
             SystemConstant.PLAYER_TYPE.RANDOM,
-            SystemConstant.PLAYER_TYPE.ORDER,
             SystemConstant.PLAYER_TYPE.ALL,
     };
 
@@ -66,7 +65,7 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
         processSeekBar = (SeekBar) v.findViewById(R.id.sbSongProcess);
         musicInfo = (TextView) v.findViewById(R.id.tvSongName);
         mMusicCover = (ImageView) v.findViewById(R.id.imageCover);
-        nextButton = (ImageButton) v.findViewById(R.id.imgBtnPreviousSong);
+        nextButton = (ImageButton) v.findViewById(R.id.imgBtnNextSong);
         previousButton = (ImageButton) v.findViewById(R.id.imgBtnPreviousSong);
         playButton = (ImageButton) v.findViewById(R.id.imgBtnPlayPause);
         playTypeButton = (ImageButton) v.findViewById(R.id.imgBtnPlayType);
@@ -179,10 +178,7 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
 
                     if(playerInfo.getType()!=null){
                         //todo 获取循环方式修改图片
-                        if(playerInfo.getType().equals(SystemConstant.PLAYER_TYPE.ORDER)){
-                            playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.all_play));
-                            PLAY_TYPE_STATUS = 2;
-                        }else if(playerInfo.getType().equals(SystemConstant.PLAYER_TYPE.RANDOM)){
+                        if(playerInfo.getType().equals(SystemConstant.PLAYER_TYPE.RANDOM)){
                             playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.rang_play));
                             PLAY_TYPE_STATUS = 1;
                         }else if(playerInfo.getType().equals(SystemConstant.PLAYER_TYPE.SINGLE)){
@@ -190,7 +186,7 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                             PLAY_TYPE_STATUS = 0;
                         }else{
                             playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.all_play));
-                            PLAY_TYPE_STATUS = 3;
+                            PLAY_TYPE_STATUS = 2;
                         }
                     }
                 }
@@ -265,9 +261,7 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                         playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.one_play));
                     }else if(PLAY_TYPE_STATUS == 1){
                         playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.rang_play));
-                    }  else if(PLAY_TYPE_STATUS == 2){
-                        playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.all_play));
-                    } else{
+                    }  else{
                         playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.all_play));
                     }
                     PanelClient.getClient().sendTo("/play/type",String.valueOf(PLAY_TYPE_STATUS));
