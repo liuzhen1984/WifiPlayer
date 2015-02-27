@@ -6,12 +6,10 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import com.silveroak.playerclient.R;
 import com.silveroak.playerclient.domain.Music;
+import com.silveroak.playerclient.domain.PlayerInfo;
 import com.silveroak.playerclient.service.business.PanelClient;
 import com.silveroak.playerclient.service.business.SearchMusic;
 import com.silveroak.playerclient.ui.activity.PlayerDeviceMusicPlayActivity;
@@ -32,6 +30,8 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
     private ListView musicListView;
 
     private PanelClient panelClient;
+    private ImageButton playInfoButton;
+    private TextView playInfoView;
 
     public static PlayerMusicListFragment newInstance() {
         return new PlayerMusicListFragment();
@@ -50,6 +50,18 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_music_list, null);
 
+        playInfoButton = (ImageButton) v.findViewById(R.id.into_player_bt);
+        playInfoView = (TextView) v.findViewById(R.id.player_info_tv);
+        View.OnClickListener von = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setClass(mActivity, PlayerDeviceMusicPlayActivity.class);
+                startActivity(intent);
+            }
+        };
+        playInfoView.setOnClickListener(von);
+        playInfoButton.setOnClickListener(von);
         panelClient = PanelClient.getClient();
         if(panelClient==null){
             Intent intent = new Intent();
@@ -137,6 +149,13 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
             case MESSAGE: // 消息显示
                 LogUtils.debug(TAG, message.getData().getString(MESSAGE_KEY));
                 msg(message.getData().getString(MESSAGE_KEY));
+                break;
+            case UPDATE_PLAY_INFO:
+                PlayerInfo playerInfo = JsonUtils.string2Object(message.getData().getString(MESSAGE_KEY), PlayerInfo.class);
+                if(playerInfo!=null && playerInfo.getMusic()!=null){
+                    playInfoView.setText(playerInfo.getMusic().getArtistName()+": "+playerInfo.getMusic().getSongName());
+
+                }
                 break;
             default:
                 break;
