@@ -81,7 +81,7 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    //todo 调用百度获取接口
+                    // 调用百度获取接口
                     Music music = SearchMusic.getSearchMusic(mActivity.getApplicationContext()).getMusic(searchTxt);
                     if (music != null) {
                         if(panelClient!=null) {

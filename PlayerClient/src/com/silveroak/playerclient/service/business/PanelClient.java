@@ -85,13 +85,10 @@ public class PanelClient {
 		if(channelFuture !=null && channelFuture.channel().isOpen()){
             try{
                 channelFuture.channel().close();
-                channelFuture=null;
+            }catch (Exception ex){}
 
-            }catch (Exception ex){}
-            try{
-                channel.close();
-                channel=null;
-            }catch (Exception ex){}
+            channelFuture=null;
+            channel=null;
 		}
 
 		// Configure the client.
@@ -150,6 +147,7 @@ public class PanelClient {
 			LogUtils.error(PanelClient.class.getSimpleName(),ex);
 		} finally {
 			channelFuture = null;
+            channel = null;
 		}
 	}
 

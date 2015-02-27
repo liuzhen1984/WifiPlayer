@@ -45,7 +45,17 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
     private ImageButton nextButton;
     private ImageButton previousButton;
     private ImageButton playButton;
+    private ImageButton playTypeButton;
     private PanelClient panelClient;
+
+    private SystemConstant.PLAYER_TYPE[] TYPE_LIST={
+            SystemConstant.PLAYER_TYPE.SINGLE,
+            SystemConstant.PLAYER_TYPE.RANDOM,
+            SystemConstant.PLAYER_TYPE.ORDER,
+            SystemConstant.PLAYER_TYPE.ALL,
+    };
+
+    private int PLAY_TYPE_STATUS = 0;
 
     private SystemConstant.PLAYER_STATUS PLAYER_STATUS= SystemConstant.PLAYER_STATUS.PAUSED;
 
@@ -59,11 +69,13 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
         nextButton = (ImageButton) v.findViewById(R.id.imgBtnPreviousSong);
         previousButton = (ImageButton) v.findViewById(R.id.imgBtnPreviousSong);
         playButton = (ImageButton) v.findViewById(R.id.imgBtnPlayPause);
+        playTypeButton = (ImageButton) v.findViewById(R.id.imgBtnPlayType);
 
         ButtonClickListener buttonClickListener = new ButtonClickListener();
         nextButton.setOnClickListener(buttonClickListener);
         previousButton.setOnClickListener(buttonClickListener);
         playButton.setOnClickListener(buttonClickListener);
+        playTypeButton.setOnClickListener(buttonClickListener);
 
         musicInfo.setText("No music");
         processSeekBar.setOnSeekBarChangeListener(new SeekBarChangeEvent());
@@ -95,11 +107,10 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    //todo 调用百度获取接口
+                    // 调用百度获取接口
                     Music music = SearchMusic.getSearchMusic(mActivity.getApplicationContext()).getMusic(searchTxt);
                     if (music != null) {
                         if(panelClient!=null){
-                            mMusicCover.setImageDrawable(getResources().getDrawable(R.drawable.no_music));
                             panelClient.sendTo("/play/add", JsonUtils.object2String(music));
                         }
                     } else {
@@ -158,13 +169,30 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
 
                     PLAYER_STATUS = playerInfo.getStatus();
                     if(playerInfo.getStatus().equals(SystemConstant.PLAYER_STATUS.PLAYER)){
-                        //todo 把图片改为暂停的
+                        // 把图片改为暂停的
                         playButton.setImageDrawable(getResources().getDrawable(R.drawable.pause_song));
                     } else{
-                        //todo 把图片改为播放的
+                        // 把图片改为播放的
                         playButton.setImageDrawable(getResources().getDrawable(R.drawable.play_song));
                     }
                     musicInfo.setText(playerInfo.getMusic().getSongName()+"  Artiste:"+playerInfo.getMusic().getArtistName());
+
+                    if(playerInfo.getType()!=null){
+                        //todo 获取循环方式修改图片
+                        if(playerInfo.getType().equals(SystemConstant.PLAYER_TYPE.ORDER)){
+                            playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.all_play));
+                            PLAY_TYPE_STATUS = 2;
+                        }else if(playerInfo.getType().equals(SystemConstant.PLAYER_TYPE.RANDOM)){
+                            playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.rang_play));
+                            PLAY_TYPE_STATUS = 1;
+                        }else if(playerInfo.getType().equals(SystemConstant.PLAYER_TYPE.SINGLE)){
+                            playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.one_play));
+                            PLAY_TYPE_STATUS = 0;
+                        }else{
+                            playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.all_play));
+                            PLAY_TYPE_STATUS = 3;
+                        }
+                    }
                 }
                 break;
             case CONNECT_DEVICE_ERROR:
@@ -226,6 +254,23 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                     break;
                 case R.id.imgBtnPreviousSong:
                     PanelClient.getClient().sendTo("/play/previous",null);
+                    break;
+                case R.id.imgBtnPlayType:
+                    //todo 修改循环播放类型
+                    PLAY_TYPE_STATUS = PLAY_TYPE_STATUS+1;
+                    if(PLAY_TYPE_STATUS>= SystemConstant.PLAYER_TYPE.values().length){
+                        PLAY_TYPE_STATUS = 0;
+                    }
+                    if(PLAY_TYPE_STATUS==0){
+                        playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.one_play));
+                    }else if(PLAY_TYPE_STATUS == 1){
+                        playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.rang_play));
+                    }  else if(PLAY_TYPE_STATUS == 2){
+                        playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.all_play));
+                    } else{
+                        playTypeButton.setImageDrawable(getResources().getDrawable(R.drawable.all_play));
+                    }
+                    PanelClient.getClient().sendTo("/play/type",String.valueOf(PLAY_TYPE_STATUS));
                     break;
                 default:
                     break;

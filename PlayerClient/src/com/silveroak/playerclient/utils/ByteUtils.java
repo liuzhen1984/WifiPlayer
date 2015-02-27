@@ -276,7 +276,6 @@ public class ByteUtils {
             bo.close();
             oo.close();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -296,8 +295,6 @@ public class ByteUtils {
             oi.close();
             return (T)obj;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            //e.printStackTrace();
             LogUtils.warn(TAG,e.toString());
         }
         return null;

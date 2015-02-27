@@ -23,13 +23,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/llControl"/>
-
     <LinearLayout
         android:id="@+id/llControl"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center_horizontal"
+        android:gravity="center_vertical|center_horizontal"
         android:orientation="horizontal"
         android:paddingTop="20dp"
         android:paddingLeft="50dp"
@@ -55,5 +54,12 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:src="@drawable/next_song"/>
+
+        <ImageButton
+                android:id="@+id/imgBtnPlayType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:src="@drawable/one_play"/>
     </LinearLayout>
 </RelativeLayout>

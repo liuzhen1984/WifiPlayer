@@ -39,6 +39,7 @@ import java.util.*;
  * play  传过来字符串 music id
  * play_name  传过来字符串 music name
  * add  当前播放的操作 参数是Music 对象的json串
+ * type  循环播放的类型，0，1，2，3 分别表示播放模式
  * volume
  */
 public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener {
@@ -209,6 +210,8 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
                 return delete(params);
             } else if ("volume".equals(type)) {
                 return volume(params);
+            } else if ("type".equals(type)) {
+                return playMode(params);
             } else {
                 result.setResult(ErrorCode.USER_ERROR.URL_INVALID);
             }
@@ -218,6 +221,8 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
         }
         return result;
     }
+
+
 
     public Result volume(String params) {
         LogUtils.debug(TAG, "volume");
@@ -479,6 +484,32 @@ public class MusicPlayerServer implements IProcessService, MediaPlayer.OnBufferi
             result.setResult(ErrorCode.USER_ERROR.PARAMS_FORMAT);
         }
         return playUrl(music);
+    }
+
+    public Result playMode(String params){
+        LogUtils.debug(TAG, "playMode");
+        Result result = new Result();
+        CurrentPlayer currentPlayer = getCurrentPlayer();
+        Integer type = 0;
+        try {
+            type = Integer.valueOf(params);
+        }catch (Exception ex){
+            result.setWhat(IHandlerWhatAndKey.MESSAGE);
+            result.setResult(ErrorCode.USER_ERROR.PARAMS_FORMAT);
+            return result;
+        }
+        SystemConstant.PLAYER_TYPE player_type = SystemConstant.PLAYER_TYPE.values()[type];
+        if(player_type==null){
+            result.setWhat(IHandlerWhatAndKey.MESSAGE);
+            result.setResult(ErrorCode.USER_ERROR.PARAMS_FORMAT);
+            return result;
+        }
+        result.setWhat(IHandlerWhatAndKey.UPDATE_INFO);
+        currentPlayer.setType(player_type);
+        saveCurrentPlayer(currentPlayer);
+        result.setPayload(currentPlayer);
+        result.setResult(ErrorCode.SUCCESS);
+        return result;
     }
 
     /**

@@ -242,7 +242,7 @@ public class SearchDeviceService {
                         NetworkInfo.State wifi = conMan.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState();
                         if (wifi == NetworkInfo.State.CONNECTED) {
                             config(wifiConfig);
-                            //todo 通知前台正在配置需要等待10秒
+                            // 通知前台正在配置需要等待10秒
                             Thread.sleep(10000l);
                             return;
                         } else {
@@ -289,7 +289,7 @@ public class SearchDeviceService {
 
     public void search(){
         if(wifiManager==null || !wifiManager.isWifiEnabled()){
-            //todo 通知前台没有找到设备
+            // 通知前台没有找到设备
             sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
             return;
         }
@@ -300,7 +300,7 @@ public class SearchDeviceService {
                 int count = 0;
                 WifiConfig wifiConfig = NetworkUtils.getWifiConfig(wifiManager);
                 if(wifiConfig!=null && wifiConfig.getSsid()!=null && wifiConfig.getSsid().contains(SystemConstant.DEFAULT_AP)){
-                    //todo 通知前台连接AP成功，进入配置页面
+                    // 通知前台连接AP成功，进入配置页面
                     sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
                     return;
                 }
@@ -324,17 +324,17 @@ public class SearchDeviceService {
                 }
                 if(LISTEN_STATUS==0){
                     //配置完成
-                    //todo 通知前台连接成功
+                    // 通知前台连接成功
                     sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd());
                     return;
                 }
                 if (searchDeviceAP()) {
-                    //todo 通知前台连接AP成功，进入配置页面
+                    // 通知前台连接AP成功，进入配置页面
                     sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd());
                     return;
 
                 } else {
-                    //todo 通知前台没有找到设备
+                    // 通知前台没有找到设备
                     sendMessage(PlayerBaseFragment.SEARCH_DEVICE_MESSAGE,MessageConstant.SEARCH_DEVICE_CMD.NO_FIND_DEVCIE.getCmd());
                     return;
                 }

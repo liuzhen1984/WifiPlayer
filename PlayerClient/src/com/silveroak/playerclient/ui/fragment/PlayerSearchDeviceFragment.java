@@ -75,7 +75,7 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
                     return;
                 }
                 Intent intent = new Intent();
-                //todo 进入配置页面
+                // 进入配置页面
                 if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.IN_CONFIG_PAGE.getCmd())) {
                     intent.setClass(mActivity, PlayerConfigureActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -83,7 +83,7 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
                     mActivity.finish();
                     msg("Config device ...");
                 } else
-                    //todo 进入列表页面
+                    // 进入列表页面
                     if (cmd.equals(MessageConstant.SEARCH_DEVICE_CMD.COMPLETE.getCmd())) {
                         intent.setClass(mActivity, PlayerDeviceMusicListActivity.class);
                         SearchDeviceService.init(mActivity.getApplicationContext()).closeListen();
@@ -97,7 +97,7 @@ public class PlayerSearchDeviceFragment extends PlayerBaseFragment {
                         isSearching = false;
                         searchDevice();
                     } else {
-                        //todo 没有找到设备，及热点，停留在次页面
+                        // 没有找到设备，及热点，停留在次页面
                         msg("No find device");
                         isSearching = false;
                         ((AnimationDrawable)imgBtnRefreshSearch.getDrawable()).stop();

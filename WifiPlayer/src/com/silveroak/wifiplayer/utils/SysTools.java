@@ -35,7 +35,7 @@ public class SysTools {
             if(TextUtils.isEmpty(packageInfo.versionName)){
                 return "-.-";
             }
-            return packageInfo.versionName+"."+packageInfo.versionCode;
+            return packageInfo.versionCode+"."+packageInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

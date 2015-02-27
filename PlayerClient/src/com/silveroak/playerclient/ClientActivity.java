@@ -223,7 +223,7 @@ public class ClientActivity extends Activity implements IHandlerWhatAndKey {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                //todo 调用百度获取接口
+                                // 调用百度获取接口
                                 Music music = SearchMusic.getSearchMusic(getApplicationContext()).getMusic(searchStr);
                                 if (music != null) {
                                     if (channel != null) {

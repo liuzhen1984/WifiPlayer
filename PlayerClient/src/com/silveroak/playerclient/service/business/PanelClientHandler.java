@@ -52,7 +52,7 @@ public class PanelClientHandler  extends SimpleChannelInboundHandler<Object> {
         }
         strMsg = tempStr;
         tempStr = "";
-        //todo 返回给前台activity显示
+        // 返回给前台activity显示
         Result result = JsonUtils.string2Object(strMsg,Result.class);
         if(result==null){
             LogUtils.error(TAG,"msg format error");
