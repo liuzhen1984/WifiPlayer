@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.silveroak.playerclient.R;
+import com.silveroak.playerclient.constants.SystemConstant;
 import com.silveroak.playerclient.domain.Music;
 import com.silveroak.playerclient.domain.PlayerInfo;
 import com.silveroak.playerclient.service.business.PanelClient;
@@ -42,8 +43,10 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
         super.onResume();
         if(panelClient!=null){
             panelClient.sendTo("/play/list", "");
+            syncInfo();
         }
     }
+    private SystemConstant.PLAYER_STATUS PLAYER_STATUS= SystemConstant.PLAYER_STATUS.PAUSED;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,12 +55,33 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
 
         playInfoButton = (ImageButton) v.findViewById(R.id.into_player_bt);
         playInfoView = (TextView) v.findViewById(R.id.player_info_tv);
+
         View.OnClickListener von = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(mActivity, PlayerDeviceMusicPlayActivity.class);
-                startActivity(intent);
+
+                switch (view.getId()) {
+                    case R.id.into_player_bt:
+                        if(PLAYER_STATUS.equals(SystemConstant.PLAYER_STATUS.PAUSED)){
+                            PanelClient.getClient().sendTo("/play/start",null);
+                            PLAYER_STATUS = SystemConstant.PLAYER_STATUS.PLAYER;
+                            playInfoButton.setImageDrawable(getResources().getDrawable(R.drawable.pause_song));
+                        } else{
+                            PanelClient.getClient().sendTo("/play/paused",null);
+                            PLAYER_STATUS = SystemConstant.PLAYER_STATUS.PAUSED;
+                            playInfoButton.setImageDrawable(getResources().getDrawable(R.drawable.play_song));
+                        }
+                        break;
+                    case R.id.player_info_tv:
+                        Intent intent = new Intent();
+                        intent.setClass(mActivity, PlayerDeviceMusicPlayActivity.class);
+                        startActivity(intent);
+                        break;
+                    default:
+                        break;
+                }
+
+
             }
         };
         playInfoView.setOnClickListener(von);
@@ -156,6 +180,14 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
                     playInfoView.setText(playerInfo.getMusic().getArtistName()+": "+playerInfo.getMusic().getSongName());
 
                 }
+                PLAYER_STATUS = playerInfo.getStatus();
+                if(playerInfo.getStatus().equals(SystemConstant.PLAYER_STATUS.PLAYER)){
+                    // 把图片改为暂停的
+                    playInfoButton.setImageDrawable(getResources().getDrawable(R.drawable.pause_song));
+                } else{
+                    // 把图片改为播放的
+                    playInfoButton.setImageDrawable(getResources().getDrawable(R.drawable.play_song));
+                }
                 break;
             default:
                 break;
@@ -192,5 +224,35 @@ public class PlayerMusicListFragment extends PlayerBaseSearchBarFragment {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        isSync = false;
+    }
+
+    private boolean isSync=false;
+    private void syncInfo(){
+        if(isSync){
+            return;
+        }
+        isSync = true;
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while (isSync){
+                    if(panelClient!=null) {
+                        panelClient.sendTo("/play/sync", "");
+                    }
+                    try {
+                        Thread.sleep(5000l);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        };
+        new Thread(runnable).start();
+    }
 
 }

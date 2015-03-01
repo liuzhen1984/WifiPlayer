@@ -23,7 +23,6 @@ import com.silveroak.playerclient.ui.base.PlayerBaseFragment;
 import com.silveroak.playerclient.ui.base.PlayerBaseSearchBarFragment;
 import com.silveroak.playerclient.utils.JsonUtils;
 import com.silveroak.playerclient.utils.LogUtils;
-import io.netty.channel.Channel;
 
 import java.util.Map;
 
@@ -224,6 +223,7 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
                          e.printStackTrace();
                      }
                  }
+
             }
         };
         new Thread(runnable).start();
@@ -232,7 +232,6 @@ public class PlayerMusicPlayFragment extends PlayerBaseSearchBarFragment {
     private final class ButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            final Channel channel = PanelClient.init(mActivity.getApplicationContext()).getChannel();
             switch (v.getId()) {
                 case R.id.imgBtnPlayPause:
                     if(PLAYER_STATUS.equals(SystemConstant.PLAYER_STATUS.PAUSED)){

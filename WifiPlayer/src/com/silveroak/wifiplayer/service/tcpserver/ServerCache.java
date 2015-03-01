@@ -35,7 +35,7 @@ public class ServerCache {
 	public static Channel findChannel(String key) {
 		Channel channel = channelMap.get(key);
         if(channel!=null){
-           if(!channel.isOpen()){
+           if(!channel.isOpen()|| !channel.isActive()){
                removeChannel(key);
            } else{
                return channel;

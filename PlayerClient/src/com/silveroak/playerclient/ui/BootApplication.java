@@ -1,7 +1,6 @@
 package com.silveroak.playerclient.ui;
 
 import android.app.Application;
-import android.os.Messenger;
 import android.util.Log;
 import com.silveroak.playerclient.exception.AppCrashException;
 
@@ -17,4 +16,5 @@ public class BootApplication extends Application{
         AppCrashException crashException = AppCrashException.getInstance();
         crashException.init(getApplicationContext());
     }
+
 }

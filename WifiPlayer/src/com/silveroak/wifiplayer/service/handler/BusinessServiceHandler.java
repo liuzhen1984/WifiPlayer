@@ -48,8 +48,11 @@ public class BusinessServiceHandler extends SimpleChannelInboundHandler<Object> 
             return;
         }
         Channel channel = ServerCache.findChannel(ctx.channel().remoteAddress().toString());
-        if(channel==null){
+        if(channel==null || !ctx.channel().equals(channel)){
+            LogUtils.debug(TAG,"No channel :"+ctx.channel().remoteAddress());
             ServerCache.addClientChannel(ctx.channel());
+        }else{
+            LogUtils.debug(TAG,"Already exist channel :"+ctx.channel().remoteAddress());
         }
         try{
             if(MessageConstant.HB_STR.equalsIgnoreCase(msg.toString())){
